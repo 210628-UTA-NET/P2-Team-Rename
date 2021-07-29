@@ -1,6 +1,6 @@
 using System;
 
-namespace TutorConnect {
+namespace TutorConnectAPI {
     public class WeatherForecast {
         public DateTime Date { get; set; }
 
