@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>aspnet-TutorConnect-2715F7F1-DAC7-4021-AA9C-97B0A8ECEFA4</UserSecretsId>
+    <UserSecretsId>aspnet-TutorConnectAPI-EA853754-09CF-47CE-84F2-533FCE6FCB71</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

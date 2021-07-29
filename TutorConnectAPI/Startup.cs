@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TutorConnect {
+namespace TutorConnectAPI {
     public class Startup {
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
@@ -30,7 +30,7 @@ namespace TutorConnect {
 
             services.AddControllers();
             services.AddSwaggerGen(c => {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TutorConnect", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TutorConnectAPI", Version = "v1" });
             });
         }
 
@@ -39,7 +39,7 @@ namespace TutorConnect {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TutorConnect v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TutorConnectAPI v1"));
             }
 
             app.UseHttpsRedirection();
