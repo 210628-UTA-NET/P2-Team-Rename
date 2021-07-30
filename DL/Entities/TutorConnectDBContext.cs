@@ -1,8 +1,9 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DL.Entities
 {
-    public class TutorConnectDBContext : DbContext
+    public class TutorConnectDBContext : IdentityDbContext<User>
     {
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Availability> Availabilities { get; set; }
