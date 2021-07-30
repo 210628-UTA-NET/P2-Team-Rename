@@ -22,6 +22,22 @@ namespace DL.Entities
         {
             p_optionsBuilder.EnableSensitiveDataLogging();
         }
+
+        protected override void OnModelCreating(ModelBuilder p_modelBuilder)
+        {
+            base.OnModelCreating(p_modelBuilder);
+            p_modelBuilder.Entity<Appointment>();
+            p_modelBuilder.Entity<Availability>();
+            p_modelBuilder.Entity<Location>();
+            p_modelBuilder.Entity<Message>();
+            p_modelBuilder.Entity<Message>();
+            p_modelBuilder.Entity<Payment>();
+            p_modelBuilder.Entity<Review>();
+            p_modelBuilder.Entity<Topic>();
+            p_modelBuilder.Entity<Transaction>();
+            p_modelBuilder.Entity<Tutor>();
+            p_modelBuilder.Entity<User>();
+        }
     }
 
     
