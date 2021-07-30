@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace DL.Entities
 {
     public class TutorConnectDBContext : DbContext
@@ -11,16 +13,17 @@ namespace DL.Entities
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Tutor> Tutors { get; set; }
         public DbSet<User> Users { get; set; }
+        public TutorConnectDBContext() : base()
+        { }
+        public TutorConnectDBContext(DbContextOptions options) : base(options)
+        { }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder p_options)
+        {
+            p_options.EnableSensitiveDataLogging();
+        }
     }
 
-    public TutorConnectDBContext() : base()
-    {}
-    public TutorConnectDBContext(options) : base(options)
-    {}
-
-    protected overide void onConfiguring(DbContextOptionsBuilder p_options)
-    {
-        p_options.EnableSensitiveDataLogging();
-    }
+    
 
 }
