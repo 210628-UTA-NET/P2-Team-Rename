@@ -15,12 +15,12 @@ namespace DL.Entities
         public DbSet<User> Users { get; set; }
         public TutorConnectDBContext() : base()
         { }
-        public TutorConnectDBContext(DbContextOptions options) : base(options)
+        public TutorConnectDBContext(DbContextOptions p_options) : base(p_options)
         { }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder p_options)
+        protected override void OnConfiguring(DbContextOptionsBuilder p_optionsBuilder)
         {
-            p_options.EnableSensitiveDataLogging();
+            p_optionsBuilder.EnableSensitiveDataLogging();
         }
     }
 
