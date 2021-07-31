@@ -9,7 +9,7 @@ namespace DL
         Task<List<User>> GetAll();
         Task<User> Get(string p_id);
         Task<User> Save(User p_user);
-        Task<User> Edit(User p_user);
+        void Edit(User p_user);
         void Delete(string p_id);
     }
 }

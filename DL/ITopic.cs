@@ -9,7 +9,7 @@ namespace DL
         Task<List<Topic>> GetAll();
         Task<Topic> Get(string p_id);
         Task<Topic> Save(Topic p_topic);
-        Task<Topic> Edit(Topic p_topic);
+        void Edit(Topic p_topic);
         void Delete(string p_id);
     }
 }
