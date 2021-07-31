@@ -1,8 +1,9 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DL.Entities
 {
-    public class TutorConnectDBContext : DbContext
+    public class TutorConnectDBContext : IdentityDbContext<User>
     {
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Availability> Availabilities { get; set; }
@@ -21,6 +22,22 @@ namespace DL.Entities
         protected override void OnConfiguring(DbContextOptionsBuilder p_optionsBuilder)
         {
             p_optionsBuilder.EnableSensitiveDataLogging();
+        }
+
+        protected override void OnModelCreating(ModelBuilder p_modelBuilder)
+        {
+            base.OnModelCreating(p_modelBuilder);
+            p_modelBuilder.Entity<Appointment>();
+            p_modelBuilder.Entity<Availability>();
+            p_modelBuilder.Entity<Location>();
+            p_modelBuilder.Entity<Message>();
+            p_modelBuilder.Entity<Message>();
+            p_modelBuilder.Entity<Payment>();
+            p_modelBuilder.Entity<Review>();
+            p_modelBuilder.Entity<Topic>();
+            p_modelBuilder.Entity<Transaction>();
+            p_modelBuilder.Entity<Tutor>();
+            p_modelBuilder.Entity<User>();
         }
     }
 
