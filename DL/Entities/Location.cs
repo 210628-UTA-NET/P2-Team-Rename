@@ -8,6 +8,5 @@ namespace DL.Entities
         public string LocationID { get; set; }
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
-        public User User { get; set; }
     }
 }

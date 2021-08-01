@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using DL.Entities;
 
-namespace DL.Entities
+namespace DL
 {
     public class TutorConnectDBContext : IdentityDbContext<User>
     {
@@ -27,7 +28,10 @@ namespace DL.Entities
         protected override void OnModelCreating(ModelBuilder p_modelBuilder)
         {
             base.OnModelCreating(p_modelBuilder);
-            p_modelBuilder.Entity<Appointment>();
+            p_modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.Transaction)
+                .WithOne(t => t.Appointment)
+                .HasForeignKey<Transaction>(t => t.AppointmentID);
             p_modelBuilder.Entity<Availability>();
             p_modelBuilder.Entity<Location>();
             p_modelBuilder.Entity<Message>();
@@ -37,7 +41,10 @@ namespace DL.Entities
             p_modelBuilder.Entity<Topic>();
             p_modelBuilder.Entity<Transaction>();
             p_modelBuilder.Entity<Tutor>();
-            p_modelBuilder.Entity<User>();
+            p_modelBuilder.Entity<User>()
+                .HasOne(u => u.Tutor)
+                .WithOne(t => t.User)
+                .HasForeignKey<Tutor>(t => t.UserID);
         }
     }
 

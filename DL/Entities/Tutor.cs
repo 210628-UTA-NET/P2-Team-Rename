@@ -8,5 +8,6 @@ namespace DL.Entities
         public string TutorID { get; set; }
         public decimal HourlyRate { get; set; }
         public User User { get; set; }
+        public virtual string UserID { get; set; }
     }
 }
