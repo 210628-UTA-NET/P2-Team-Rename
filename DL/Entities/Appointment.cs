@@ -13,7 +13,7 @@ namespace DL.Entities
         [Key]
         public string AppointmentID { get; set; }
         public DateTime Date { get; set; }
-        public Transaction Transaction { get; set; }
+        public virtual Transaction Transaction { get; set; }
         public virtual ICollection<User> Users { get; set; }
     }
 }
