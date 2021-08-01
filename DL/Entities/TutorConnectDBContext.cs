@@ -13,7 +13,7 @@ namespace DL.Entities
         public DbSet<Topic> Topics { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Tutor> Tutors { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> ApplicationUsers { get; set; }
         public TutorConnectDBContext() : base()
         { }
         public TutorConnectDBContext(DbContextOptions p_options) : base(p_options)
