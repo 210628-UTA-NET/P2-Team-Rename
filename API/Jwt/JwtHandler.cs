@@ -12,12 +12,10 @@ using DL.Entities;
 
 namespace API.Jwt {
     public class JwtHandler {
-        private readonly IConfiguration _configuration;
         private readonly IConfigurationSection _jwtSettings;
 
         public JwtHandler(IConfiguration configuration) {
-            _configuration = configuration;
-            _jwtSettings = _configuration.GetSection("JwtSettings");
+            _jwtSettings = configuration.GetSection("JwtSettings");
         }
 
         public SigningCredentials GetSigningCredentials() {

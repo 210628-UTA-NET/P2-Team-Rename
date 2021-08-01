@@ -25,23 +25,26 @@ namespace DL
             optionsBuilder.EnableSensitiveDataLogging();
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Appointment>()
+            base.OnModelCreating(builder);
+
+            builder.ApplyConfiguration(new RoleConfiguration());
+
+            builder.Entity<Appointment>()
                 .HasOne(a => a.Transaction)
                 .WithOne(t => t.Appointment)
                 .HasForeignKey<Transaction>(t => t.AppointmentID);
-            modelBuilder.Entity<Availability>();
-            modelBuilder.Entity<Location>();
-            modelBuilder.Entity<Message>();
-            modelBuilder.Entity<Message>();
-            modelBuilder.Entity<Payment>();
-            modelBuilder.Entity<Review>();
-            modelBuilder.Entity<Topic>();
-            modelBuilder.Entity<Transaction>();
-            modelBuilder.Entity<Tutor>();
-            modelBuilder.Entity<User>()
+            builder.Entity<Availability>();
+            builder.Entity<Location>();
+            builder.Entity<Message>();
+            builder.Entity<Message>();
+            builder.Entity<Payment>();
+            builder.Entity<Review>();
+            builder.Entity<Topic>();
+            builder.Entity<Transaction>();
+            builder.Entity<Tutor>();
+            builder.Entity<User>()
                 .HasOne(u => u.Tutor)
                 .WithOne(t => t.User)
                 .HasForeignKey<Tutor>(t => t.UserID);
