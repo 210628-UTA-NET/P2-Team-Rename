@@ -17,31 +17,31 @@ namespace DL
         public DbSet<User> ApplicationUsers { get; set; }
         public TutorConnectDBContext() : base()
         { }
-        public TutorConnectDBContext(DbContextOptions p_options) : base(p_options)
+        public TutorConnectDBContext(DbContextOptions options) : base(options)
         { }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder p_optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            p_optionsBuilder.EnableSensitiveDataLogging();
+            optionsBuilder.EnableSensitiveDataLogging();
         }
 
-        protected override void OnModelCreating(ModelBuilder p_modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(p_modelBuilder);
-            p_modelBuilder.Entity<Appointment>()
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Appointment>()
                 .HasOne(a => a.Transaction)
                 .WithOne(t => t.Appointment)
                 .HasForeignKey<Transaction>(t => t.AppointmentID);
-            p_modelBuilder.Entity<Availability>();
-            p_modelBuilder.Entity<Location>();
-            p_modelBuilder.Entity<Message>();
-            p_modelBuilder.Entity<Message>();
-            p_modelBuilder.Entity<Payment>();
-            p_modelBuilder.Entity<Review>();
-            p_modelBuilder.Entity<Topic>();
-            p_modelBuilder.Entity<Transaction>();
-            p_modelBuilder.Entity<Tutor>();
-            p_modelBuilder.Entity<User>()
+            modelBuilder.Entity<Availability>();
+            modelBuilder.Entity<Location>();
+            modelBuilder.Entity<Message>();
+            modelBuilder.Entity<Message>();
+            modelBuilder.Entity<Payment>();
+            modelBuilder.Entity<Review>();
+            modelBuilder.Entity<Topic>();
+            modelBuilder.Entity<Transaction>();
+            modelBuilder.Entity<Tutor>();
+            modelBuilder.Entity<User>()
                 .HasOne(u => u.Tutor)
                 .WithOne(t => t.User)
                 .HasForeignKey<Tutor>(t => t.UserID);
