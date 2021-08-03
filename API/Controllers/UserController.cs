@@ -26,7 +26,7 @@ namespace API.Controllers {
             _jwtHandler = jwtHandler;
         }
 
-        [HttpPost("Registration")]
+        [HttpPost("registration")]
         public async Task<IActionResult> RegisterUser([FromBody] UserRegistration userRegistration) {
             if (userRegistration == null || !ModelState.IsValid) return BadRequest();
 
@@ -46,7 +46,7 @@ namespace API.Controllers {
             return StatusCode(201);
         }
 
-        [HttpPost("Login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserAuthentication userAuthentication) {
             User user = await _userManager.FindByEmailAsync(userAuthentication.Email);
             if (user == null || !await _userManager.CheckPasswordAsync(user, userAuthentication.Password))

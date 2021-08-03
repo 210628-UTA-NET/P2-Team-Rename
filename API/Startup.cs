@@ -18,6 +18,7 @@ using DL.Entities;
 using API.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
+using Microsoft.AspNetCore.Routing;
 
 namespace API {
     public class Startup {
@@ -29,6 +30,13 @@ namespace API {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
+            services.AddCors(options => {
+                options.AddPolicy(name: "TestingFrontend",
+                    builder => {
+                        builder.WithOrigins("http://localhost:4200");
+                    });
+            });
+            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             services.AddDbContext<TutorConnectDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AzureDB")));
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<TutorConnectDBContext>();
