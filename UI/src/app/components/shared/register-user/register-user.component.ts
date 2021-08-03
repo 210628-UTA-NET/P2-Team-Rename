@@ -29,15 +29,16 @@ export class RegisterUserComponent implements OnInit {
   public hasError = (controlName: string, errorName: string) => {
     return this.registerForm.controls[controlName].hasError(errorName)
   }
-  public registerUser = (registerForm: FormGroup) => {
+  public registerUser = (registerForm: any) => {
+    const formValues = { ...registerForm };
     const user: UserRegistration = {
-      firstName: registerForm.get('firstName')!.value,
-      lastName: registerForm.get('lastName')!.value,
-      email: registerForm.get('email')!.value,
-      password: registerForm.get('password')!.value,
-      confirmPassword: registerForm.get('confirm')!.value,
+      firstName: formValues.firstName,
+      lastName: formValues.lastName,
+      email: formValues.email,
+      password: formValues.password,
+      confirmPassword: formValues.confirm
     };
-    this._authService.registerUser("/user/registration", user)
+    this._authService.registerUser("user/registration", user)
     .subscribe(_ => {
       console.log("Successful registration");
     },

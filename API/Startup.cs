@@ -33,7 +33,9 @@ namespace API {
             services.AddCors(options => {
                 options.AddPolicy(name: "TestingFrontend",
                     builder => {
-                        builder.WithOrigins("http://localhost:4200");
+                        builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
                     });
             });
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
@@ -88,6 +90,7 @@ namespace API {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
+                app.UseCors("TestingFrontend");
             }
 
             app.UseHttpsRedirection();
