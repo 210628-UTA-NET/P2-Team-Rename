@@ -14,6 +14,7 @@ import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { LoginComponent } from './components/pages/login/login.component';
 import { RegisterUserComponent } from './components/shared/register-user/register-user.component';
 import { AuthenticationService } from './services/authentication.service';
+import { TutorSearchComponent } from './components/pages/tutor-search/tutor-search.component';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -25,7 +26,8 @@ export function tokenGetter() {
     HomeComponent,
     NavbarComponent,
     LoginComponent,
-    RegisterUserComponent
+    RegisterUserComponent,
+    TutorSearchComponent
   ],
   imports: [
     BrowserModule,
