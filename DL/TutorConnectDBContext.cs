@@ -11,6 +11,7 @@ namespace DL {
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Tutor> Tutors { get; set; }
+        public DbSet<Topic> Topics { get; set; }
         public DbSet<User> ApplicationUsers { get; set; }
         public DbSet<TutorApplication> TutorApplications { get; set; }
         public DbSet<DegreeCertification> DegreeCertifications { get; set; }
@@ -24,7 +25,7 @@ namespace DL {
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);
 
-            builder.ApplyConfiguration(new RoleConfiguration());
+            //builder.ApplyConfiguration(new RoleConfiguration());
 
             builder.Entity<Appointment>()
                 .HasOne(a => a.Transaction)
@@ -36,13 +37,35 @@ namespace DL {
                 .WithOne(t => t.User)
                 .HasForeignKey<Tutor>(t => t.UserId);
 
+            builder.Entity<Topic>();
             builder.Entity<Availability>();
             builder.Entity<Location>();
-            builder.Entity<Message>();
-            builder.Entity<Message>();
+            builder.Entity<Message>()
+                .HasOne(m => m.Receiver)
+                .WithMany(u => u.MessagesReceived)
+                .HasForeignKey(m => m.ReceiverId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Message>()
+                .HasOne(p => p.Sender)
+                .WithMany(t => t.MessagesSent)
+                .HasForeignKey(m => m.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<Payment>();
             builder.Entity<Review>();
-            builder.Entity<Transaction>();
+            builder.Entity<Transaction>()
+                .HasOne(t => t.UserReceived)
+                .WithMany(u => u.TransactionsReceived)
+                .HasForeignKey(t => t.UserReceivedId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Transaction>()
+                .HasOne(t => t.UserSent)
+                .WithMany(u => u.TransactionsSent)
+                .HasForeignKey(t => t.UserSentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<Tutor>();
             builder.Entity<DegreeCertification>();
             builder.Entity<TutorApplication>();

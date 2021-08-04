@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DL {
     public class TutorConnectDB<T>: IDatabase<T> where T: class {
@@ -11,19 +12,19 @@ namespace DL {
             _context = context;
         }
 
-        public void Create(T model) {
+        public async void Create(T model) {
             _context.Set<T>().Add(model);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(T model) {
+        public async void Delete(T model) {
             _context.Set<T>().Attach(model);
             _context.Set<T>().Remove(model);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public T FindSingle(QueryOptions<T> options) {
-            return Query(options).FirstOrDefault();
+        public async Task<T> FindSingle(QueryOptions<T> options) {
+            return (await Query(options)).FirstOrDefault();
         }
 
         public void FlagForRemoval(T model) {
@@ -31,7 +32,7 @@ namespace DL {
             _context.Set<T>().Remove(model);
         }
 
-        public IList<T> Query(QueryOptions<T> options) {
+        public async Task<IList<T>> Query(QueryOptions<T> options) {
             // Load relations and subrelations
             var queryableQuery = _context.Set<T>().AsQueryable();
             if (options.Includes != null) {
@@ -48,14 +49,14 @@ namespace DL {
                 }
             }
 
-            return enumerableQuery.Select(o => o).ToList();
+            return await Task.FromResult(enumerableQuery.AsQueryable().Select(o => o).ToList());
         }
 
-        public void Save() {
-            _context.SaveChanges();
+        public async void Save() {
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(T model) {
+        public async void Update(T model) {
             _context.Set<T>().Attach(model);
 
             var entry = _context.Entry(model);
@@ -67,7 +68,7 @@ namespace DL {
                 }
             }
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             entry.State = EntityState.Detached;
         }
     }
