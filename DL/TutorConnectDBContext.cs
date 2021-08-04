@@ -34,8 +34,8 @@ namespace DL {
 
             builder.Entity<User>()
                 .HasOne(u => u.IsTutor)
-                .WithOne(t => t.User)
-                .HasForeignKey<Tutor>(t => t.UserId);
+                .WithOne(t => t.UserAccount)
+                .HasForeignKey<Tutor>(t => t.UserAccountId);
 
             builder.Entity<Topic>();
             builder.Entity<Availability>();

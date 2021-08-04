@@ -3,7 +3,18 @@
     <h1 class="text-light" id="app-padding-title">TutorConnect</h1>
   </div>
   
-  <div class="container bg-light" id="app-login-panel">
-    <app-register-user></app-register-user>
+  <div [ngSwitch] = "radioGroupForm.value['display']" class="container bg-light" id="app-login-panel">
+    <form [formGroup]="radioGroupForm">
+      <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" formControlName="display">
+        <label ngbButtonLabel class="btn btn-primary">
+          <input ngbButton type="radio" value="login"> Login
+        </label>
+        <label ngbButtonLabel class="btn btn-primary">
+          <input ngbButton type="radio" value="register"> Register
+        </label>
+      </div>
+    </form>
+    
+    <app-register-user *ngSwitchCase="'register'"></app-register-user>
   </div>
 </div>

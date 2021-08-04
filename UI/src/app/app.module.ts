@@ -17,6 +17,7 @@ import { AuthenticationService } from './services/authentication.service';
 import { TutorSearchComponent } from './components/pages/tutor-search/tutor-search.component';
 import { TutorMatchesComponent } from './components/pages/tutor-matches/tutor-matches.component';
 import { TutorCardComponent } from './components/pages/tutor-card/tutor-card.component';
+import { LoginUserComponent } from './components/shared/login-user/login-user.component';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -31,7 +32,8 @@ export function tokenGetter() {
     RegisterUserComponent,
     TutorSearchComponent,
     TutorMatchesComponent,
-    TutorCardComponent
+    TutorCardComponent,
+    LoginUserComponent
   ],
   imports: [
     BrowserModule,
