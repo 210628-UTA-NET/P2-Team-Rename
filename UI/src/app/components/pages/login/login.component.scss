@@ -1,0 +1,24 @@
+#app-login-container {
+  display: flex;
+  min-height: calc(100vh - 69px);
+  padding: 0px;
+}
+#app-login-padding {
+  display: flex;
+  background-color: #344955;
+  min-height: 100%;
+  margin: 0px;
+  align-items: center;
+  justify-content: center;
+  flex-basis: 60%;
+}
+#app-padding-title {
+  font-size: 5em;
+}
+
+#app-login-panel {
+  display: flex;
+  flex-basis: 40%;
+  align-items: center;
+  justify-content: center;
+}
