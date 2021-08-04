@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace API {
-    public class UserAuthentication {
+    public class UserAuthenticationDto {
 
         [Required(ErrorMessage = "Email is required.")]
         public string Email { get; set; }

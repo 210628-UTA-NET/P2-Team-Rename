@@ -9,16 +9,18 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BL;
 using DL;
 using DL.Entities;
 using API.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
-using Microsoft.AspNetCore.Routing;
+using AutoMapper;
 
 namespace API {
     public class Startup {
@@ -38,6 +40,7 @@ namespace API {
                            .AllowAnyHeader();
                     });
             });
+            services.AddAutoMapper(typeof(Startup));
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             services.AddDbContext<TutorConnectDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AzureDB")));
             services.AddIdentity<User, IdentityRole>()
@@ -80,8 +83,9 @@ namespace API {
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("securityKey").Value))
                 };
             });
-
+            services.AddScoped(typeof(IDatabase<>), typeof(TutorConnectDB<>));
             services.AddScoped<JwtHandler>();
+            services.AddScoped<TutorApplicationManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

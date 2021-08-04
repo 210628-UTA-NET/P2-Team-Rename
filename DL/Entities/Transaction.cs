@@ -9,10 +9,14 @@ namespace DL.Entities {
 
         [Column(TypeName = "money")]
         public decimal Amount { get; set; }
-        public DateTime Date { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public DateTime Timestamp { get; set; }
         public virtual Appointment Appointment { get; set; }
         public virtual string AppointmentId { get; set; }
         public User UserSent { get; set; }
         public User UserReceived { get; set; }
+        public string UserSentId { get; set; }
+        public string UserReceivedId { get; set; }
     }
 }
