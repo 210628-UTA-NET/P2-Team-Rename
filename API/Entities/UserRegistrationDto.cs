@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace API {
-    public class UserRegistration {
+    public class UserRegistrationDto {
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
