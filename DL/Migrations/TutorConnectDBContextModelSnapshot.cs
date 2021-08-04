@@ -319,22 +319,6 @@ namespace DL.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "542b3684-753b-4101-9a58-acc5822c9a1f",
-                            ConcurrencyStamp = "a3065149-5e99-41db-8dea-c6725261bc01",
-                            Name = "Tutor",
-                            NormalizedName = "TUTOR"
-                        },
-                        new
-                        {
-                            Id = "9967379d-771f-49c6-84f3-9698b5cde493",
-                            ConcurrencyStamp = "1b4f9750-d70c-4d67-9c44-82734277d6cf",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
