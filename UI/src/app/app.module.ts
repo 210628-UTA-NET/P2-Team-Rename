@@ -15,6 +15,8 @@ import { LoginComponent } from './components/pages/login/login.component';
 import { RegisterUserComponent } from './components/shared/register-user/register-user.component';
 import { AuthenticationService } from './services/authentication.service';
 import { TutorSearchComponent } from './components/pages/tutor-search/tutor-search.component';
+import { TutorMatchesComponent } from './components/pages/tutor-matches/tutor-matches.component';
+import { TutorCardComponent } from './components/pages/tutor-card/tutor-card.component';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -27,7 +29,9 @@ export function tokenGetter() {
     NavbarComponent,
     LoginComponent,
     RegisterUserComponent,
-    TutorSearchComponent
+    TutorSearchComponent,
+    TutorMatchesComponent,
+    TutorCardComponent
   ],
   imports: [
     BrowserModule,

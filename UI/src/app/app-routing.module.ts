@@ -1,3 +1,4 @@
+import { TutorCardComponent } from './components/pages/tutor-card/tutor-card.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/pages/home/home.component';
@@ -7,7 +8,8 @@ import { TutorSearchComponent } from './components/pages/tutor-search/tutor-sear
 const routes: Routes = [
   {path:"", component: LoginComponent},
   {path: "home", component: HomeComponent},
-  {path: "search", component: TutorSearchComponent}
+  {path: "search", component: TutorSearchComponent},
+  {path: "matches", component: TutorCardComponent}
 ];
 
 @NgModule({
