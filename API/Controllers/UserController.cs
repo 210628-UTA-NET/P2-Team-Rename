@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 using DL.Entities;
 using API.Jwt;
+using API.Entities;
 using Microsoft.IdentityModel.Tokens;
 
 namespace API.Controllers {
@@ -44,8 +45,12 @@ namespace API.Controllers {
 
                 return BadRequest(new RegistrationResponseDto { Errors = errors });
             }
+            var userDto = _mapper.Map<UserDto>(user);
 
-            return StatusCode(201);
+            return Ok(new RegistrationResponseDto {
+                IsSuccessfulRegistration = true,
+                User = userDto
+            });
         }
 
         [HttpPost("login")]
@@ -58,8 +63,13 @@ namespace API.Controllers {
             List<Claim> claims = _jwtHandler.GetClaims(user);
             JwtSecurityToken tokenOptions = _jwtHandler.GenerateTokenOptions(signingCredentials, claims);
             string token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            var userDto = _mapper.Map<UserDto>(user);
 
-            return Ok(new AuthenticationResponseDto { IsSuccessfulAuthentication = true, Token = token });
+            return Ok(new AuthenticationResponseDto { 
+                IsSuccessfulAuthentication = true, 
+                Token = token,
+                User = userDto
+            });
         }
 
 

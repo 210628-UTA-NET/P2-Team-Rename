@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace API {
+namespace API.Entities {
     public class UserRegistrationDto {
         public string FirstName { get; set; }
         public string LastName { get; set; }

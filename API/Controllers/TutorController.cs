@@ -31,6 +31,18 @@ namespace API.Controllers {
             return Ok(new { Results = results });
         }
 
+        [HttpPost("application")]
+        public async Task<IActionResult> SubmitApplication() {
+            IList<TutorApplication> results = await _appManager.GetTutorApplications();
+
+            if (results == null) { 
+                return StatusCode(500);
+            }
+
+            return Ok(new { Results = results });
+        }
+
+
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetTutorsForUser([FromQuery] int distance, [FromQuery] string sortBy) {
