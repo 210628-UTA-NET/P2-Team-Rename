@@ -20,8 +20,8 @@ namespace API.Controllers {
             _appManager = appManager;
         }
 
-        //[Authorize]
-        [HttpGet("application")]
+        //[Authorize(Roles = "Administrator")]
+        [HttpGet()]
         public async Task<IActionResult> GetApplications() {
             IList<TutorApplication> results = await _appManager.GetTutorApplications();
 
@@ -33,13 +33,13 @@ namespace API.Controllers {
         }
 
         //[Authorize]
-        [HttpPost("application")]
+        [HttpPost()]
         public IActionResult SubmitApplication([FromBody] SubmitTutorApplicationDto applicationDto) {
             return Ok();
         }
 
         //[Authorize(Roles = "Administrator")]
-        [HttpPost("application/approve")]
+        [HttpPost("approve")]
         public IActionResult ApproveApplication(int id, bool approve) {
             return Ok();
         }

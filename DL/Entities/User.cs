@@ -23,6 +23,7 @@ namespace DL.Entities {
         public string LastName { get; set; }
         public ICollection<Topic> Topics { get; set; }
         public Tutor IsTutor { get; set; }
+        public virtual ICollection<ChatMessage> ChatMessages { get; set; }
         public virtual ICollection<Message> MessagesSent { get; set; }
         public virtual ICollection<Message> MessagesReceived { get; set; }
         public virtual Location Location { get; set; }

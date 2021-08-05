@@ -40,6 +40,7 @@ namespace API {
                            .AllowAnyHeader();
                     });
             });
+            services.AddSignalR();
             services.AddAutoMapper(typeof(Startup));
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             services.AddDbContext<TutorConnectDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AzureDB")));
@@ -83,6 +84,7 @@ namespace API {
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("securityKey").Value))
                 };
             });
+
             services.AddScoped(typeof(IDatabase<>), typeof(TutorConnectDB<>));
             services.AddScoped<JwtHandler>();
             services.AddScoped<TutorApplicationManager>();
@@ -107,6 +109,7 @@ namespace API {
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
+                endpoints.MapHub<API.Hubs.ChatHub>("/chat");
             });
         }
     }
