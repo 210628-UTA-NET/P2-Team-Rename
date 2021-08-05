@@ -28,10 +28,10 @@ export class LoginUserComponent implements OnInit {
     this.showError = false;
     const login = {... loginFormValue };
     const userForAuth: UserAuthentication = {
-      email: login.username,
+      email: login.email,
       password: login.password
     }
-    this._authService.loginUser('api/accounts/login', userForAuth)
+    this._authService.loginUser('user/login', userForAuth)
     .subscribe(res => {
        localStorage.setItem("token", res.token);
        this._router.navigate([this._returnUrl]);
