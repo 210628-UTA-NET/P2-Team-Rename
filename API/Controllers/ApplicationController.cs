@@ -34,13 +34,13 @@ namespace API.Controllers {
 
         //[Authorize]
         [HttpPost("application")]
-        public async Task<IActionResult> SubmitApplication([FromBody] SubmitTutorApplicationDto applicationDto) {
+        public IActionResult SubmitApplication([FromBody] SubmitTutorApplicationDto applicationDto) {
             return Ok();
         }
 
         //[Authorize(Roles = "Administrator")]
         [HttpPost("application/approve")]
-        public async Task<IActionResult> ApproveApplication(int id, bool approve) {
+        public IActionResult ApproveApplication(int id, bool approve) {
             return Ok();
         }
     }

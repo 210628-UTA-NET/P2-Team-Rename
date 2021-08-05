@@ -20,7 +20,7 @@ namespace API.Controllers {
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetTutorsForUser([FromQuery] int distance, [FromQuery] string sortBy) {
+        public ActionResult GetTutorsForUser([FromQuery] int distance, [FromQuery] string sortBy) {
 
             return Ok();
         }
