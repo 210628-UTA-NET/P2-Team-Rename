@@ -13,8 +13,8 @@ namespace DL.Entities {
         public decimal HourlyRate { get; set; }
 
         [Required]
-        public User User { get; set; }
-        public virtual string UserId { get; set; }
+        public User UserAccount { get; set; }
+        public virtual string UserAccountId { get; set; }
         public ICollection<DegreeCertification> DegreesOrCerts { get; set; }
         public ICollection<Review> Reviews { get; set; }
     }

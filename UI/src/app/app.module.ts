@@ -11,12 +11,12 @@ import { JwtModule } from "@auth0/angular-jwt";
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/pages/home/home.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
-import { LoginComponent } from './components/pages/login/login.component';
-import { RegisterUserComponent } from './components/shared/register-user/register-user.component';
 import { AuthenticationService } from './services/authentication.service';
 import { TutorSearchComponent } from './components/pages/tutor-search/tutor-search.component';
 import { TutorMatchesComponent } from './components/pages/tutor-matches/tutor-matches.component';
 import { TutorCardComponent } from './components/pages/tutor-card/tutor-card.component';
+import { LoadingWheelComponent } from './components/shared/loading-wheel/loading-wheel.component';
+import { AuthModule } from './modules/auth/auth.module';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -27,11 +27,10 @@ export function tokenGetter() {
     AppComponent,
     HomeComponent,
     NavbarComponent,
-    LoginComponent,
-    RegisterUserComponent,
     TutorSearchComponent,
     TutorMatchesComponent,
-    TutorCardComponent
+    TutorCardComponent,
+    LoadingWheelComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +40,7 @@ export function tokenGetter() {
     NgbModule,
     ReactiveFormsModule,
     HttpClientModule,
+    AuthModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
