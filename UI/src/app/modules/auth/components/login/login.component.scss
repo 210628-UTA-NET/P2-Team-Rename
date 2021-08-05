@@ -13,12 +13,19 @@
   flex-basis: 60%;
 }
 #app-padding-title {
-  font-size: 5em;
+  font-size: 4em;
 }
 
 #app-login-panel {
   display: flex;
+  flex-direction: column;
   flex-basis: 40%;
   align-items: center;
   justify-content: center;
+}
+
+.btn {
+  input {
+    display: none;
+  }
 }

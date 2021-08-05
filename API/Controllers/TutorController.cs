@@ -30,5 +30,12 @@ namespace API.Controllers {
 
             return Ok(new { Results = results });
         }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetTutorsForUser([FromQuery] int distance, [FromQuery] string sortBy) {
+
+            return Ok();
+        }
     }
 }

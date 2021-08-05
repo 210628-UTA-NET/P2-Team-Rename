@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks;
 using DL;
 using DL.Entities;
 
@@ -16,6 +17,10 @@ namespace BL {
                 "User",
                 "DegreesOrCerts"
             };
+        }
+
+        public async Task<IList<Tutor>> GetTutors(User user, int distance, string sortBy) {
+            throw new NotImplementedException();
         }
     }
 }
