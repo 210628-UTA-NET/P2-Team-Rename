@@ -1,0 +1,25 @@
+<div class="card" id="login-user-component">
+  <div class="card-body m-3">
+      <h1 class="card-title">Login</h1>
+      <form [formGroup]="loginForm" autocomplete="off" novalidate (ngSubmit)="loginUser(loginForm.value)">
+          <div class="form-floating mb-3">
+              <input type="email" id="email" formControlName="email" class="form-control"
+                  [ngClass]="{ 'is-invalid': loginForm.controls.email.dirty && loginForm.controls.email.invalid, 
+                      'is-valid': loginForm.controls.email.dirty && !loginForm.controls.email.invalid }"
+                  required />
+              <label for="email">Email</label>
+          </div>
+          <div class="form-floating mb-3">
+              <input type="password" id="password" formControlName="password" class="form-control" 
+                  [ngClass]="{ 'is-invalid': loginForm.controls.password.dirty && loginForm.controls.password.invalid, 
+                      'is-valid': loginForm.controls.password.dirty && !loginForm.controls.password.invalid }"
+                  required />
+              <label for="password">Password</label>
+          </div>
+          <br>
+          <div class="form-floating mb-3">
+              <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Login</button>
+          </div>
+      </form>
+  </div>
+</div>

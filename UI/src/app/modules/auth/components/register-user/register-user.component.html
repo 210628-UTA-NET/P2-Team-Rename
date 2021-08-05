@@ -1,0 +1,45 @@
+<div class="card" id="register-user-component">
+    <div class="card-body m-3">
+        <h1 class="card-title">Register</h1>
+        <form [formGroup]="registerForm" autocomplete="off" novalidate (ngSubmit)="registerUser(registerForm.value)">
+            <div class="form-floating mb-3">
+                <input type="text" id="firstName" formControlName="firstName" class="form-control" 
+                [ngClass]="{ 'is-invalid': registerForm.controls.firstName.dirty && registerForm.controls.firstName.invalid, 
+                    'is-valid': registerForm.controls.firstName.dirty && !registerForm.controls.firstName.invalid }"/>
+                <label for="firstName">First Name</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" id="lastName" formControlName="lastName" class="form-control" 
+                    [ngClass]="{ 'is-invalid': registerForm.controls.lastName.dirty && registerForm.controls.lastName.invalid, 
+                        'is-valid': registerForm.controls.lastName.dirty && !registerForm.controls.lastName.invalid }" 
+                    required/>
+                <label for="lastName">Last Name</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="email" id="email" formControlName="email" class="form-control"
+                    [ngClass]="{ 'is-invalid': registerForm.controls.email.dirty && registerForm.controls.email.invalid, 
+                        'is-valid': registerForm.controls.email.dirty && !registerForm.controls.email.invalid }"
+                    required />
+                <label for="email">Email</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" id="password" formControlName="password" class="form-control" 
+                    [ngClass]="{ 'is-invalid': registerForm.controls.password.dirty && registerForm.controls.password.invalid, 
+                        'is-valid': registerForm.controls.password.dirty && !registerForm.controls.password.invalid }"
+                    required />
+                <label for="password">Password</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" id="confirm" formControlName="confirm" class="form-control" 
+                    [ngClass]="{ 'is-invalid': registerForm.controls.confirm.dirty && registerForm.controls.confirm.invalid, 
+                        'is-valid': registerForm.controls.confirm.dirty && !registerForm.controls.confirm.invalid }"
+                    required />
+                <label for="confirm">Confirm Password</label>
+            </div>
+            <br>
+            <div class="form-floating mb-3">
+                <button type="submit" class="btn btn-primary" [disabled]="!registerForm.valid">Register</button>
+            </div>
+        </form>
+    </div>
+</div>

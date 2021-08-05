@@ -1,4 +1,13 @@
 <app-navbar></app-navbar>
 <div id="app-content"class="container-fluid">
-<router-outlet></router-outlet>
+  <router-outlet>
+    <!--<app-loading-wheel *ngIf="loading"></app-loading-wheel>-->
+    <div class="wrapper">
+      <div class="overlay" *ngIf="loading">
+        <div class="spinner-wrapper">
+          <app-loading-wheel></app-loading-wheel>
+        </div>
+      </div>
+    </div>
+  </router-outlet>
 </div>
