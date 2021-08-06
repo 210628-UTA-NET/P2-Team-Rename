@@ -70,10 +70,11 @@ namespace DL {
             builder.Entity<DegreeCertification>();
             builder.Entity<TutorApplication>();
 
+            /*
             builder.Entity<ChatMessage>()
                 .HasOne(m => m.Sender)
                 .WithMany(u => u.ChatMessages)
-                .HasForeignKey(u => u.SenderId);
+                .HasForeignKey(u => u.SenderId);*/
         }
     }
 }
