@@ -12,11 +12,9 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/pages/home/home.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { AuthenticationService } from './services/authentication.service';
-import { TutorSearchComponent } from './components/pages/tutor-search/tutor-search.component';
-import { TutorMatchesComponent } from './components/pages/tutor-matches/tutor-matches.component';
-import { TutorCardComponent } from './components/pages/tutor-card/tutor-card.component';
 import { LoadingWheelComponent } from './components/shared/loading-wheel/loading-wheel.component';
 import { AuthModule } from './modules/auth/auth.module';
+import { UserModule } from './modules/user/user.module';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -27,9 +25,6 @@ export function tokenGetter() {
     AppComponent,
     HomeComponent,
     NavbarComponent,
-    TutorSearchComponent,
-    TutorMatchesComponent,
-    TutorCardComponent,
     LoadingWheelComponent
   ],
   imports: [
@@ -41,6 +36,7 @@ export function tokenGetter() {
     ReactiveFormsModule,
     HttpClientModule,
     AuthModule,
+    UserModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
