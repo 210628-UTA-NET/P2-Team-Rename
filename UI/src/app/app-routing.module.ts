@@ -8,7 +8,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 const routes: Routes = [
   //{path:"", component: LoadingWheelComponent},
-  {path:"", loadChildren:() => import('./modules/auth/auth.module').then(m => m.AuthModule)},
+  {path: "", loadChildren: ()=> import('./modules/chat/chat.module').then(m => m.ChatModule)},
+  {path: "login", loadChildren:() => import('./modules/auth/auth.module').then(m => m.AuthModule)},
   {path: "home", component: HomeComponent},
   {path: "search", component: TutorSearchComponent},
   {path: "matches", component: TutorCardComponent}

@@ -1,7 +1,7 @@
 export interface ChatMessage {
-  SenderId: string;
-  ReceiverId: string;
-  SenderName: string;
-  Body: string;
-  Date: Date;
+  senderId: string;
+  receiverId: string;
+  senderName: string;
+  body: string;
+  date: Date;
 }
