@@ -17,6 +17,8 @@ import { TutorMatchesComponent } from './components/pages/tutor-matches/tutor-ma
 import { TutorCardComponent } from './components/pages/tutor-card/tutor-card.component';
 import { LoadingWheelComponent } from './components/shared/loading-wheel/loading-wheel.component';
 import { AuthModule } from './modules/auth/auth.module';
+import { AdminAdmitComponent } from './components/pages/admin-admit/admin-admit.component';
+import { AdminAdmitCardComponent } from './components/pages/admin-admit-card/admin-admit-card.component';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -30,7 +32,9 @@ export function tokenGetter() {
     TutorSearchComponent,
     TutorMatchesComponent,
     TutorCardComponent,
-    LoadingWheelComponent
+    LoadingWheelComponent,
+    AdminAdmitComponent,
+    AdminAdmitCardComponent
   ],
   imports: [
     BrowserModule,

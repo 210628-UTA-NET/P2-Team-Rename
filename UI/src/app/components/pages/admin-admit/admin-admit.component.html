@@ -1,0 +1,20 @@
+<p>admin-admit works!</p>
+<div class="container">
+    <h2>Students</h2>
+    <ul class="list">
+        <li *ngFor="let application of list"
+            [class.selected]="application === selectedApplication"
+            (click)="onSelect(application)">
+            <span class="badge">Name: </span>
+        </li>
+    </ul>
+
+    <div *ngIf="selectedApplication">
+        <h2>Name Details</h2>
+        <div><span>: </span></div>
+        <div><span>: </span></div>
+        <div><span>: </span></div>
+        <div><span>: </span></div>
+    </div>
+
+</div>
