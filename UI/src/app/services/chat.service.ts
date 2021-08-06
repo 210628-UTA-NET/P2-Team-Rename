@@ -26,13 +26,25 @@ export class ChatService {
   
   public joinChat(senderId: string, receiverId: string) {
     if (this._hubConnection) {
-      this._hubConnection.invoke('JoinPrivateChat', senderId, receiverId);
+      this._hubConnection.invoke('JoinPrivateChat', senderId, receiverId)
+        .then(() => {
+          console.log(`Connected to private chat with ${receiverId}.`)
+        })
+        .catch(err =>{
+          console.log(err.toString());
+        });
     }
   }
 
   public leaveChat(senderId: string, receiverId: string) {
     if (this._hubConnection) {
-      this._hubConnection.invoke('LeavePrivateChat', senderId, receiverId);
+      this._hubConnection.invoke('LeavePrivateChat', senderId, receiverId)
+        .then(() => {
+          console.log(`Disconnected to private chat with ${receiverId}.`)
+        })
+        .catch(err =>{
+          console.log(err.toString());
+        });
     }
   }
   
@@ -51,6 +63,7 @@ export class ChatService {
   
   private registerOnServerEvents(): void {  
     this._hubConnection.on('MessageReceived', (data: any) => {  
+      console.log("message recieved");
       this.messageReceived.emit(data);  
     });  
   }  
