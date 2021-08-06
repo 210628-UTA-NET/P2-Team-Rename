@@ -10,8 +10,6 @@ const routes: Routes = [
   {path: "login", loadChildren:() => import('./modules/auth/auth.module').then(m => m.AuthModule)},
   {path: "user", loadChildren:() => import('./modules/user/user.module').then(m => m.UserModule)},
   {path: "home", component: HomeComponent},
-  {path: "search", component: TutorSearchComponent},
-  {path: "matches", component: TutorCardComponent}
 ];
 
 @NgModule({
