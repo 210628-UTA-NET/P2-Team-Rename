@@ -19,7 +19,7 @@ namespace BL {
             };
         }
 
-        public async Task<IList<Tutor>> GetTutors(User user, int distance, string sortBy) {
+        public IList<Tutor> GetTutors(User user, int distance, string sortBy) {
             throw new NotImplementedException();
         }
     }
