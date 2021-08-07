@@ -25,7 +25,7 @@
         </div>
         <div class="container align-items-center row m-4">
             <div class="form-floating mb-3 col-7">
-                <input class="form-control" id="name" type="text" [formControl]="messageBody">
+                <input (keydown.enter)="sendMessage()" class="form-control" id="name" type="text" [formControl]="messageBody">
             </div>
             <div class="form-floating mb-3 col-2">
                 <button (click)="sendMessage()" class="btn btn-primary">Send</button>

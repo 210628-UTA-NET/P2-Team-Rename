@@ -28,7 +28,6 @@ namespace API.Controllers {
             if (results == null) { 
                 return StatusCode(500);
             }
-
             return Ok(new { Results = results });
         }
 
