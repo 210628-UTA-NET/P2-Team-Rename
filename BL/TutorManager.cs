@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 using DL;
-using DL.Entities;
+using Entities.Database;
 
 namespace BL {
     public class TutorManager {

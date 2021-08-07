@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using DL.Entities;
-using API.Entities;
+using Entities.Database;
+using Entities.Dtos;
+using Entities.Query;
 using BL;
 
 namespace API.Controllers {
@@ -22,8 +23,10 @@ namespace API.Controllers {
 
         //[Authorize(Roles = "Administrator")]
         [HttpGet()]
-        public async Task<IActionResult> GetApplications() {
-            IList<TutorApplication> results = await _appManager.GetTutorApplications();
+        public async Task<IActionResult> GetApplications([FromQuery] TutorAppParameters tutorAppParams) {
+            if (!ModelState.IsValid) return BadRequest();
+
+            IList<TutorApplication> results = await _appManager.GetTutorApplications(tutorAppParams);
 
             if (results == null) { 
                 return StatusCode(500);

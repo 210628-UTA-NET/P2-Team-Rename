@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace DL.Entities {
+namespace Entities.Database {
     public class Availability {
         [Key]
         public string Id { get; set; }

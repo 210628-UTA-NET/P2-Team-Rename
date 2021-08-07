@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DL.Entities {
+namespace Entities.Database {
     public class Tutor {
         public Tutor() {
             DegreesOrCerts = new HashSet<DegreeCertification>();

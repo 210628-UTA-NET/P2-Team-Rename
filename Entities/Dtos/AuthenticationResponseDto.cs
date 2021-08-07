@@ -1,4 +1,4 @@
-namespace API.Entities {
+namespace Entities.Dtos {
     public class AuthenticationResponseDto {
         public bool IsSuccessfulAuthentication{ get; set; }
         public string ErrorMessage { get; set; }

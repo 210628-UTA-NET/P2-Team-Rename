@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DL.Entities {
+namespace Entities.Database {
     public class Message {
         public Message() {
             Users = new HashSet<User>();

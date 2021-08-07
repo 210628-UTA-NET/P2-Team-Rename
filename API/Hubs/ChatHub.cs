@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 
-using DL.Entities;
+using Entities.Database;
 
 namespace API.Hubs {
     public class ChatHub : Hub {

@@ -1,6 +1,6 @@
 using AutoMapper;
-using DL.Entities;
-using API.Entities;
+using Entities.Database;
+using Entities.Dtos;
 
 namespace API {
     public class AutoMapping : Profile {

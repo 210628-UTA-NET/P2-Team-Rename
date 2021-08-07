@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace API.Entities {
+namespace Entities.Dtos {
     public class UserAuthenticationDto {
 
         [Required(ErrorMessage = "Email is required.")]

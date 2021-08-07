@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DL.Entities {
+namespace Entities.Database {
     public class Topic {
         public Topic() {
             Users = new HashSet<User>();

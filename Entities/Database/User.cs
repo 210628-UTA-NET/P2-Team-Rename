@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations;
 
-namespace DL.Entities {
-
-    [DataContract]
+namespace Entities.Database {
     public class User : IdentityUser {
         public User() {
             Appointments = new HashSet<Appointment>();

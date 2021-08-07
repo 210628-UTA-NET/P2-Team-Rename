@@ -10,9 +10,9 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using AutoMapper;
-using DL.Entities;
 using API.Jwt;
-using API.Entities;
+using Entities.Dtos;
+using Entities.Database;
 using Microsoft.IdentityModel.Tokens;
 
 namespace API.Controllers {

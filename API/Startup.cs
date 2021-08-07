@@ -16,7 +16,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BL;
 using DL;
-using DL.Entities;
+using Entities.Database;
 using API.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DL;
-using DL.Entities;
+using Entities.Database;
+using Entities.Query;
 
 namespace BL {
     public class TutorApplicationManager {
@@ -21,10 +22,10 @@ namespace BL {
             };
         }
 
-        public async Task<IList<TutorApplication>> GetTutorApplications(bool openOnly = true) {
+        public async Task<IList<TutorApplication>> GetTutorApplications(TutorAppParameters tutorAppParams) {
             IList<Func<TutorApplication, bool>> conditions = new List<Func<TutorApplication, bool>>();
 
-            if (openOnly) {
+            if (true) {
                 conditions.Add(app => app.Open == true);
             }
 

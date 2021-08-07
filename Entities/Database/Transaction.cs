@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DL.Entities {
+namespace Entities.Database {
     public class Transaction {
         [Key]
         public string Id { get; set; }

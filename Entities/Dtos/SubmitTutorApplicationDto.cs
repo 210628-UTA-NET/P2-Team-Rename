@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using DL.Entities;
+using Entities.Database;
 
-namespace API.Entities {
+namespace Entities.Dtos {
     public class SubmitTutorApplicationDto {
         [Required(ErrorMessage = "Information about yourself is required")]
         public string About {get; set;}

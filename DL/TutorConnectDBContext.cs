@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using DL.Entities;
+using Entities.Database;
 
 namespace DL {
     public class TutorConnectDBContext : IdentityDbContext<User> {

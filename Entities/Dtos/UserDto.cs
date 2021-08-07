@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using DL.Entities;
+using Entities.Database;
 
-namespace API.Entities {
+namespace Entities.Dtos {
     public class UserDto {
         public string Id { get; set; }
         public string FirstName { get; set; }

@@ -6,8 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using DL.Entities;
-using API.Entities;
+using Entities.Database;
 using BL;
 
 namespace API.Controllers {
