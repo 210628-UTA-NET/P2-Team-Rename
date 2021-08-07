@@ -10,6 +10,7 @@ using Entities.Database;
 using Entities.Dtos;
 using Entities.Query;
 using BL;
+using AutoMapper;
 
 namespace API.Controllers {
 
@@ -17,8 +18,11 @@ namespace API.Controllers {
     [Route("[controller]")]
     public class ApplicationController : ControllerBase {
         private readonly TutorApplicationManager _appManager;
-        public ApplicationController(TutorApplicationManager appManager) {
+        private readonly IMapper _mapper;
+
+        public ApplicationController(TutorApplicationManager appManager, IMapper mapper) {
             _appManager = appManager;
+            _mapper = mapper;
         }
 
         //[Authorize(Roles = "Administrator")]
@@ -27,11 +31,12 @@ namespace API.Controllers {
             if (!ModelState.IsValid) return BadRequest();
 
             IList<TutorApplication> results = await _appManager.GetTutorApplications(tutorAppParams);
+            IList<TutorApplicationDto> resultsDto = _mapper.Map<IList<TutorApplication>, IList<TutorApplicationDto>>(results);
 
             if (results == null) { 
                 return StatusCode(500);
             }
-            return Ok(new { Results = results });
+            return Ok(new { Results = resultsDto });
         }
 
         //[Authorize]
