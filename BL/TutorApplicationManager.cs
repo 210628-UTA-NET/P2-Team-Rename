@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using DL;
 using Entities.Database;
 using Entities.Query;
-using Entities.Dtos;
 
 namespace BL {
     public class TutorApplicationManager {
@@ -39,15 +38,12 @@ namespace BL {
             })); 
         }
 
-        public async Task<TutorApplication> CreateTutorApplication(SubmitTutorApplicationDto applicationDto, string userId) {
+        public async Task<TutorApplication> CreateTutorApplication(TutorApplication application, string userId) {
 
-            return await _applicationDB.Create(new TutorApplication() {
-                UserId = userId,
-                About = applicationDto.About,
-                DegreesOrCerts = applicationDto.DegreesOrCerts,
-                Open = true,
-                Topics = applicationDto.Topics,
-            }); 
+            application.Open = true;
+            application.UserId = userId;
+
+            return await _applicationDB.Create(application); 
         }
 
         public async void ApproveTutorApplication(string id, bool approve) {
@@ -62,7 +58,7 @@ namespace BL {
 
             if (approve) {
                 await _tutorDB.Create(new() {
-                    UserAccountId = tutorApplication.UserId,
+                    Id = tutorApplication.UserId,
                     DegreesOrCerts = tutorApplication.DegreesOrCerts,
                     Topics = tutorApplication.Topics,
                     About = tutorApplication.About

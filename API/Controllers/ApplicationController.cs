@@ -50,14 +50,19 @@ namespace API.Controllers {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null) return StatusCode(500);
 
-            TutorApplication newApp = await _appManager.CreateTutorApplication(applicationDto, user.Id);
+            TutorApplication newApp = _mapper.Map<SubmitTutorApplicationDto, TutorApplication>(applicationDto);
+
+            newApp = await _appManager.CreateTutorApplication(newApp, user.Id);
             if (newApp == null) return BadRequest();
-            return Ok(newApp);
+            TutorApplicationDto createdApp = _mapper.Map<TutorApplication, TutorApplicationDto>(newApp);
+            return Ok(createdApp);
         }
 
         //[Authorize(Roles = "Administrator")]
-        [HttpPost("approve")]
-        public IActionResult ApproveApplication(int id, bool approve) {
+        [HttpGet("approve")]
+        public IActionResult ApproveOrDenyApplication(int? id, bool approve = true) {
+            if (id == null) return BadRequest();
+
             return Ok();
         }
     }

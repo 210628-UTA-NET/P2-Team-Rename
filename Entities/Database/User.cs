@@ -22,7 +22,6 @@ namespace Entities.Database {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public ICollection<Topic> Topics { get; set; }
-        public Tutor IsTutor { get; set; }
         public Point Location { get; set; }
         public virtual ICollection<ChatMessage> ChatMessages { get; set; }
         public virtual ICollection<Message> MessagesSent { get; set; }

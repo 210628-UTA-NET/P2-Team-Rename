@@ -3,25 +3,19 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Database {
-    public class Tutor {
+    public class Tutor: User {
         public Tutor() {
             DegreesOrCerts = new HashSet<DegreeCertification>();
             Reviews = new HashSet<Review>();
             Topics = new HashSet<Topic>();
         }
 
-        [Key]
-        public string Id { get; set; }
         public string About {get; set;}
 
         [Column(TypeName = "money")]
         public decimal HourlyRate { get; set; }
-
-        [Required]
-        public User UserAccount { get; set; }
-        public virtual string UserAccountId { get; set; }
         public ICollection<DegreeCertification> DegreesOrCerts { get; set; }
-        public ICollection<Topic> Topics { get; set; }
-        public ICollection<Review> Reviews { get; set; }
+        public ICollection<Topic> TutorTopics { get; set; }
+        public ICollection<Review> TutorReviews { get; set; }
     }
 }

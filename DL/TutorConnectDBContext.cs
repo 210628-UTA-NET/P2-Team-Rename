@@ -32,10 +32,7 @@ namespace DL {
                 .WithOne(t => t.Appointment)
                 .HasForeignKey<Transaction>(t => t.AppointmentId);
 
-            builder.Entity<User>()
-                .HasOne(u => u.IsTutor)
-                .WithOne(t => t.UserAccount)
-                .HasForeignKey<Tutor>(t => t.UserAccountId);
+            builder.Entity<User>();
 
             builder.Entity<Topic>();
             builder.Entity<Availability>();

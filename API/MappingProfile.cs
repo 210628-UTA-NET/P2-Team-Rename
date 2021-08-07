@@ -7,6 +7,10 @@ namespace API {
         public AutoMapping() {
             CreateMap<User, UserDto>();
             CreateMap<TutorApplication, TutorApplicationDto>();
+            CreateMap<SubmitTutorApplicationDto, TutorApplication>();
+            CreateMap<DegreeCertification, DegreeOrCertDto>();
+            CreateMap<DegreeOrCertDto, DegreeCertification>();
+
         }
     }
 }

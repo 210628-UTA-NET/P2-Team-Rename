@@ -11,6 +11,7 @@ namespace Entities.Database {
         }
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
         public User User { get; set; }
         public string UserId { get; set; }

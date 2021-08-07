@@ -6,7 +6,7 @@ namespace Entities.Dtos {
     public class SubmitTutorApplicationDto {
         [Required(ErrorMessage = "Information about yourself is required")]
         public string About {get; set;}
-        public ICollection<DegreeCertification> DegreesOrCerts { get; set; }
+        public ICollection<DegreeOrCertDto> DegreesOrCerts { get; set; }
         public ICollection<Topic> Topics { get; set; }
     }
 }
