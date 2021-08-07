@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DL;
 using Entities.Database;
 using Entities.Query;
+using Entities.Dtos;
 
 namespace BL {
     public class TutorApplicationManager {
@@ -34,7 +35,19 @@ namespace BL {
                 Conditions = conditions,
                 PageNumber = tutorAppParams.PageNumber,
                 PageSize = tutorAppParams.PageSize,
-            })).OrderByDescending(app => app.Timestamp).ToList(); 
+                OrderBy = tutorAppParams.OrderBy ?? "Timestamp_desc"
+            })); 
+        }
+
+        public async Task<TutorApplication> CreateTutorApplication(SubmitTutorApplicationDto applicationDto, string userId) {
+
+            return await _applicationDB.Create(new TutorApplication() {
+                UserId = userId,
+                About = applicationDto.About,
+                DegreesOrCerts = applicationDto.DegreesOrCerts,
+                Open = true,
+                Topics = applicationDto.Topics,
+            }); 
         }
 
         public async void ApproveTutorApplication(string id, bool approve) {
@@ -48,7 +61,7 @@ namespace BL {
             if (tutorApplication == null) throw new ArgumentException("No application with that Id could be found.");
 
             if (approve) {
-                _tutorDB.Create(new() {
+                await _tutorDB.Create(new() {
                     UserAccountId = tutorApplication.UserId,
                     DegreesOrCerts = tutorApplication.DegreesOrCerts,
                     Topics = tutorApplication.Topics,

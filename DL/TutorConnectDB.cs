@@ -13,9 +13,10 @@ namespace DL {
             _context = context;
         }
 
-        public async void Create(T model) {
+        public async Task<T> Create(T model) {
             _context.Set<T>().Add(model);
             await _context.SaveChangesAsync();
+            return model;
         }
 
         public async void Delete(T model) {
