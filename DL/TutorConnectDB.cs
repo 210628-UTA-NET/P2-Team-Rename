@@ -26,7 +26,8 @@ namespace DL {
         }
 
         public async Task<T> FindSingle(QueryOptions<T> options) {
-            return (await Query(options)).FirstOrDefault();
+            var query = BuildQuery(options);
+            return await Task.FromResult(query.SingleOrDefault());
         }
 
         public void FlagForRemoval(T model) {
@@ -35,7 +36,11 @@ namespace DL {
         }
 
         public async Task<IList<T>> Query(QueryOptions<T> options) {
-            // Load relations and subrelations
+            var query = BuildQuery(options);
+            return await query.ToListAsync();
+        }
+
+        private IQueryable<T> BuildQuery(QueryOptions<T> options) {
             IQueryable<T> queryableQuery = _context.Set<T>().AsQueryable();
             if (options.Includes != null) {
                 foreach (string inc in options.Includes) {
@@ -66,7 +71,7 @@ namespace DL {
                 }
             }
 
-            return await queryableQuery.ToListAsync();
+            return queryableQuery;
         }
 
         private static (string, bool) ParseSortOrder(string orderBy) {

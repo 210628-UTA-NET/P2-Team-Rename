@@ -76,12 +76,12 @@ namespace API.Controllers {
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetUser() {
-            var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _userManager.FindByIdAsync(id);
+            string id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            User user = await _userManager.FindByIdAsync(id);
 
             if (user == null) return StatusCode(500);
 
-            var userDto = _mapper.Map<UserDto>(user);
+            UserDto userDto = _mapper.Map<UserDto>(user);
 
             return Ok(userDto);
         }

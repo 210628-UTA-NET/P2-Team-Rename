@@ -60,10 +60,14 @@ namespace API.Controllers {
 
         //[Authorize(Roles = "Administrator")]
         [HttpGet("approve")]
-        public IActionResult ApproveOrDenyApplication(int? id, bool approve = true) {
+        public async Task<IActionResult> ApproveOrDenyApplication(string id, bool approve = true) {
             if (id == null) return BadRequest();
 
-            return Ok();
+            if (await _appManager.ApproveTutorApplication(id, approve)) {
+                return Ok();
+            } else {
+                return StatusCode(500);
+            }
         }
     }
 }

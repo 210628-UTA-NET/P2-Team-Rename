@@ -2,19 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using DL;
 using Entities.Database;
 using Entities.Query;
+using Microsoft.AspNetCore.Identity;
 
 namespace BL {
     public class TutorApplicationManager {
         private readonly IDatabase<TutorApplication> _applicationDB;
         private readonly IDatabase<Tutor> _tutorDB;
+        private readonly UserManager<User> _userManager;
+        private readonly IMapper _mapper;
         private readonly IList<string> _includes;
 
-        public TutorApplicationManager(IDatabase<TutorApplication> applicationDB, IDatabase<Tutor> tutorDB) {
+        public TutorApplicationManager(IDatabase<TutorApplication> applicationDB, IDatabase<Tutor> tutorDB, UserManager<User> userManager, IMapper mapper) {
             _applicationDB = applicationDB;
             _tutorDB = tutorDB;
+            _userManager = userManager;
+            _mapper = mapper;
             _includes = new List<string> {
                 "User",
                 "Topics",
@@ -46,7 +52,7 @@ namespace BL {
             return await _applicationDB.Create(application); 
         }
 
-        public async void ApproveTutorApplication(string id, bool approve) {
+        public async Task<bool> ApproveTutorApplication(string id, bool approve) {
             TutorApplication tutorApplication = await _applicationDB.FindSingle(new(){
                 Includes = _includes,
                 Conditions = new List<Func<TutorApplication, bool>>{
@@ -55,14 +61,20 @@ namespace BL {
             });
 
             if (tutorApplication == null) throw new ArgumentException("No application with that Id could be found.");
+            User user = await _userManager.FindByIdAsync(tutorApplication.UserId);
+            if (tutorApplication == null) throw new ArgumentException("User associated with application could not be found.");
 
             if (approve) {
-                await _tutorDB.Create(new() {
-                    Id = tutorApplication.UserId,
-                    DegreesOrCerts = tutorApplication.DegreesOrCerts,
-                    Topics = tutorApplication.Topics,
-                    About = tutorApplication.About
-                });
+                Tutor tutor = _mapper.Map<User, Tutor>(user);
+                tutor.DegreesOrCerts = tutorApplication.DegreesOrCerts;
+                tutor.Topics = tutorApplication.Topics;
+                tutor.About = tutorApplication.About;
+
+                await _userManager.DeleteAsync(user);
+                await _tutorDB.Create(tutor);
+                tutorApplication.UserId = tutor.Id;
+
+                await _userManager.AddToRoleAsync(tutor, "Tutor");
             }
 
             // TO BE IMPLEMENTED
@@ -70,6 +82,7 @@ namespace BL {
 
             tutorApplication.Open = false;
             _applicationDB.Save();
+            return true;
         }
     }
 }
