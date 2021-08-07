@@ -16,22 +16,24 @@ namespace BL {
             _applicationDB = applicationDB;
             _tutorDB = tutorDB;
             _includes = new List<string> {
-                "Tutor",
-                "Tutor.User",
-                "Tutor.DegreesOrCerts"
+                "User",
+                "Topics",
+                "DegreesOrCerts"
             };
         }
 
         public async Task<IList<TutorApplication>> GetTutorApplications(TutorAppParameters tutorAppParams) {
             IList<Func<TutorApplication, bool>> conditions = new List<Func<TutorApplication, bool>>();
 
-            if (true) {
+            if (tutorAppParams.Open) {
                 conditions.Add(app => app.Open == true);
             }
 
             return (await _applicationDB.Query(new() {
                 Includes = _includes,
-                Conditions = conditions
+                Conditions = conditions,
+                PageNumber = tutorAppParams.PageNumber,
+                PageSize = tutorAppParams.PageSize,
             })).OrderByDescending(app => app.Timestamp).ToList(); 
         }
 

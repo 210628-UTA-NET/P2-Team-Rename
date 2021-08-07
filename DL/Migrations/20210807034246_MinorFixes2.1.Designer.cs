@@ -4,15 +4,16 @@ using DL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NetTopologySuite.Geometries;
 
 namespace DL.Migrations
 {
     [DbContext(typeof(TutorConnectDBContext))]
-    partial class TutorConnectDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210807034246_MinorFixes2.1")]
+    partial class MinorFixes21
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,6 +124,22 @@ namespace DL.Migrations
                     b.HasIndex("TutorId");
 
                     b.ToTable("DegreeCertifications");
+                });
+
+            modelBuilder.Entity("Entities.Database.Location", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Latitude")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Longitude")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Location");
                 });
 
             modelBuilder.Entity("Entities.Database.Message", b =>
@@ -258,7 +275,7 @@ namespace DL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("HourlyRate")
-                        .HasColumnType("money");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UserAccountId")
                         .IsRequired()
@@ -290,8 +307,7 @@ namespace DL.Migrations
 
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getdate()");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -328,8 +344,8 @@ namespace DL.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Point>("Location")
-                        .HasColumnType("geography");
+                    b.Property<string>("LocationId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -368,6 +384,8 @@ namespace DL.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
 
                     b.HasIndex("MessageId");
 
@@ -669,9 +687,15 @@ namespace DL.Migrations
 
             modelBuilder.Entity("Entities.Database.User", b =>
                 {
+                    b.HasOne("Entities.Database.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
+
                     b.HasOne("Entities.Database.Message", null)
                         .WithMany("Users")
                         .HasForeignKey("MessageId");
+
+                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

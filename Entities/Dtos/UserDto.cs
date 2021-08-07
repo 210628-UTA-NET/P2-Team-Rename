@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Entities.Database;
+using NetTopologySuite.Geometries;
 
 namespace Entities.Dtos {
     public class UserDto {
@@ -10,6 +11,6 @@ namespace Entities.Dtos {
         public string UserName { get; set; }
         public ICollection<Topic> Topics { get; set; }
         public Tutor IsTutor { get; set; }
-        public virtual Location Location { get; set; }
+        public Point Location { get; set; }
     }
 }

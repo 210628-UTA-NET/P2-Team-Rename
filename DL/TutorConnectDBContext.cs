@@ -39,7 +39,6 @@ namespace DL {
 
             builder.Entity<Topic>();
             builder.Entity<Availability>();
-            builder.Entity<Location>();
             builder.Entity<Message>()
                 .HasOne(m => m.Receiver)
                 .WithMany(u => u.MessagesReceived)
@@ -68,7 +67,9 @@ namespace DL {
 
             builder.Entity<Tutor>();
             builder.Entity<DegreeCertification>();
-            builder.Entity<TutorApplication>();
+            builder.Entity<TutorApplication>()
+                .Property(ta => ta.Timestamp)
+                .HasDefaultValueSql("getdate()");
 
             /*
             builder.Entity<ChatMessage>()

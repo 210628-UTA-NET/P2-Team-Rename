@@ -43,7 +43,11 @@ namespace API {
             services.AddSignalR();
             services.AddAutoMapper(typeof(Startup));
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
-            services.AddDbContext<TutorConnectDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AzureDB")));
+            services.AddDbContext<TutorConnectDBContext>(options => 
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("AzureDB"),
+                    x => x.UseNetTopologySuite()
+            ));
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<TutorConnectDBContext>();
             services.AddControllers();

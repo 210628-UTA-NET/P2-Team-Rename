@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Database {
     public class Tutor {
@@ -12,6 +13,8 @@ namespace Entities.Database {
         [Key]
         public string Id { get; set; }
         public string About {get; set;}
+
+        [Column(TypeName = "money")]
         public decimal HourlyRate { get; set; }
 
         [Required]

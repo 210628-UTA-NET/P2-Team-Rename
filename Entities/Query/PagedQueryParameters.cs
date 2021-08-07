@@ -6,6 +6,7 @@ namespace Entities.Query {
         public int PageNumber { get; set; } = 1;
 
         [Range(0, int.MaxValue)]
-        public int PageSize { get; set; }
+        public int PageSize { get; set; } = 20;
+        public string OrderBy { get; set; }
     }
 }
