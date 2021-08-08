@@ -36,7 +36,7 @@ namespace BL {
             });
         }
 
-        public async Task<string> CancelAppointment(string appointmentId, bool isTutor) {
+        public async Task<string> CancelAppointment(string appointmentId, string userId) {
             if (appointmentId == null) throw new ArgumentException("appointmentId is null");
             Appointment target = await _appointmentDB.FindSingle(new() {
                 Conditions = new List<Func<Appointment, bool>> {
@@ -46,12 +46,14 @@ namespace BL {
 
             if (target == null) throw new ArgumentException("Appointment with the given Id could not be cancelled");
 
-            if (isTutor) {
+            if (target.TutorId == userId) {
                 _appointmentDB.Delete(target);
-            } else {
+            } else if (target.StudentId == userId){
                 target.StudentId = null;
                 target.Student = null;
                 _appointmentDB.Save();
+            } else {
+                return "You are not authorized to cancel this appointment.";
             }
 
             return "The appointment was successfully cancelled.";

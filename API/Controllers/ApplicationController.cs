@@ -43,7 +43,7 @@ namespace API.Controllers {
         }
 
         [Authorize]
-        [HttpPost()]
+        [HttpPost]
         public async Task<IActionResult> SubmitApplication([FromBody] SubmitTutorApplicationDto applicationDto) {
             if (!ModelState.IsValid) return BadRequest();
             var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
