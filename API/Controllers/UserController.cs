@@ -10,9 +10,13 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using AutoMapper;
-using DL.Entities;
 using API.Jwt;
+using Entities.Dtos;
+using Entities.Database;
+using Entities.Query;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
+using NetTopologySuite;
 
 namespace API.Controllers {
 
@@ -20,10 +24,12 @@ namespace API.Controllers {
     [Route("[controller]")]
     public class UserController : ControllerBase {
         private readonly UserManager<User> _userManager;
+        RoleManager<IdentityRole> _roleManager;
         private readonly JwtHandler _jwtHandler;
         private readonly IMapper _mapper;
-        public UserController(UserManager<User> userManager, JwtHandler jwtHandler, IMapper mapper) {
+        public UserController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, JwtHandler jwtHandler, IMapper mapper) {
             _userManager = userManager;
+            _roleManager = roleManager;
             _jwtHandler = jwtHandler;
             _mapper = mapper;
         }
@@ -44,8 +50,12 @@ namespace API.Controllers {
 
                 return BadRequest(new RegistrationResponseDto { Errors = errors });
             }
+            var userDto = _mapper.Map<UserDto>(user);
 
-            return StatusCode(201);
+            return Ok(new RegistrationResponseDto {
+                IsSuccessfulRegistration = true,
+                User = userDto
+            });
         }
 
         [HttpPost("login")]
@@ -58,22 +68,70 @@ namespace API.Controllers {
             List<Claim> claims = _jwtHandler.GetClaims(user);
             JwtSecurityToken tokenOptions = _jwtHandler.GenerateTokenOptions(signingCredentials, claims);
             string token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            var userDto = _mapper.Map<UserDto>(user);
 
-            return Ok(new AuthenticationResponseDto { IsSuccessfulAuthentication = true, Token = token });
+            return Ok(new AuthenticationResponseDto { 
+                IsSuccessfulAuthentication = true, 
+                Token = token,
+                User = userDto
+            });
         }
 
 
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetUser() {
-            var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _userManager.FindByIdAsync(id);
+            string id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            User user = await _userManager.FindByIdAsync(id);
 
             if (user == null) return StatusCode(500);
 
-            var userDto = _mapper.Map<UserDto>(user);
+            UserDto userDto = _mapper.Map<UserDto>(user);
 
             return Ok(userDto);
+        }
+
+        //[Authorize]
+        [HttpGet("Search")]
+        public async Task<IActionResult> QueryUsers([FromQuery] UserParameters userParameters) {
+            var roles = _roleManager.Roles.Select(r => r.Name).ToList();
+
+            var query = _userManager.Users;
+
+            if (userParameters.Role != null) {
+                if (!roles.Contains(userParameters.Role)) {
+                    return BadRequest();
+                } else {
+                    query = (await _userManager.GetUsersInRoleAsync(userParameters.Role)).AsQueryable();
+                }
+            }
+
+            if (userParameters.Name != null) {
+                query = query.Where(u => u.FirstName.Contains(userParameters.Name) || u.LastName.Contains(userParameters.Name));
+            }
+
+            if (userParameters.Distance != null && userParameters.Longitude != null && userParameters.Latitude != null) {
+                var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
+                var location = geometryFactory.CreatePoint(new NetTopologySuite.Geometries.Coordinate((double)userParameters.Longitude, (double)userParameters.Latitude));
+                query = query.Where(u => u.Location.IsWithinDistance(location, (double) userParameters.Distance));
+            }
+
+            var results = await query.ToListAsync();
+            IList<UserDto> userResults = _mapper.Map<List<UserDto>>(results);
+
+
+            return Ok(new { Results = userResults });
+        }
+
+        //[Authorize(Roles = "Administrator")]
+        [HttpDelete]
+        public async Task<IActionResult> RemoveUser([FromRoute] string userId) {
+            User target = await _userManager.FindByIdAsync(userId);
+            if (target == null) return BadRequest();
+
+            await _userManager.DeleteAsync(target);
+
+            return Ok();
         }
     }
 }
