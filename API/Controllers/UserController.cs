@@ -16,6 +16,7 @@ using Entities.Database;
 using Entities.Query;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite;
 
 namespace API.Controllers {
 
@@ -109,8 +110,10 @@ namespace API.Controllers {
                 query = query.Where(u => u.FirstName.Contains(userParameters.Name) || u.LastName.Contains(userParameters.Name));
             }
 
-            if (userParameters.Distance != null && userParameters.Location != null) {
-                query = query.Where(u => u.Location.IsWithinDistance(userParameters.Location, (double) userParameters.Distance));
+            if (userParameters.Distance != null && userParameters.Longitude != null && userParameters.Latitude != null) {
+                var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
+                var location = geometryFactory.CreatePoint(new NetTopologySuite.Geometries.Coordinate((double)userParameters.Longitude, (double)userParameters.Latitude));
+                query = query.Where(u => u.Location.IsWithinDistance(location, (double) userParameters.Distance));
             }
 
             var results = await query.ToListAsync();
