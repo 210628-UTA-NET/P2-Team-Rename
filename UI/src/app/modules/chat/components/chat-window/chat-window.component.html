@@ -1,3 +1,35 @@
-<div class="container">
-  <h1>Chat Window</h1>
+<div class="card">
+    <div class="card-body m-3">
+        <h1 *ngIf="sessionString =='';else session_card" class="card-title text-center">Chat</h1>
+        <ng-template #session_card> <h1 class="card-title text-center">{{sessionString}}</h1></ng-template>
+        <form [formGroup]="connectionForm" autocomplete="off" novalidate
+            (ngSubmit)="openPrivateChat(connectionForm.value)">
+            <div class="row justify-content-center align-items-center">
+                <div class="form-floating mb-3 connect-text col-2">
+                    <input type="text" id="userIdA" formControlName="userIdA" class="form-control" required />
+                    <label for="userIdA">UserIdA</label>
+                </div>
+                <div class="form-floating mb-3 connect-text col-2">
+                    <input type="text" id="userIdB" formControlName="userIdB" class="form-control" required />
+                    <label for="userIdB">UserIdB</label>
+                </div>
+                <div class="form-floating mb-3 col-2">
+                    <button type="submit" class="btn btn-primary" [disabled]="!connectionForm.valid">Connect</button>
+                </div>
+            </div>
+        </form>
+        <div class="container border m-5" id="chat-window">
+        <ul class="list-group list-group-flush" >
+            <li class="list-group-item" *ngFor="let msg of messages">{{msg.body}}</li>
+        </ul>
+        </div>
+        <div class="container align-items-center row m-4">
+            <div class="form-floating mb-3 col-7">
+                <input (keydown.enter)="sendMessage()" class="form-control" id="name" type="text" [formControl]="messageBody">
+            </div>
+            <div class="form-floating mb-3 col-2">
+                <button (click)="sendMessage()" class="btn btn-primary">Send</button>
+            </div>
+        </div>
+    </div>
 </div>

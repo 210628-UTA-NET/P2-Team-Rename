@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -6,23 +8,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using DL.Entities;
-using API.Entities;
+using Entities.Database;
+using Entities.Dtos;
+using Entities.Query;
 using BL;
+using NetTopologySuite;
 
 namespace API.Controllers {
 
     [ApiController]
     [Route("[controller]")]
     public class TutorController : ControllerBase {
-        public TutorController() {
+        private readonly TutorManager _tutorManager;
+        private readonly UserManager<User> _userManager;
+        private readonly IMapper _mapper;
+        public TutorController(TutorManager tutorManager, UserManager<User> userManager, IMapper mapper) {
+            _tutorManager = tutorManager;
+            _userManager = userManager;
+            _mapper = mapper;
         }
 
-        [Authorize]
+        
         [HttpGet]
-        public ActionResult GetTutorsForUser([FromQuery] int distance, [FromQuery] string sortBy) {
+        public async Task<ActionResult> GetTutorsForUser([FromQuery] TutorParameters tutorParams) {
+            if (!ModelState.IsValid) return BadRequest();
 
-            return Ok();
+            IList<Tutor> results = await _tutorManager.GetTutors(tutorParams);
+            IList<TutorDto> resultsDto = _mapper.Map<IList<Tutor>, IList<TutorDto>>(results);
+
+            if (tutorParams.Distance != null && tutorParams.Latitude != null && tutorParams.Longitude != null) {
+                var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
+                var location = geometryFactory.CreatePoint(new NetTopologySuite.Geometries.Coordinate((double)tutorParams.Longitude, (double)tutorParams.Latitude));
+
+                foreach (TutorDto tutor in resultsDto) {
+                    tutor.Distance = tutor.Location.Distance(location);
+                }
+            }
+
+            return Ok(new { Results = resultsDto});
         }
     }
 }

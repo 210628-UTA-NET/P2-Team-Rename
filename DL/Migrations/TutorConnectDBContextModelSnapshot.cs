@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NetTopologySuite.Geometries;
 
 namespace DL.Migrations
 {
@@ -19,37 +20,35 @@ namespace DL.Migrations
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AppointmentUser", b =>
-                {
-                    b.Property<string>("AppointmentsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("AppointmentsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("AppointmentUser");
-                });
-
-            modelBuilder.Entity("DL.Entities.Appointment", b =>
+            modelBuilder.Entity("Entities.Database.Appointment", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("MinuteLength")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TutorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TutorId");
 
                     b.ToTable("Appointments");
                 });
 
-            modelBuilder.Entity("DL.Entities.Availability", b =>
+            modelBuilder.Entity("Entities.Database.Availability", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("AvailabilityEnd")
@@ -68,46 +67,69 @@ namespace DL.Migrations
                     b.ToTable("Availabilities");
                 });
 
-            modelBuilder.Entity("DL.Entities.DegreeCertification", b =>
+            modelBuilder.Entity("Entities.Database.ChatMessage", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReceiverId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ChatMessage");
+                });
+
+            modelBuilder.Entity("Entities.Database.DegreeCertification", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Details")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TutorApplicationId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("TutorId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TutorApplicationId");
+
                     b.HasIndex("TutorId");
 
                     b.ToTable("DegreeCertifications");
                 });
 
-            modelBuilder.Entity("DL.Entities.Location", b =>
+            modelBuilder.Entity("Entities.Database.Message", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("Latitude")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Longitude")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Location");
-                });
-
-            modelBuilder.Entity("DL.Entities.Message", b =>
-                {
-                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("MessageBody")
@@ -131,9 +153,10 @@ namespace DL.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("DL.Entities.Payment", b =>
+            modelBuilder.Entity("Entities.Database.Payment", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreditCard")
@@ -149,9 +172,10 @@ namespace DL.Migrations
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("DL.Entities.Review", b =>
+            modelBuilder.Entity("Entities.Database.Review", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Details")
@@ -175,19 +199,35 @@ namespace DL.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("DL.Entities.Topic", b =>
+            modelBuilder.Entity("Entities.Database.Topic", b =>
                 {
                     b.Property<string>("TopicName")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("TutorApplicationId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TutorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("TopicName");
+
+                    b.HasIndex("TutorApplicationId");
+
+                    b.HasIndex("TutorId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Topics");
                 });
 
-            modelBuilder.Entity("DL.Entities.Transaction", b =>
+            modelBuilder.Entity("Entities.Database.Transaction", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Amount")
@@ -219,34 +259,10 @@ namespace DL.Migrations
                     b.ToTable("Transactions");
                 });
 
-            modelBuilder.Entity("DL.Entities.Tutor", b =>
+            modelBuilder.Entity("Entities.Database.TutorApplication", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("HourlyRate")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("Tutors");
-                });
-
-            modelBuilder.Entity("DL.Entities.TutorApplication", b =>
-                {
-                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("About")
@@ -257,19 +273,20 @@ namespace DL.Migrations
 
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
-                    b.Property<string>("TutorId")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TutorId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("TutorApplications");
                 });
 
-            modelBuilder.Entity("DL.Entities.User", b =>
+            modelBuilder.Entity("Entities.Database.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -279,6 +296,10 @@ namespace DL.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -294,8 +315,8 @@ namespace DL.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LocationId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Point>("Location")
+                        .HasColumnType("geography");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -335,8 +356,6 @@ namespace DL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LocationId");
-
                     b.HasIndex("MessageId");
 
                     b.HasIndex("NormalizedEmail")
@@ -348,6 +367,8 @@ namespace DL.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -375,6 +396,22 @@ namespace DL.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "648decb2-b5dc-45dd-807e-e028722020ae",
+                            ConcurrencyStamp = "eee1c715-5508-4dae-8ea3-347dd68cbe49",
+                            Name = "Tutor",
+                            NormalizedName = "TUTOR"
+                        },
+                        new
+                        {
+                            Id = "0e0db2d5-d051-440c-a880-62240bdd9bf1",
+                            ConcurrencyStamp = "da730b88-9cb7-4d95-a125-bbe8e1936cb0",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -481,60 +518,77 @@ namespace DL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("TopicUser", b =>
+            modelBuilder.Entity("Entities.Database.Tutor", b =>
                 {
-                    b.Property<string>("TopicsTopicName")
+                    b.HasBaseType("Entities.Database.User");
+
+                    b.Property<string>("About")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("HourlyRate")
+                        .HasColumnType("money");
+
+                    b.Property<double?>("Rating")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UsersId")
-                        .HasColumnType("nvarchar(450)");
+                    b.HasIndex("UserId");
 
-                    b.HasKey("TopicsTopicName", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("TopicUser");
+                    b.HasDiscriminator().HasValue("Tutor");
                 });
 
-            modelBuilder.Entity("AppointmentUser", b =>
+            modelBuilder.Entity("Entities.Database.Appointment", b =>
                 {
-                    b.HasOne("DL.Entities.Appointment", null)
-                        .WithMany()
-                        .HasForeignKey("AppointmentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Entities.Database.Tutor", "Tutor")
+                        .WithMany("Appointments")
+                        .HasForeignKey("TutorId");
 
-                    b.HasOne("DL.Entities.User", null)
+                    b.HasOne("Entities.Database.User", "Student")
                         .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TutorId");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Tutor");
                 });
 
-            modelBuilder.Entity("DL.Entities.Availability", b =>
+            modelBuilder.Entity("Entities.Database.Availability", b =>
                 {
-                    b.HasOne("DL.Entities.User", "User")
+                    b.HasOne("Entities.Database.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DL.Entities.DegreeCertification", b =>
+            modelBuilder.Entity("Entities.Database.ChatMessage", b =>
                 {
-                    b.HasOne("DL.Entities.Tutor", null)
+                    b.HasOne("Entities.Database.User", null)
+                        .WithMany("ChatMessages")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Entities.Database.DegreeCertification", b =>
+                {
+                    b.HasOne("Entities.Database.TutorApplication", null)
+                        .WithMany("DegreesOrCerts")
+                        .HasForeignKey("TutorApplicationId");
+
+                    b.HasOne("Entities.Database.Tutor", null)
                         .WithMany("DegreesOrCerts")
                         .HasForeignKey("TutorId");
                 });
 
-            modelBuilder.Entity("DL.Entities.Message", b =>
+            modelBuilder.Entity("Entities.Database.Message", b =>
                 {
-                    b.HasOne("DL.Entities.User", "Receiver")
+                    b.HasOne("Entities.Database.User", "Receiver")
                         .WithMany("MessagesReceived")
                         .HasForeignKey("ReceiverId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("DL.Entities.User", "Sender")
+                    b.HasOne("Entities.Database.User", "Sender")
                         .WithMany("MessagesSent")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -544,40 +598,55 @@ namespace DL.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("DL.Entities.Payment", b =>
+            modelBuilder.Entity("Entities.Database.Payment", b =>
                 {
-                    b.HasOne("DL.Entities.User", "User")
+                    b.HasOne("Entities.Database.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DL.Entities.Review", b =>
+            modelBuilder.Entity("Entities.Database.Review", b =>
                 {
-                    b.HasOne("DL.Entities.Tutor", "Tutor")
-                        .WithMany("Reviews")
+                    b.HasOne("Entities.Database.Tutor", "Tutor")
+                        .WithMany("TutorReviews")
                         .HasForeignKey("TutorId");
 
-                    b.HasOne("DL.Entities.User", null)
+                    b.HasOne("Entities.Database.User", null)
                         .WithMany("Reviews")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Tutor");
                 });
 
-            modelBuilder.Entity("DL.Entities.Transaction", b =>
+            modelBuilder.Entity("Entities.Database.Topic", b =>
                 {
-                    b.HasOne("DL.Entities.Appointment", "Appointment")
-                        .WithOne("Transaction")
-                        .HasForeignKey("DL.Entities.Transaction", "AppointmentId");
+                    b.HasOne("Entities.Database.TutorApplication", null)
+                        .WithMany("Topics")
+                        .HasForeignKey("TutorApplicationId");
 
-                    b.HasOne("DL.Entities.User", "UserReceived")
+                    b.HasOne("Entities.Database.Tutor", null)
+                        .WithMany("TutorTopics")
+                        .HasForeignKey("TutorId");
+
+                    b.HasOne("Entities.Database.User", null)
+                        .WithMany("Topics")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Entities.Database.Transaction", b =>
+                {
+                    b.HasOne("Entities.Database.Appointment", "Appointment")
+                        .WithOne("Transaction")
+                        .HasForeignKey("Entities.Database.Transaction", "AppointmentId");
+
+                    b.HasOne("Entities.Database.User", "UserReceived")
                         .WithMany("TransactionsReceived")
                         .HasForeignKey("UserReceivedId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("DL.Entities.User", "UserSent")
+                    b.HasOne("Entities.Database.User", "UserSent")
                         .WithMany("TransactionsSent")
                         .HasForeignKey("UserSentId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -589,41 +658,20 @@ namespace DL.Migrations
                     b.Navigation("UserSent");
                 });
 
-            modelBuilder.Entity("DL.Entities.Tutor", b =>
+            modelBuilder.Entity("Entities.Database.TutorApplication", b =>
                 {
-                    b.HasOne("DL.Entities.User", "User")
-                        .WithOne("IsTutor")
-                        .HasForeignKey("DL.Entities.Tutor", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DL.Entities.User", null)
-                        .WithMany("Tutors")
-                        .HasForeignKey("UserId1");
+                    b.HasOne("Entities.Database.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DL.Entities.TutorApplication", b =>
+            modelBuilder.Entity("Entities.Database.User", b =>
                 {
-                    b.HasOne("DL.Entities.Tutor", "Tutor")
-                        .WithMany()
-                        .HasForeignKey("TutorId");
-
-                    b.Navigation("Tutor");
-                });
-
-            modelBuilder.Entity("DL.Entities.User", b =>
-                {
-                    b.HasOne("DL.Entities.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
-
-                    b.HasOne("DL.Entities.Message", null)
+                    b.HasOne("Entities.Database.Message", null)
                         .WithMany("Users")
                         .HasForeignKey("MessageId");
-
-                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -637,7 +685,7 @@ namespace DL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("DL.Entities.User", null)
+                    b.HasOne("Entities.Database.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -646,7 +694,7 @@ namespace DL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("DL.Entities.User", null)
+                    b.HasOne("Entities.Database.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -661,7 +709,7 @@ namespace DL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DL.Entities.User", null)
+                    b.HasOne("Entities.Database.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -670,48 +718,40 @@ namespace DL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("DL.Entities.User", null)
+                    b.HasOne("Entities.Database.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TopicUser", b =>
+            modelBuilder.Entity("Entities.Database.Tutor", b =>
                 {
-                    b.HasOne("DL.Entities.Topic", null)
-                        .WithMany()
-                        .HasForeignKey("TopicsTopicName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DL.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Entities.Database.User", null)
+                        .WithMany("Tutors")
+                        .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("DL.Entities.Appointment", b =>
+            modelBuilder.Entity("Entities.Database.Appointment", b =>
                 {
                     b.Navigation("Transaction");
                 });
 
-            modelBuilder.Entity("DL.Entities.Message", b =>
+            modelBuilder.Entity("Entities.Database.Message", b =>
                 {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("DL.Entities.Tutor", b =>
+            modelBuilder.Entity("Entities.Database.TutorApplication", b =>
                 {
                     b.Navigation("DegreesOrCerts");
 
-                    b.Navigation("Reviews");
+                    b.Navigation("Topics");
                 });
 
-            modelBuilder.Entity("DL.Entities.User", b =>
+            modelBuilder.Entity("Entities.Database.User", b =>
                 {
-                    b.Navigation("IsTutor");
+                    b.Navigation("ChatMessages");
 
                     b.Navigation("MessagesReceived");
 
@@ -719,11 +759,24 @@ namespace DL.Migrations
 
                     b.Navigation("Reviews");
 
+                    b.Navigation("Topics");
+
                     b.Navigation("TransactionsReceived");
 
                     b.Navigation("TransactionsSent");
 
                     b.Navigation("Tutors");
+                });
+
+            modelBuilder.Entity("Entities.Database.Tutor", b =>
+                {
+                    b.Navigation("Appointments");
+
+                    b.Navigation("DegreesOrCerts");
+
+                    b.Navigation("TutorReviews");
+
+                    b.Navigation("TutorTopics");
                 });
 #pragma warning restore 612, 618
         }
