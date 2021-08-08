@@ -3,15 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 
 using Entities.Database;
-using Entities.Dtos;
 using Entities.Query;
 using BL;
-using AutoMapper;
 using System.Security.Claims;
 
 namespace API.Controllers {
@@ -20,11 +16,9 @@ namespace API.Controllers {
     [Route("[controller]")]
     public class AppointmentController : ControllerBase {
         private readonly AppointmentManager _appointmentManager;
-        private readonly UserManager<User> _userManager;
 
-        public AppointmentController(AppointmentManager appointmentManager, UserManager<User> userManager) {
+        public AppointmentController(AppointmentManager appointmentManager) {
             _appointmentManager = appointmentManager;
-            _userManager = userManager;
         }
 
         [HttpGet]
@@ -37,7 +31,7 @@ namespace API.Controllers {
         }
 
         [Authorize]
-        [HttpGet("cancel")]
+        [HttpDelete]
         public async Task<IActionResult> CancelAppointment([FromRoute]string appointmentId) {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             string result = await _appointmentManager.CancelAppointment(appointmentId, userId);
@@ -47,15 +41,15 @@ namespace API.Controllers {
 
         [Authorize(Roles = "Tutor")]
         [HttpPost]
-        public async Task<IActionResult> CreateAppointment([FromBody] DateTime? date, int minuteLength) {
+        public async Task<IActionResult> CreateAppointment([FromBody] CreateAppointmentParameters createAppointmentParameters) {
             string tutorId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            Appointment result = await _appointmentManager.CreateAppointment(tutorId, date, minuteLength);
+            Appointment result = await _appointmentManager.CreateAppointment(tutorId, createAppointmentParameters.Date, createAppointmentParameters.MinuteLength);
 
             return Ok(new { Results = result });
         }
 
         [Authorize]
-        [HttpGet("book")]
+        [HttpPut]
         public async Task<IActionResult> BookAppointment([FromRoute] string appointmentId) {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Appointment result = await _appointmentManager.BookAppointment(appointmentId, userId);

@@ -30,7 +30,7 @@ namespace API.Controllers {
         }
 
         //[Authorize(Roles = "Administrator")]
-        [HttpGet()]
+        [HttpGet]
         public async Task<IActionResult> GetApplications([FromQuery] TutorAppParameters tutorAppParams) {
             if (!ModelState.IsValid) return BadRequest();
 
@@ -59,7 +59,7 @@ namespace API.Controllers {
         }
 
         //[Authorize(Roles = "Administrator")]
-        [HttpGet("approve")]
+        [HttpPut]
         public async Task<IActionResult> ApproveOrDenyApplication(string id, bool approve = true) {
             if (id == null) return BadRequest();
 

@@ -11,6 +11,7 @@ namespace API {
             CreateMap<DegreeCertification, DegreeOrCertDto>();
             CreateMap<DegreeOrCertDto, DegreeCertification>();
             CreateMap<User, Tutor>();
+            CreateMap<Tutor, TutorDto>();
 
         }
     }

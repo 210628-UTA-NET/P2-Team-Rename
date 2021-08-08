@@ -92,6 +92,8 @@ namespace API {
             services.AddScoped(typeof(IDatabase<>), typeof(TutorConnectDB<>));
             services.AddScoped<JwtHandler>();
             services.AddScoped<TutorApplicationManager>();
+            services.AddScoped<TutorManager>();
+            services.AddScoped<AppointmentManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

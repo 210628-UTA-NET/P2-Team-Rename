@@ -13,7 +13,9 @@ using AutoMapper;
 using API.Jwt;
 using Entities.Dtos;
 using Entities.Database;
+using Entities.Query;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers {
 
@@ -21,10 +23,12 @@ namespace API.Controllers {
     [Route("[controller]")]
     public class UserController : ControllerBase {
         private readonly UserManager<User> _userManager;
+        RoleManager<IdentityRole> _roleManager;
         private readonly JwtHandler _jwtHandler;
         private readonly IMapper _mapper;
-        public UserController(UserManager<User> userManager, JwtHandler jwtHandler, IMapper mapper) {
+        public UserController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, JwtHandler jwtHandler, IMapper mapper) {
             _userManager = userManager;
+            _roleManager = roleManager;
             _jwtHandler = jwtHandler;
             _mapper = mapper;
         }
@@ -84,6 +88,47 @@ namespace API.Controllers {
             UserDto userDto = _mapper.Map<UserDto>(user);
 
             return Ok(userDto);
+        }
+
+        //[Authorize]
+        [HttpGet("Search")]
+        public async Task<IActionResult> QueryUsers([FromQuery] UserParameters userParameters) {
+            var roles = _roleManager.Roles.Select(r => r.Name).ToList();
+
+            var query = _userManager.Users;
+
+            if (userParameters.Role != null) {
+                if (!roles.Contains(userParameters.Role)) {
+                    return BadRequest();
+                } else {
+                    query = (await _userManager.GetUsersInRoleAsync(userParameters.Role)).AsQueryable();
+                }
+            }
+
+            if (userParameters.Name != null) {
+                query = query.Where(u => u.FirstName.Contains(userParameters.Name) || u.LastName.Contains(userParameters.Name));
+            }
+
+            if (userParameters.Distance != null && userParameters.Location != null) {
+                query = query.Where(u => u.Location.IsWithinDistance(userParameters.Location, (double) userParameters.Distance));
+            }
+
+            var results = await query.ToListAsync();
+            IList<UserDto> userResults = _mapper.Map<List<UserDto>>(results);
+
+
+            return Ok(new { Results = userResults });
+        }
+
+        //[Authorize(Roles = "Administrator")]
+        [HttpDelete]
+        public async Task<IActionResult> RemoveUser([FromRoute] string userId) {
+            User target = await _userManager.FindByIdAsync(userId);
+            if (target == null) return BadRequest();
+
+            await _userManager.DeleteAsync(target);
+
+            return Ok();
         }
     }
 }
