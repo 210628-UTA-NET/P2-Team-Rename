@@ -37,7 +37,7 @@ namespace DL {
 
         public async Task<IList<T>> Query(QueryOptions<T> options) {
             var query = BuildQuery(options);
-            return await query.ToListAsync();
+            return await Task.FromResult(query.ToList());
         }
 
         private IQueryable<T> BuildQuery(QueryOptions<T> options) {

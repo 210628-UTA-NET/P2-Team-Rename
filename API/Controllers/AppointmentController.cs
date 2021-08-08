@@ -49,7 +49,7 @@ namespace API.Controllers {
         }
 
         [Authorize]
-        [HttpPut]
+        [HttpPut("book")]
         public async Task<IActionResult> BookAppointment([FromRoute] string appointmentId) {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Appointment result = await _appointmentManager.BookAppointment(appointmentId, userId);

@@ -1,9 +1,10 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Entities.Query {
-    public class CreateAppointmentParameters: PagedQueryParameters {
-        public DateTime? Date { get; set; }
-        public int MinuteLength { get; set; }
+    public class AppointmentParameters: PagedQueryParameters {
+        public string TutorId { get; set; }
+        public string StudentId { get; set; }
+        public string UserId { get; set; }
+        public bool Available {get; set;}
     }
 }
