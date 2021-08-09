@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TutorSearchV2Component } from './components/tutor-search-v2/tutor-search-v2.component';
 import { TutorSearchV3Component } from './components/tutor-search-v3/tutor-search-v3.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -19,7 +20,8 @@ import { TutorSearchV3Component } from './components/tutor-search-v3/tutor-searc
   ],
   imports: [
     CommonModule,
-    UserRoutes
+    UserRoutes,
+    ReactiveFormsModule
   ]
 })
 export class UserModule { }
