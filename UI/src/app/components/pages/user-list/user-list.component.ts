@@ -4,14 +4,14 @@ import { EnvironmentUrlService } from 'src/app/services/environment-url.service'
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
-  selector: 'app-admin-admit',
-  templateUrl: './admin-admit.component.html',
-  styleUrls: ['./admin-admit.component.scss']
+  selector: 'app-user-list',
+  templateUrl: './user-list.component.html',
+  styleUrls: ['./user-list.component.scss']
 })
-export class AdminAdmitComponent implements OnInit {
+export class UserListComponent implements OnInit {
 
-  list: any;//List of imported applications
-  selectedApplication?: any;//Variable for displaying application details
+  list: any;//List of Users
+  selectedUser?: any;//Variable for displaying user details
 
   constructor(private _http: HttpClient, private _envUrl: EnvironmentUrlService, private _jwtHelper: JwtHelperService)
   {
@@ -23,7 +23,6 @@ export class AdminAdmitComponent implements OnInit {
   }
 
   //onSelect(*: *) {
-  //  this.selectedApplication = *;
+  //  this.selectedUser = *;
   //}
-
 }

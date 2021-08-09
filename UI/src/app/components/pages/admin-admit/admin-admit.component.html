@@ -1,10 +1,10 @@
 <p>admin-admit works!</p>
-<div class="container">
+<div class="container" style="width: 18rem;  border: 1px solid black;">
     <h2>Students</h2>
     <ul class="list">
-        <li *ngFor="let application of list"
+        <li> *ngFor="let application of list"
             [class.selected]="application === selectedApplication"
-            (click)="onSelect(application)">
+            <!-- (click)="onSelect(application)"> -->
             <span class="badge">Name: </span>
         </li>
     </ul>
