@@ -1,11 +1,18 @@
 using AutoMapper;
-using DL.Entities;
-using API.Entities;
+using Entities.Database;
+using Entities.Dtos;
 
 namespace API {
     public class AutoMapping : Profile {
         public AutoMapping() {
             CreateMap<User, UserDto>();
+            CreateMap<TutorApplication, TutorApplicationDto>();
+            CreateMap<SubmitTutorApplicationDto, TutorApplication>();
+            CreateMap<DegreeCertification, DegreeOrCertDto>();
+            CreateMap<DegreeOrCertDto, DegreeCertification>();
+            CreateMap<User, Tutor>();
+            CreateMap<Tutor, TutorDto>();
+
         }
     }
 }

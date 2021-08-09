@@ -4,7 +4,9 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 using DL;
-using DL.Entities;
+using Entities.Database;
+using Entities.Query;
+using NetTopologySuite;
 
 namespace BL {
     public class TutorManager {
@@ -19,8 +21,37 @@ namespace BL {
             };
         }
 
-        public IList<Tutor> GetTutors(User user, int distance, string sortBy) {
-            throw new NotImplementedException();
+        public async Task<IList<Tutor>> GetTutors(TutorParameters tutorParams) {
+            IList<Func<Tutor, bool>> conditions = new List<Func<Tutor, bool>>();
+
+            if (tutorParams.Name != null) {
+                conditions.Add(t =>
+                    t.FirstName.Contains(tutorParams.Name, StringComparison.OrdinalIgnoreCase)
+                    || t.LastName.Contains(tutorParams.Name, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (tutorParams.HourlyRate != null) {
+                conditions.Add(t => t.HourlyRate < tutorParams.HourlyRate);
+            }
+
+            if (tutorParams.Rating != null) {
+                conditions.Add(t => t.Rating > tutorParams.Rating);
+            }
+
+            if (tutorParams.Distance != null && tutorParams.Latitude != null && tutorParams.Longitude != null) {
+                var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
+                var location = geometryFactory.CreatePoint(new NetTopologySuite.Geometries.Coordinate((double)tutorParams.Longitude, (double)tutorParams.Latitude));
+                conditions.Add(t => t.Location.IsWithinDistance(location, (double)tutorParams.Distance));
+            }
+
+             return await _tutorDB.Query(new() {
+                Conditions = conditions,
+                PageNumber = tutorParams.PageNumber,
+                PageSize = tutorParams.PageSize,
+                OrderBy = tutorParams.OrderBy
+            });
+
+
         }
     }
 }

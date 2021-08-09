@@ -2,13 +2,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 
-using DL.Entities;
+using Entities.Database;
 
 namespace API.Hubs {
     public class ChatHub : Hub {
         public async Task PrivateChat(ChatMessage message) {
             //var senderId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            await Clients.Group(GenerateChatId(message.SenderId, message.ReceiverId)).SendAsync("MessageRecieved", message);
+            string chatId = GenerateChatId(message.SenderId, message.ReceiverId);
+            await Clients.Group(chatId).SendAsync("MessageReceived", message);
         }
 
         public async Task JoinPrivateChat(string userId, string targetUserId) {
