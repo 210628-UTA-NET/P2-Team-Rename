@@ -1,5 +1,4 @@
 import { Tutor } from './../../../../models/tutor/tutor';
-import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from './../../../../services/user.service';
 import { Component, OnInit } from '@angular/core';
@@ -16,7 +15,6 @@ export class TutorSearchV3Component implements OnInit {
   constructor(
     private userService: UserService,
     private route: Router,
-    private location: Location,
     private activatedRoute: ActivatedRoute
   ) {}
   searchForm = new FormGroup({
