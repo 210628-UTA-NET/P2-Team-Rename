@@ -6,7 +6,7 @@ using Entities.Database;
 
 namespace API.Hubs {
     public class ChatHub : Hub {
-        public async Task PrivateChat(ChatMessage message) {
+        public async Task PrivateChat(Message message) {
             //var senderId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             string chatId = GenerateChatId(message.SenderId, message.ReceiverId);
             await Clients.Group(chatId).SendAsync("MessageReceived", message);

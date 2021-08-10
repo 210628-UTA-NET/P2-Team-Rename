@@ -32,7 +32,7 @@ namespace API.Controllers {
 
         [Authorize]
         [HttpDelete]
-        public async Task<IActionResult> CancelAppointment([FromRoute]string appointmentId) {
+        public async Task<IActionResult> CancelAppointment([FromRoute] string appointmentId) {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             string result = await _appointmentManager.CancelAppointment(appointmentId, userId);
 

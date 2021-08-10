@@ -13,6 +13,7 @@ using Entities.Dtos;
 using Entities.Query;
 using BL;
 using NetTopologySuite;
+using System.Security.Claims;
 
 namespace API.Controllers {
 
@@ -47,5 +48,32 @@ namespace API.Controllers {
 
             return Ok(new { Results = resultsDto});
         }
+
+
+        [Authorize]
+        [HttpPut("request")]
+        public async Task<IActionResult> RequestFollowTutor([FromRoute] string tutorId) {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            User user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return BadRequest();
+
+            Tutor tutor = await _tutorManager.FindByIdAsync(tutorId);
+            if (tutor == null) return BadRequest();
+
+            //To be implemented send request to tutor.
+
+            //temp
+            user.MyTutors.Add(tutor);
+
+            await _userManager.UpdateAsync(user);
+            return Ok();
+        }
+
+        /*
+        [Authorize]
+        [HttpPut("approve")]
+        public async Task<IActionResult> ApproveFollowRequest([FromRoute] string followRequestId) {
+
+        }*/
     }
 }

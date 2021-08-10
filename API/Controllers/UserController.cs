@@ -81,10 +81,9 @@ namespace API.Controllers {
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetUser() {
-            string id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            User user = await _userManager.FindByIdAsync(id);
-
-            if (user == null) return StatusCode(500);
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            User user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return BadRequest();
 
             UserDto userDto = _mapper.Map<UserDto>(user);
 
