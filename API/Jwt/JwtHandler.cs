@@ -13,9 +13,11 @@ using Entities.Database;
 namespace API.Jwt {
     public class JwtHandler {
         private readonly IConfigurationSection _jwtSettings;
+        private readonly UserManager<User> _userManager;
 
-        public JwtHandler(IConfiguration configuration) {
+        public JwtHandler(IConfiguration configuration, UserManager<User> userManager) {
             _jwtSettings = configuration.GetSection("JwtSettings");
+            _userManager = userManager;
         }
 
         public SigningCredentials GetSigningCredentials() {
@@ -25,10 +27,15 @@ namespace API.Jwt {
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
 
-        public List<Claim> GetClaims(User user) {
+        public async Task<List<Claim>> GetClaims(User user) {
             List<Claim> claims = new() {
                 new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
+
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles) {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             return claims;
         }

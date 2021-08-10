@@ -65,7 +65,7 @@ namespace API.Controllers {
                 return Unauthorized(new AuthenticationResponseDto { ErrorMessage = "Invalid Authentication" });
 
             SigningCredentials signingCredentials = _jwtHandler.GetSigningCredentials();
-            List<Claim> claims = _jwtHandler.GetClaims(user);
+            List<Claim> claims = await _jwtHandler.GetClaims(user);
             JwtSecurityToken tokenOptions = _jwtHandler.GenerateTokenOptions(signingCredentials, claims);
             string token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             var userDto = _mapper.Map<UserDto>(user);

@@ -18,25 +18,44 @@ export class AuthenticationService {
   
   constructor(private _http: HttpClient, private _envUrl: EnvironmentUrlService, private _jwtHelper: JwtHelperService) { }
 
-  public registerUser = (route: string, body: UserRegistration) => {
+  public registerUser(route: string, body: UserRegistration){
     return this._http.post<RegistrationResponse>(`${this._envUrl.urlAddress}/${route}`, body);
   }
   
-  public loginUser = (route: string, body: UserAuthentication) => {
+  public loginUser(route: string, body: UserAuthentication){
     return this._http.post<AuthenticationResponse>(`${this._envUrl.urlAddress}/${route}`, body);
   }
   
-  public logout = () => {
+  public logout(){
     localStorage.removeItem("token");
     this.authStateChange(false);
   }
 
-  public authStateChange = (isAuthenticated: boolean) => {
+  public authStateChange(isAuthenticated: boolean){
     this._authChangeSub.next(isAuthenticated);
   }
 
-  public isUserAuthenticated = (): boolean => {
+  public isUserAuthenticated(): boolean {
     const token = localStorage.getItem("token");
+    
     return (token != null && !this._jwtHelper.isTokenExpired(token));
+  }
+
+  public isUserTutor(): boolean {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const role = this._jwtHelper.decodeToken(token)['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+      return role == 'Tutor';
+    }
+    return false;
+  }
+
+  public isUserAdministrator(): boolean {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const role = this._jwtHelper.decodeToken(token)['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+      return role == 'Administrator';
+    }
+    return false;
   }
 }
