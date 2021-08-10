@@ -12,11 +12,11 @@ export class UserService {
 
   constructor() {}
 
-  SearchTutors(searchTopic: string): Observable<Tutor[]> {
+  SearchTutors(queryString: string): Observable<Tutor[]> {
     let foundTutors = TUTORS.filter((tutor) =>
       tutor.User.Topics.some(
         (topic) =>
-          topic.toLowerCase().indexOf(searchTopic.trim().toLowerCase()) != -1
+          topic.toLowerCase().indexOf(queryString.split('=')[1].trim().toLowerCase()) != -1
       )
     );
     return of(foundTutors);
