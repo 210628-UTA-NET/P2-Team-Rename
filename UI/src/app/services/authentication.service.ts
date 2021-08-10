@@ -19,7 +19,7 @@ export class AuthenticationService {
   constructor(private _http: HttpClient, private _envUrl: EnvironmentUrlService, private _jwtHelper: JwtHelperService) { }
 
   public registerUser(route: string, body: UserRegistration){
-    return this._http.post<RegistrationResponse>(`${this._envUrl.urlAddress}/${route}`, body);
+    return this._http.post<RegistrationResponse>(`${this._envUrl.urlAddress}/${route}/`, body);
   }
   
   public loginUser(route: string, body: UserAuthentication){
