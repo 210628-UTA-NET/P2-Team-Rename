@@ -58,7 +58,7 @@ namespace API {
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
                     Scheme = "bearer",
-                    Description = "Please insert JWT token into field"
+                    Description = "JWTForTutorConnect"
                 });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement { {

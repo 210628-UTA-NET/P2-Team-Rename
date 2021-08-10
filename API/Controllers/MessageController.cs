@@ -47,8 +47,8 @@ namespace API.Controllers {
             if (targetUser == null) return BadRequest();
 
             if (approve) {
-                tutor.MyStudents.Add(targetUser);
-                targetUser.MyTutors.Add(tutor);
+                tutor.MyContacts.Add(targetUser);
+                targetUser.MyContacts.Add(tutor);
 
                 _tutorManager.SaveChanges();
                 await _userManager.UpdateAsync(targetUser);
