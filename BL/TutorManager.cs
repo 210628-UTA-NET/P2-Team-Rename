@@ -63,5 +63,9 @@ namespace BL {
                 Includes = _includes
             });
         }
+
+        public void SaveChanges() {
+            _tutorDB.Save();
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,36 +19,42 @@ namespace API.Controllers {
 
     [ApiController]
     [Route("[controller]")]
-    public class TutorController : ControllerBase {
+    public class MessageController : ControllerBase {
         private readonly TutorManager _tutorManager;
         private readonly UserManager<User> _userManager;
         private readonly MessageManager _messageManager;
         private readonly IMapper _mapper;
-        public TutorController(TutorManager tutorManager, UserManager<User> userManager, MessageManager messageManager, IMapper mapper) {
+
+        public MessageController(TutorManager tutorManager, UserManager<User> userManager, MessageManager messageManager, IMapper mapper) {
             _tutorManager = tutorManager;
             _userManager = userManager;
             _messageManager = messageManager;
             _mapper = mapper;
         }
 
-        
-        [HttpGet]
-        public async Task<ActionResult> GetTutorsForUser([FromQuery] TutorParameters tutorParams) {
-            if (!ModelState.IsValid) return BadRequest();
 
-            IList<Tutor> results = await _tutorManager.GetTutors(tutorParams);
-            IList<TutorDto> resultsDto = _mapper.Map<IList<Tutor>, IList<TutorDto>>(results);
+        [Authorize("Tutor")]
+        [HttpPut("approve")]
+        public async Task<IActionResult> ApproveFollowRequest(string followRequestId, bool approve = true) {
+            string tutorId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            Tutor tutor = await _tutorManager.FindByIdAsync(tutorId);
+            if (tutor == null) return BadRequest();
 
-            if (tutorParams.Distance != null && tutorParams.Latitude != null && tutorParams.Longitude != null) {
-                var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
-                var location = geometryFactory.CreatePoint(new NetTopologySuite.Geometries.Coordinate((double)tutorParams.Longitude, (double)tutorParams.Latitude));
+            FollowRequest request = await _messageManager.DeleteFollowRequest(followRequestId);
+            if (request == null || request.ReceiverId != tutorId) return BadRequest();
 
-                foreach (TutorDto tutor in resultsDto) {
-                    tutor.Distance = tutor.Location.Distance(location);
-                }
+            User targetUser = await _userManager.FindByIdAsync(request.SenderId);
+            if (targetUser == null) return BadRequest();
+
+            if (approve) {
+                tutor.MyStudents.Add(targetUser);
+                targetUser.MyTutors.Add(tutor);
+
+                _tutorManager.SaveChanges();
+                await _userManager.UpdateAsync(targetUser);
             }
-
-            return Ok(new { Results = resultsDto});
+            
+            return Ok();
         }
 
 

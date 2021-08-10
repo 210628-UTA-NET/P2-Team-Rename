@@ -30,7 +30,7 @@ namespace BL {
             return await _messageDB.Create(message);
         }
 
-        public async Task<bool> DeleteMessage(string messageId) {
+        public async Task<Message> DeleteMessage(string messageId) {
             try {
                 Message targetMessage = await _messageDB.FindSingle(new() {
                     Conditions = new List<Func<Message, bool>> {
@@ -38,9 +38,9 @@ namespace BL {
                     }
                 });
                 _messageDB.Delete(targetMessage);
-                return true;
+                return targetMessage;
             } catch (Exception ) {
-                return false;
+                return null;
             }
         }
 
@@ -57,7 +57,16 @@ namespace BL {
             });
         }
 
-        public async Task<bool> DeleteFollowRequest(string messageId) {
+        public async Task<FollowRequest> GetTutorFollowRequestsByUserId(string userId) {
+            return await _followRequestDB.FindSingle(new() {
+                Conditions = new List<Func<FollowRequest, bool>>{
+                    m => m.SenderId == userId
+                },
+                OrderBy  = "Timestamp"
+            });
+        }
+
+        public async Task<FollowRequest> DeleteFollowRequest(string messageId) {
             try {
                 FollowRequest targetMessage = await _followRequestDB.FindSingle(new() {
                     Conditions = new List<Func<FollowRequest, bool>> {
@@ -65,9 +74,9 @@ namespace BL {
                     }
                 });
                 _followRequestDB.Delete(targetMessage);
-                return true;
+                return targetMessage;
             } catch (Exception ) {
-                return false;
+                return null;
             }
         }
     }
