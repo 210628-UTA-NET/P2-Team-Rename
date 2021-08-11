@@ -19,6 +19,7 @@ import { AdminAdmitCardComponent } from './components/pages/admin-admit-card/adm
 import { UserListCardComponent } from './components/pages/user-list-card/user-list-card.component';
 import { UserListComponent } from './components/pages/user-list/user-list.component';
 import { UserModule } from './modules/user/user.module';
+import { DashMainComponent } from './components/dashboard/dash-main/dash-main.component';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -34,7 +35,8 @@ export function tokenGetter() {
     AdminAdmitCardComponent,
     UserListCardComponent,
     UserListComponent,
-    LoadingWheelComponent
+    LoadingWheelComponent,
+    DashMainComponent
 
   ],
   imports: [
