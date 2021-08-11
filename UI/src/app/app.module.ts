@@ -19,10 +19,8 @@ import { AdminAdmitCardComponent } from './components/pages/admin-admit-card/adm
 import { UserListCardComponent } from './components/pages/user-list-card/user-list-card.component';
 import { UserListComponent } from './components/pages/user-list/user-list.component';
 import { UserModule } from './modules/user/user.module';
-import { DashMainComponent } from './components/dashboard/dash-main/dash-main.component';
-import { environment } from 'src/environments/environment';
 
-export function getToken() {
+export function tokenGetter() {
   return localStorage.getItem("token");
 }
 
@@ -36,9 +34,7 @@ export function getToken() {
     AdminAdmitCardComponent,
     UserListCardComponent,
     UserListComponent,
-    LoadingWheelComponent,
-    DashMainComponent
-
+    LoadingWheelComponent
   ],
   imports: [
     BrowserModule,
@@ -52,15 +48,13 @@ export function getToken() {
     UserModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: getToken,
-        allowedDomains: ["localhost:44385"],
-        disallowedRoutes: [],
-        authScheme: 'Bearer ',
-        throwNoTokenError: true
+        tokenGetter: tokenGetter,
+        allowedDomains: ["localhost:44329"],
+        disallowedRoutes: []
       }
     })
   ],
-  providers: [],
+  providers: [AuthenticationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
