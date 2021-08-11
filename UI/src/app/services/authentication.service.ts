@@ -37,7 +37,6 @@ export class AuthenticationService {
   public loadUser(){
     return this.http.get<UserDto>(`${environment.urlAddress}/user`).subscribe(res => {
       this.userSub.next(res);
-      console.log("GOT");
       console.log(res);
     });
   }
