@@ -20,9 +20,10 @@ export class UserListComponent implements OnInit {
 
   ngOnInit(): void
   {
+    //this.list = this._jwtHelper.GetUsers();
   }
 
-  //onSelect(*: *) {
-  //  this.selectedUser = *;
+  //onSelect(person: any) {
+  //  this.selectedUser = person;
   //}
 }

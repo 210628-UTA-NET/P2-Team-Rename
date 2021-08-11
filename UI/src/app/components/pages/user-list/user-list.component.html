@@ -11,10 +11,11 @@
 
   <div *ngIf="selectedUser">
       <h2>Name Details</h2>
+      <div><span>User Type: </span></div>
       <div><span>: </span></div>
       <div><span>: </span></div>
       <div><span>: </span></div>
-      <div><span>: </span></div>
+      <a> <!-- (click)="toDelete(selectedUser)" --> <button class="btn btn-danger" > Remove </button></a>
   </div>
 
 </div>

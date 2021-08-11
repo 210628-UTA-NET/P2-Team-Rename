@@ -20,10 +20,11 @@ export class AdminAdmitComponent implements OnInit {
 
   ngOnInit(): void
   {
+    //this.list = this._jwtHelper.GetApplications();
   }
 
-  //onSelect(*: *) {
-  //  this.selectedApplication = *;
+  //onSelect(selected: any) {
+  //  this.selectedApplication = selected;
   //}
 
 }
