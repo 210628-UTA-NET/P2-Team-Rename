@@ -23,7 +23,7 @@ namespace API.Controllers {
 
         [HttpGet]
         public async Task<IActionResult> GetAppointments([FromQuery] AppointmentParameters appointmentParameters) {
-            if (!ModelState.IsValid) return BadRequest();
+            if (!ModelState.IsValid) return BadRequest(new { Error = "Invalid query parameters." });
 
             IList<Appointment> results = await _appointmentManager.GetAppointments(appointmentParameters);
 
