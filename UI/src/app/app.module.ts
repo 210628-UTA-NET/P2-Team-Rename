@@ -29,14 +29,11 @@ export function tokenGetter() {
     AppComponent,
     HomeComponent,
     NavbarComponent,
-    TutorSearchComponent,
-    TutorMatchesComponent,
-    TutorCardComponent,
     LoadingWheelComponent,
     AdminAdmitComponent,
     AdminAdmitCardComponent,
     UserListCardComponent,
-    UserListComponent
+    UserListComponent,
     LoadingWheelComponent
 
   ],
