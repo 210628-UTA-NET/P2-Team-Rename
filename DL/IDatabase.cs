@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace DL {
     public interface IDatabase<T> where T: class {
-        void Create(T model);
+        Task<T> Create(T model);
         void Delete(T model);
         Task<IList<T>> Query(QueryOptions<T> options);
         Task<T> FindSingle(QueryOptions<T> options);

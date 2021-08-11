@@ -8,7 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using DL.Entities;
+using Entities.Database;
 
 namespace API.Jwt {
     public class JwtHandler {

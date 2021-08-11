@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using DL.Entities;
+using Entities.Database;
 
 namespace DL {
     public class TutorConnectDBContext : IdentityDbContext<User> {
@@ -25,21 +25,22 @@ namespace DL {
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);
 
-            //builder.ApplyConfiguration(new RoleConfiguration());
+            builder.ApplyConfiguration(new RoleConfiguration());
 
             builder.Entity<Appointment>()
                 .HasOne(a => a.Transaction)
                 .WithOne(t => t.Appointment)
                 .HasForeignKey<Transaction>(t => t.AppointmentId);
 
-            builder.Entity<User>()
-                .HasOne(u => u.IsTutor)
-                .WithOne(t => t.UserAccount)
-                .HasForeignKey<Tutor>(t => t.UserAccountId);
+            builder.Entity<Appointment>()
+                .HasOne(a => a.Tutor)
+                .WithMany(t => t.Appointments)
+                .HasForeignKey(a => a.TutorId);
+
+            builder.Entity<User>();
 
             builder.Entity<Topic>();
             builder.Entity<Availability>();
-            builder.Entity<Location>();
             builder.Entity<Message>()
                 .HasOne(m => m.Receiver)
                 .WithMany(u => u.MessagesReceived)
@@ -68,7 +69,15 @@ namespace DL {
 
             builder.Entity<Tutor>();
             builder.Entity<DegreeCertification>();
-            builder.Entity<TutorApplication>();
+            builder.Entity<TutorApplication>()
+                .Property(ta => ta.Timestamp)
+                .HasDefaultValueSql("getdate()");
+
+            /*
+            builder.Entity<ChatMessage>()
+                .HasOne(m => m.Sender)
+                .WithMany(u => u.ChatMessages)
+                .HasForeignKey(u => u.SenderId);*/
         }
     }
 }

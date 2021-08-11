@@ -12,15 +12,13 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/pages/home/home.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { AuthenticationService } from './services/authentication.service';
-import { TutorSearchComponent } from './components/pages/tutor-search/tutor-search.component';
-import { TutorMatchesComponent } from './components/pages/tutor-matches/tutor-matches.component';
-import { TutorCardComponent } from './components/pages/tutor-card/tutor-card.component';
 import { LoadingWheelComponent } from './components/shared/loading-wheel/loading-wheel.component';
 import { AuthModule } from './modules/auth/auth.module';
 import { AdminAdmitComponent } from './components/pages/admin-admit/admin-admit.component';
 import { AdminAdmitCardComponent } from './components/pages/admin-admit-card/admin-admit-card.component';
 import { UserListCardComponent } from './components/pages/user-list-card/user-list-card.component';
 import { UserListComponent } from './components/pages/user-list/user-list.component';
+import { UserModule } from './modules/user/user.module';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -39,6 +37,8 @@ export function tokenGetter() {
     AdminAdmitCardComponent,
     UserListCardComponent,
     UserListComponent
+    LoadingWheelComponent
+
   ],
   imports: [
     BrowserModule,
@@ -49,6 +49,7 @@ export function tokenGetter() {
     ReactiveFormsModule,
     HttpClientModule,
     AuthModule,
+    UserModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

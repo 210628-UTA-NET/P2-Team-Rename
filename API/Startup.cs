@@ -16,7 +16,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BL;
 using DL;
-using DL.Entities;
+using Entities.Database;
 using API.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
@@ -33,16 +33,21 @@ namespace API {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddCors(options => {
-                options.AddPolicy(name: "TestingFrontend",
-                    builder => {
-                        builder.AllowAnyOrigin()
-                           .AllowAnyMethod()
-                           .AllowAnyHeader();
+                options.AddDefaultPolicy(builder => {
+                    builder.WithOrigins("http://localhost:4200")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
                     });
             });
+            services.AddSignalR();
             services.AddAutoMapper(typeof(Startup));
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
-            services.AddDbContext<TutorConnectDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AzureDB")));
+            services.AddDbContext<TutorConnectDBContext>(options => 
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("AzureDB"),
+                    x => x.UseNetTopologySuite()
+            ));
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<TutorConnectDBContext>();
             services.AddControllers();
@@ -83,9 +88,12 @@ namespace API {
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("securityKey").Value))
                 };
             });
+
             services.AddScoped(typeof(IDatabase<>), typeof(TutorConnectDB<>));
             services.AddScoped<JwtHandler>();
             services.AddScoped<TutorApplicationManager>();
+            services.AddScoped<TutorManager>();
+            services.AddScoped<AppointmentManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -94,7 +102,7 @@ namespace API {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
-                app.UseCors("TestingFrontend");
+                app.UseCors();
             }
 
             app.UseHttpsRedirection();
@@ -107,6 +115,7 @@ namespace API {
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
+                endpoints.MapHub<API.Hubs.ChatHub>("/chat");
             });
         }
     }
