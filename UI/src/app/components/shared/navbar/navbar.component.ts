@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { faBook, faBookMedical } from '@fortawesome/free-solid-svg-icons';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,11 +8,19 @@ import { faBook, faBookMedical } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  faBook = faBook;
+  public faBook = faBook;
+  public isUserAuthenticated: boolean = false;
 
-  constructor() { }
+  constructor(public authService: AuthenticationService) { 
+    this.authService.authChanged.subscribe(res =>{
+      this.isUserAuthenticated = res;
+    });
+  }
 
   ngOnInit(): void {
+    if (this.authService.isUserAuthenticated()) {
+      this.authService.changeAuthState(true);
+    }
   }
 
 }

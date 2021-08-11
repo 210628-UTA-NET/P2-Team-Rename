@@ -16,13 +16,13 @@ export class LoginUserComponent implements OnInit {
   });
   public errorMessage: string = '';
   public showError: boolean = false;
-  private _returnUrl: string;
-  constructor(private _authService: AuthenticationService, private _router: Router, private _route: ActivatedRoute) { 
-    this._returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/';
+  private returnUrl: string;
+
+  constructor(private _authService: AuthenticationService, private router: Router, private route: ActivatedRoute) { 
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   public loginUser = (loginFormValue: any) => {
     this.showError = false;
@@ -31,11 +31,13 @@ export class LoginUserComponent implements OnInit {
       email: login.email,
       password: login.password
     }
-    this._authService.loginUser('user/login', userForAuth)
+    this._authService.loginUser(userForAuth)
     .subscribe(res => {
        localStorage.setItem("token", res.token);
        console.log("Login successful");
-       this._router.navigate([this._returnUrl]);
+       this._authService.changeAuthState(res.success);
+       this._authService.refreshUser(res.user);
+       this.router.navigate([this.returnUrl]);
     },
     (error) => {
       this.errorMessage = error;
