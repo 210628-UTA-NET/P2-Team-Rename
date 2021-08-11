@@ -11,7 +11,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder) { 
     this.radioGroupForm = this.formBuilder.group({
-      'display': "register"
+      'display': "login"
     });
   }
 

@@ -16,9 +16,9 @@ export class LoginUserComponent implements OnInit {
   });
   public errorMessage: string = '';
   public showError: boolean = false;
-  private _returnUrl: string;
-  constructor(private _authService: AuthenticationService, private _router: Router, private _route: ActivatedRoute) { 
-    this._returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/';
+  private returnUrl: string;
+  constructor(private _authService: AuthenticationService, private router: Router, private route: ActivatedRoute) { 
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   ngOnInit(): void {
@@ -35,7 +35,7 @@ export class LoginUserComponent implements OnInit {
     .subscribe(res => {
        localStorage.setItem("token", res.token);
        console.log("Login successful");
-       this._router.navigate([this._returnUrl]);
+       this.router.navigate([this.returnUrl]);
     },
     (error) => {
       this.errorMessage = error;

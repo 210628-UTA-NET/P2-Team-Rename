@@ -17,6 +17,7 @@ using Entities.Query;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite;
+using NetTopologySuite.Geometries;
 
 namespace API.Controllers {
 
@@ -70,8 +71,8 @@ namespace API.Controllers {
             string token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             var userDto = _mapper.Map<UserDto>(user);
 
-            return Ok(new AuthenticationResponseDto { 
-                IsSuccessfulAuthentication = true, 
+            return Ok(new AuthenticationResponseDto {
+                IsSuccessfulAuthentication = true,
                 Token = token,
                 User = userDto
             });
@@ -83,15 +84,30 @@ namespace API.Controllers {
         public async Task<IActionResult> GetUser() {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             User user = await _userManager.FindByIdAsync(userId);
-            if (user == null) return BadRequest();
+            if (user == null) return BadRequest(new { Error = "A user with your Id could not be found." });
 
             UserDto userDto = _mapper.Map<UserDto>(user);
 
             return Ok(userDto);
         }
+        [Authorize]
+        [HttpPatch("location")]
+        public async Task<IActionResult> SetLocation([FromQuery] LocationDto location) {
+            if (!ModelState.IsValid) return BadRequest(new { Error = "Invalid location format." });
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            User user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return BadRequest(new { Error = "A user with your Id could not be found." });
+
+            var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
+            user.Location = geometryFactory.CreatePoint(new Coordinate(location.Longitude, location.Latitude));
+
+            await _userManager.UpdateAsync(user);
+
+            return Ok(new { Results = string.Format("Location successfully changed.") });
+        }
 
         //[Authorize]
-        [HttpGet("Search")]
+        [HttpGet("search")]
         public async Task<IActionResult> QueryUsers([FromQuery] UserParameters userParameters) {
             var roles = _roleManager.Roles.Select(r => r.Name).ToList();
 

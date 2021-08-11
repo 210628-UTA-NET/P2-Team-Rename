@@ -27,7 +27,19 @@ export class TutorSearchV3Component implements OnInit {
       relativeTo: this.activatedRoute,
       queryParams: { topic: this.searchForm.get('topic')?.value },
     });
-    this.search(this.searchForm.get('topic')?.value);
+
+    //only works for form controls one level deep may change so I get the query string from route later
+    let queryString = Object.keys(this.searchForm.value).map(key => [key, this.searchForm.get(key)?.value]).reduce((query, [key, value], idx, arr) => {
+      query = query.concat(`${key}=${value}`);
+        if (idx < arr.length - 1)
+        {
+          query.concat('&');
+        }
+
+      return query;
+    }, '?');
+
+    this.search(queryString);
     this.searchForm.reset();
   }
   search(searchTerm: string) {

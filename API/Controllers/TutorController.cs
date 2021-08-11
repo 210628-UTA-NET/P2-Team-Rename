@@ -14,6 +14,7 @@ using Entities.Query;
 using BL;
 using NetTopologySuite;
 using System.Security.Claims;
+using NetTopologySuite.Geometries;
 
 namespace API.Controllers {
 
@@ -36,10 +37,13 @@ namespace API.Controllers {
 
             if (tutorParams.Distance != null && tutorParams.Latitude != null && tutorParams.Longitude != null) {
                 var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
-                var location = geometryFactory.CreatePoint(new NetTopologySuite.Geometries.Coordinate((double)tutorParams.Longitude, (double)tutorParams.Latitude));
+                var location = geometryFactory.CreatePoint(new Coordinate((double)tutorParams.Longitude, (double)tutorParams.Latitude));
 
                 foreach (TutorDto tutor in resultsDto) {
-                    tutor.Distance = tutor.Location.Distance(location);
+                    if (tutor.Location != null) {
+                        var tutorLocation = geometryFactory.CreatePoint(new Coordinate(tutor.Location.Latitude, tutor.Location.Longitude));
+                        tutor.Distance = tutorLocation.Distance(location);
+                    }
                 }
             }
 

@@ -40,9 +40,9 @@
                                                   <div class="result-sorting">
                                                       <span>Sort By:</span>
                                                       <select class="form-control border-0" id="exampleOption">
-                                                          <option value="1">Relevance</option>
-                                                          <option value="2">Names (A-Z)</option>
-                                                          <option value="3">Names (Z-A)</option>
+                                                          <option value="1">Rating</option>
+                                                          <option value="2">Price</option>
+                                                          <option value="3">Both</option>
                                                       </select>
                                                   </div>
                                                   <div class="result-views">
@@ -104,14 +104,14 @@
                                                       <td>
                                                           <div class="widget-26-job-title">
                                                               <a [routerLink]="['/tutor', tutor.Id]"
-                                                              routerLinkActive="router-link-active" href="#">{{tutor.User.FirstName + ' ' + tutor.User.LastName}}</a>
+                                                              routerLinkActive="router-link-active" href="#">{{tutor.FirstName + ' ' + tutor.LastName}}</a>
                                                               <!--<p class="m-0"><a href="#" class="employer-name">{{tutor.User.UserName}}</a> <span class="text-muted time">1 days ago</span></p>-->
                                                           </div>
                                                       </td>
                                                       <td>
                                                           <div class="widget-26-job-info">
                                                               <!--<p class="type m-0">Full-Time</p>-->
-                                                              <p class="text-muted m-0">in <span class="location">{{tutor.User.Location.Longitude + ' ' + tutor.User.Location.Latitude}}</span></p>
+                                                              <p class="text-muted m-0">in <span class="location">{{tutor.Location.Longitude + ' ' + tutor.Location.Latitude}}</span></p>
                                                           </div>
                                                       </td>
                                                       <td>
@@ -120,7 +120,7 @@
                                                       <td>
                                                           <div class="widget-26-job-category bg-soft-base">
                                                               <i class="indicator bg-base"></i>
-                                                              <span>{{tutor.User.Topics.join(', ')}}</span>
+                                                              <span>{{tutor.Topics.join(', ')}}</span>
                                                           </div>
                                                       </td>
                                                       <td>
