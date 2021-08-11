@@ -1,3 +1,4 @@
+import { TutorDetailsComponent } from './components/tutorDetails/tutorDetails.component';
 import { UserRoutes } from './user.routing';
 import { TutorSearchComponent } from './components/tutor-search/tutor-search.component';
 import { TutorMatchesComponent } from './components/tutor-matches/tutor-matches.component';
@@ -16,7 +17,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     TutorMatchesComponent,
     TutorSearchComponent,
     TutorSearchV2Component,
-    TutorSearchV3Component
+    TutorSearchV3Component,
+    TutorDetailsComponent
   ],
   imports: [
     CommonModule,

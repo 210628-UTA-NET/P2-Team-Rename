@@ -1,9 +1,7 @@
 import { degreeOrCert } from "./degreeOrCert";
 import { User } from "./user";
 
-export interface Tutor {
-  Id: string,
-  User: User,
+export interface Tutor extends User {
   About: string,
   HourlyRate: number,
   DegreesOrCerts: degreeOrCert[],
