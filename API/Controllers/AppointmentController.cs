@@ -23,7 +23,7 @@ namespace API.Controllers {
 
         [HttpGet]
         public async Task<IActionResult> GetAppointments([FromQuery] AppointmentParameters appointmentParameters) {
-            if (!ModelState.IsValid) return BadRequest();
+            if (!ModelState.IsValid) return BadRequest(new { Error = "Invalid query parameters." });
 
             IList<Appointment> results = await _appointmentManager.GetAppointments(appointmentParameters);
 
@@ -31,8 +31,8 @@ namespace API.Controllers {
         }
 
         [Authorize]
-        [HttpDelete]
-        public async Task<IActionResult> CancelAppointment([FromRoute]string appointmentId) {
+        [HttpDelete("{appointmentId}")]
+        public async Task<IActionResult> CancelAppointment([FromRoute] string appointmentId) {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             string result = await _appointmentManager.CancelAppointment(appointmentId, userId);
 
@@ -49,7 +49,7 @@ namespace API.Controllers {
         }
 
         [Authorize]
-        [HttpPut("book")]
+        [HttpPut("book/{appointmentId}")]
         public async Task<IActionResult> BookAppointment([FromRoute] string appointmentId) {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Appointment result = await _appointmentManager.BookAppointment(appointmentId, userId);

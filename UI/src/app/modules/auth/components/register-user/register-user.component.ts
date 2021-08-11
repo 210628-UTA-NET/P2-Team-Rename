@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { UserRegistration } from 'src/app/models/user/user-registration.model';
+import { ActivatedRoute, Router } from '@angular/router';
 
 export function passwordMatch(controlName: string, checkControlName: string): ValidatorFn {
   return (controls: AbstractControl) => {
@@ -38,7 +39,11 @@ export class RegisterUserComponent implements OnInit {
     validators: [passwordMatch('password', 'confirm')]
   });
 
-  constructor(private _authService: AuthenticationService) {
+  returnUrl: string;
+  
+
+  constructor(private authService: AuthenticationService, private router: Router, private route: ActivatedRoute) {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   ngOnInit(): void { }
@@ -58,8 +63,11 @@ export class RegisterUserComponent implements OnInit {
       password: formValues.password,
       confirmPassword: formValues.confirm
     };
-    this._authService.registerUser("user/registration", user)
-      .subscribe(_ => {
+    this.authService.registerUser("user/registration", user)
+      .subscribe(response => {
+        localStorage.setItem("token", response.token);
+        this.authService.authStateChange(response.isSuccessfulRegistration);
+        this.router.navigate([this.returnUrl]);
         console.log("Successful registration");
       }, error => {
           console.log(error.error.errors);

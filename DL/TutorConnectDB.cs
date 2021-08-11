@@ -87,8 +87,8 @@ namespace DL {
             return (propName, desc);
         }
 
-        public async void Save() {
-            await _context.SaveChangesAsync();
+        public void Save() {
+            _context.SaveChangesAsync();
         }
 
         public async void Update(T model) {

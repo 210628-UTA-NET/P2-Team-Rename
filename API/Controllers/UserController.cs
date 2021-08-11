@@ -65,7 +65,7 @@ namespace API.Controllers {
                 return Unauthorized(new AuthenticationResponseDto { ErrorMessage = "Invalid Authentication" });
 
             SigningCredentials signingCredentials = _jwtHandler.GetSigningCredentials();
-            List<Claim> claims = _jwtHandler.GetClaims(user);
+            List<Claim> claims = await _jwtHandler.GetClaims(user);
             JwtSecurityToken tokenOptions = _jwtHandler.GenerateTokenOptions(signingCredentials, claims);
             string token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             var userDto = _mapper.Map<UserDto>(user);
@@ -81,10 +81,9 @@ namespace API.Controllers {
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetUser() {
-            string id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            User user = await _userManager.FindByIdAsync(id);
-
-            if (user == null) return StatusCode(500);
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            User user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return BadRequest();
 
             UserDto userDto = _mapper.Map<UserDto>(user);
 
@@ -124,14 +123,14 @@ namespace API.Controllers {
         }
 
         //[Authorize(Roles = "Administrator")]
-        [HttpDelete]
+        [HttpDelete("{userId}")]
         public async Task<IActionResult> RemoveUser([FromRoute] string userId) {
             User target = await _userManager.FindByIdAsync(userId);
             if (target == null) return BadRequest();
 
             await _userManager.DeleteAsync(target);
 
-            return Ok();
+            return Ok(new { Results = string.Format("User with id: {0} successfully deleted.", userId) });
         }
     }
 }

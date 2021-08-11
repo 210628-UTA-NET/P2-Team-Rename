@@ -21,12 +21,12 @@ export class ChatService {
   }
 
   public sendMessage(message: ChatMessage) {  
-    this._hubConnection.invoke('PrivateChat', message);  
+    this._hubConnection.invoke('TestPrivateChat', message);  
   }
   
   public joinChat(senderId: string, receiverId: string) {
     if (this._hubConnection) {
-      this._hubConnection.invoke('JoinPrivateChat', senderId, receiverId)
+      this._hubConnection.invoke('JoinPrivateChatTest', senderId, receiverId)
         .then(() => {
           console.log(`Connected to private chat with ${receiverId}.`)
         })
@@ -38,7 +38,7 @@ export class ChatService {
 
   public leaveChat(senderId: string, receiverId: string) {
     if (this._hubConnection) {
-      this._hubConnection.invoke('LeavePrivateChat', senderId, receiverId)
+      this._hubConnection.invoke('LeavePrivateChatTest', senderId, receiverId)
         .then(() => {
           console.log(`Disconnected to private chat with ${receiverId}.`)
         })

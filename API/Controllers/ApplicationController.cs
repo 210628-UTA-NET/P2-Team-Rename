@@ -32,10 +32,10 @@ namespace API.Controllers {
         //[Authorize(Roles = "Administrator")]
         [HttpGet]
         public async Task<IActionResult> GetApplications([FromQuery] TutorAppParameters tutorAppParams) {
-            if (!ModelState.IsValid) return BadRequest();
+            if (!ModelState.IsValid) return BadRequest(new { Error = "Invalid query parameters." });
 
             IList<TutorApplication> results = await _appManager.GetTutorApplications(tutorAppParams);
-            if (results == null) return StatusCode(500);
+            if (results == null) return BadRequest(new { Error = "There was an error searching for tutor applications." });
 
             IList<TutorApplicationDto> resultsDto = _mapper.Map<IList<TutorApplication>, IList<TutorApplicationDto>>(results);
 
@@ -48,7 +48,7 @@ namespace API.Controllers {
             if (!ModelState.IsValid) return BadRequest();
             var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var user = await _userManager.FindByIdAsync(id);
-            if (user == null) return StatusCode(500);
+            if (user == null) return BadRequest(new { Error = "An account with your userId could not be located." });
 
             TutorApplication newApp = _mapper.Map<SubmitTutorApplicationDto, TutorApplication>(applicationDto);
 
@@ -59,11 +59,11 @@ namespace API.Controllers {
         }
 
         //[Authorize(Roles = "Administrator")]
-        [HttpPut]
-        public async Task<IActionResult> ApproveOrDenyApplication(string id, bool approve = true) {
-            if (id == null) return BadRequest();
+        [HttpPut("{applicationId}")]
+        public async Task<IActionResult> ApproveOrDenyApplication([FromRoute] string applicationId, bool approve = true) {
+            if (applicationId == null) return BadRequest(new { Error = "Invalid query parameters." });
 
-            if (await _appManager.ApproveTutorApplication(id, approve)) {
+            if (await _appManager.ApproveTutorApplication(applicationId, approve)) {
                 return Ok();
             } else {
                 return StatusCode(500);

@@ -53,6 +53,10 @@ namespace DL {
                 .HasForeignKey(m => m.SenderId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<Message>()
+                .Property(ta => ta.Timestamp)
+                .HasDefaultValueSql("getdate()");
+
             builder.Entity<Payment>();
             builder.Entity<Review>();
             builder.Entity<Transaction>()

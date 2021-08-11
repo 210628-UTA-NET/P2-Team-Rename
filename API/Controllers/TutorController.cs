@@ -13,6 +13,7 @@ using Entities.Dtos;
 using Entities.Query;
 using BL;
 using NetTopologySuite;
+using System.Security.Claims;
 
 namespace API.Controllers {
 
@@ -20,18 +21,15 @@ namespace API.Controllers {
     [Route("[controller]")]
     public class TutorController : ControllerBase {
         private readonly TutorManager _tutorManager;
-        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
-        public TutorController(TutorManager tutorManager, UserManager<User> userManager, IMapper mapper) {
+        public TutorController(TutorManager tutorManager, IMapper mapper) {
             _tutorManager = tutorManager;
-            _userManager = userManager;
             _mapper = mapper;
         }
-
         
         [HttpGet]
         public async Task<ActionResult> GetTutorsForUser([FromQuery] TutorParameters tutorParams) {
-            if (!ModelState.IsValid) return BadRequest();
+            if (!ModelState.IsValid) return BadRequest(new { Error = "Invalid query parameters." });
 
             IList<Tutor> results = await _tutorManager.GetTutors(tutorParams);
             IList<TutorDto> resultsDto = _mapper.Map<IList<Tutor>, IList<TutorDto>>(results);
