@@ -40,7 +40,6 @@ export class RegisterUserComponent implements OnInit {
   });
 
   returnUrl: string;
-  
 
   constructor(private authService: AuthenticationService, private router: Router, private route: ActivatedRoute) {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -63,10 +62,10 @@ export class RegisterUserComponent implements OnInit {
       password: formValues.password,
       confirmPassword: formValues.confirm
     };
-    this.authService.registerUser("user/registration", user)
+    this.authService.registerUser(user)
       .subscribe(response => {
         localStorage.setItem("token", response.token);
-        this.authService.authStateChange(response.isSuccessfulRegistration);
+        this.authService.changeAuthState(response.success);
         this.router.navigate([this.returnUrl]);
         console.log("Successful registration");
       }, error => {

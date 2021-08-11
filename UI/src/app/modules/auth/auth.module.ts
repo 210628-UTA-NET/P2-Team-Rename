@@ -4,7 +4,6 @@ import { LoginComponent } from './components/login/login.component';
 import { LoginUserComponent } from './components/login-user/login-user.component';
 import { RegisterUserComponent } from './components/register-user/register-user.component';
 import { RouterModule } from '@angular/router';
-import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -23,6 +22,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       { path: '', component: LoginComponent },
     ])
   ],
-  providers: [AuthenticationService]
+  providers: []
 })
 export class AuthModule { }

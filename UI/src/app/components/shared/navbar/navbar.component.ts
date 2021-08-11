@@ -8,11 +8,19 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  faBook = faBook;
+  public faBook = faBook;
+  public isUserAuthenticated: boolean = false;
 
-  constructor(private authService: AuthenticationService) { }
+  constructor(public authService: AuthenticationService) { 
+    this.authService.authChanged.subscribe(res =>{
+      this.isUserAuthenticated = res;
+    });
+  }
 
   ngOnInit(): void {
+    if (this.authService.isUserAuthenticated()) {
+      this.authService.changeAuthState(true);
+    }
   }
 
 }
