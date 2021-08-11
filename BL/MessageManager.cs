@@ -66,6 +66,14 @@ namespace BL {
             });
         }
 
+        public async Task<FollowRequest> GetSingleRequestById(string messageId) {
+            return await _followRequestDB.FindSingle(new() {
+                Conditions = new List<Func<FollowRequest, bool>> {
+                        m => m.Id == messageId
+                    }
+            });
+        }
+
         public async Task<FollowRequest> DeleteFollowRequest(string messageId) {
             try {
                 FollowRequest targetMessage = await _followRequestDB.FindSingle(new() {

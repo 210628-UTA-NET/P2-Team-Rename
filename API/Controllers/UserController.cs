@@ -123,14 +123,14 @@ namespace API.Controllers {
         }
 
         //[Authorize(Roles = "Administrator")]
-        [HttpDelete]
+        [HttpDelete("{userId}")]
         public async Task<IActionResult> RemoveUser([FromRoute] string userId) {
             User target = await _userManager.FindByIdAsync(userId);
             if (target == null) return BadRequest();
 
             await _userManager.DeleteAsync(target);
 
-            return Ok();
+            return Ok(new { Results = string.Format("User with id: {0} successfully deleted.", userId) });
         }
     }
 }
