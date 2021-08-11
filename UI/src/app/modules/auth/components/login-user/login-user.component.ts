@@ -36,6 +36,7 @@ export class LoginUserComponent implements OnInit {
        localStorage.setItem("token", res.token);
        console.log("Login successful");
        this._authService.changeAuthState(res.success);
+       this._authService.refreshUser(res.user);
        this.router.navigate([this.returnUrl]);
     },
     (error) => {

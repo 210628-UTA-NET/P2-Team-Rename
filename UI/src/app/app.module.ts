@@ -20,8 +20,9 @@ import { UserListCardComponent } from './components/pages/user-list-card/user-li
 import { UserListComponent } from './components/pages/user-list/user-list.component';
 import { UserModule } from './modules/user/user.module';
 import { DashMainComponent } from './components/dashboard/dash-main/dash-main.component';
+import { environment } from 'src/environments/environment';
 
-export function tokenGetter() {
+export function getToken() {
   return localStorage.getItem("token");
 }
 
@@ -51,9 +52,11 @@ export function tokenGetter() {
     UserModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: tokenGetter,
-        allowedDomains: ["localhost:44329"],
-        disallowedRoutes: []
+        tokenGetter: getToken,
+        allowedDomains: ["localhost:44385"],
+        disallowedRoutes: [],
+        authScheme: 'Bearer ',
+        throwNoTokenError: true
       }
     })
   ],

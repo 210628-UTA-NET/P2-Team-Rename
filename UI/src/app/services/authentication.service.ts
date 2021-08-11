@@ -14,11 +14,16 @@ import { UserDto } from '../models/api/user-dto.model';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private _authChangeSub = new Subject<boolean>()
-  public authChanged = this._authChangeSub.asObservable();
+  private authChangeSub = new Subject<boolean>()
+  public authChanged = this.authChangeSub.asObservable();
+
+  private userSub = new Subject<UserDto>();
+  public userInfo = this.userSub.asObservable();
   
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { 
-
+    if (this.isUserAuthenticated()) {
+      this.loadUser();
+    }
   }
 
   public registerUser(body: UserRegistration){
@@ -29,8 +34,12 @@ export class AuthenticationService {
     return this.http.post<AuthenticationResponse>(`${environment.urlAddress}/user/login`, body);
   }
 
-  public getUser(){
-    return this.http.get<UserDto>(`${environment.urlAddress}/user`);
+  public loadUser(){
+    return this.http.get<UserDto>(`${environment.urlAddress}/user`).subscribe(res => {
+      this.userSub.next(res);
+      console.log("GOT");
+      console.log(res);
+    });
   }
   
   public logout(){
@@ -40,7 +49,11 @@ export class AuthenticationService {
 
   public changeAuthState(isAuthenticated: boolean){
     console.log("Authstate change.");
-    this._authChangeSub.next(isAuthenticated);
+    this.authChangeSub.next(isAuthenticated);
+  }
+
+  public refreshUser(user : UserDto) {
+    this.userSub.next(user);
   }
 
   public isUserAuthenticated(): boolean {
