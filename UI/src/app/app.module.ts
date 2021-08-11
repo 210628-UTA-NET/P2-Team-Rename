@@ -14,6 +14,10 @@ import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { AuthenticationService } from './services/authentication.service';
 import { LoadingWheelComponent } from './components/shared/loading-wheel/loading-wheel.component';
 import { AuthModule } from './modules/auth/auth.module';
+import { AdminAdmitComponent } from './components/pages/admin-admit/admin-admit.component';
+import { AdminAdmitCardComponent } from './components/pages/admin-admit-card/admin-admit-card.component';
+import { UserListCardComponent } from './components/pages/user-list-card/user-list-card.component';
+import { UserListComponent } from './components/pages/user-list/user-list.component';
 import { UserModule } from './modules/user/user.module';
 
 export function tokenGetter() {
@@ -25,7 +29,16 @@ export function tokenGetter() {
     AppComponent,
     HomeComponent,
     NavbarComponent,
+    TutorSearchComponent,
+    TutorMatchesComponent,
+    TutorCardComponent,
+    LoadingWheelComponent,
+    AdminAdmitComponent,
+    AdminAdmitCardComponent,
+    UserListCardComponent,
+    UserListComponent
     LoadingWheelComponent
+
   ],
   imports: [
     BrowserModule,
