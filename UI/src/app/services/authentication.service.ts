@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { UserDto } from '../models/user/user-dto.model';
+import { UserDto } from '../models/api/user-dto.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,12 +21,12 @@ export class AuthenticationService {
 
   }
 
-  public registerUser(route: string, body: UserRegistration){
-    return this.http.post<RegistrationResponse>(`${environment.urlAddress}/${route}/`, body);
+  public registerUser(body: UserRegistration){
+    return this.http.post<RegistrationResponse>(`${environment.urlAddress}/user/registration`, body);
   }
   
-  public loginUser(route: string, body: UserAuthentication){
-    return this.http.post<AuthenticationResponse>(`${environment.urlAddress}/${route}`, body);
+  public loginUser(body: UserAuthentication){
+    return this.http.post<AuthenticationResponse>(`${environment.urlAddress}/user/login`, body);
   }
 
   public getUser(){
@@ -39,6 +39,7 @@ export class AuthenticationService {
   }
 
   public authStateChange(isAuthenticated: boolean){
+    console.log("Authstate change.");
     this._authChangeSub.next(isAuthenticated);
   }
 

@@ -54,7 +54,7 @@ namespace API.Controllers {
             var userDto = _mapper.Map<UserDto>(user);
 
             return Ok(new RegistrationResponseDto {
-                IsSuccessfulRegistration = true,
+                Success = true,
                 User = userDto
             });
         }
@@ -72,7 +72,7 @@ namespace API.Controllers {
             var userDto = _mapper.Map<UserDto>(user);
 
             return Ok(new AuthenticationResponseDto {
-                IsSuccessfulAuthentication = true,
+                Success = true,
                 Token = token,
                 User = userDto
             });

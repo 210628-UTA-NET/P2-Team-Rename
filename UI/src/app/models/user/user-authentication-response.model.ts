@@ -1,5 +1,5 @@
 export interface AuthenticationResponse {
-  isSuccessfulRegistration: boolean;
+  success: boolean;
   error: string;
   token: string;
 }

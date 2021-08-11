@@ -57,7 +57,7 @@ export function tokenGetter() {
       }
     })
   ],
-  providers: [AuthenticationService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
