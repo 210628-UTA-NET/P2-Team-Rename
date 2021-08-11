@@ -65,7 +65,7 @@ export class RegisterUserComponent implements OnInit {
     this.authService.registerUser(user)
       .subscribe(response => {
         localStorage.setItem("token", response.token);
-        this.authService.authStateChange(response.success);
+        this.authService.changeAuthState(response.success);
         this.router.navigate([this.returnUrl]);
         console.log("Successful registration");
       }, error => {

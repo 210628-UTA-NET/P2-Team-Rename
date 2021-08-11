@@ -35,7 +35,7 @@ export class LoginUserComponent implements OnInit {
     .subscribe(res => {
        localStorage.setItem("token", res.token);
        console.log("Login successful");
-       this._authService.authStateChange(res.success);
+       this._authService.changeAuthState(res.success);
        this.router.navigate([this.returnUrl]);
     },
     (error) => {

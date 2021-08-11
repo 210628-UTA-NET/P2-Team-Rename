@@ -11,12 +11,16 @@ export class NavbarComponent implements OnInit {
   public faBook = faBook;
   public isUserAuthenticated: boolean = false;
 
-  constructor(public authService: AuthenticationService) { }
-
-  ngOnInit(): void {
+  constructor(public authService: AuthenticationService) { 
     this.authService.authChanged.subscribe(res =>{
       this.isUserAuthenticated = res;
     });
+  }
+
+  ngOnInit(): void {
+    if (this.authService.isUserAuthenticated()) {
+      this.authService.changeAuthState(true);
+    }
   }
 
 }

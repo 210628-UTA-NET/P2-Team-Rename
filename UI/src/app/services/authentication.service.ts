@@ -35,10 +35,10 @@ export class AuthenticationService {
   
   public logout(){
     localStorage.removeItem("token");
-    this.authStateChange(false);
+    this.changeAuthState(false);
   }
 
-  public authStateChange(isAuthenticated: boolean){
+  public changeAuthState(isAuthenticated: boolean){
     console.log("Authstate change.");
     this._authChangeSub.next(isAuthenticated);
   }
