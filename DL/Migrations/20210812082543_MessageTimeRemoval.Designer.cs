@@ -4,15 +4,17 @@ using DL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 
 namespace DL.Migrations
 {
     [DbContext(typeof(TutorConnectDBContext))]
-    partial class TutorConnectDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210812082543_MessageTimeRemoval")]
+    partial class MessageTimeRemoval
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,7 +121,7 @@ namespace DL.Migrations
                     b.Property<string>("SenderName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("TimeSent")
+                    b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -380,15 +382,15 @@ namespace DL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "137162ef-bc77-400e-b863-64d5b3d810a1",
-                            ConcurrencyStamp = "6986cc60-4fc3-4d6e-a9cd-99d4955250d7",
+                            Id = "069de705-39cd-496a-a3cf-0b17a91b9ac6",
+                            ConcurrencyStamp = "6465ae18-e8d4-4d8d-a0ae-698956d5ec0f",
                             Name = "Tutor",
                             NormalizedName = "TUTOR"
                         },
                         new
                         {
-                            Id = "426cfd88-3444-4248-b1ae-1b4ad05d455e",
-                            ConcurrencyStamp = "5da74755-fb76-48b1-a8e2-2547d48bcb49",
+                            Id = "30069111-cdbd-4b39-9391-51f9fb454a9a",
+                            ConcurrencyStamp = "e56a38fc-167f-47ab-8887-5ce429ca2302",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
