@@ -35,7 +35,7 @@ export function tokenGetter() {
     AdminAdmitCardComponent,
     UserListCardComponent,
     UserListComponent,
-    TutorApplyComponent
+    TutorApplyComponent,
     LoadingWheelComponent,
     DashMainComponent
 
