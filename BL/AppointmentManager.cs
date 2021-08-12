@@ -47,11 +47,11 @@ namespace BL {
             if (target == null) throw new ArgumentException("Appointment with the given Id could not be cancelled");
 
             if (target.TutorId == userId) {
-                _appointmentDB.Delete(target);
+                await _appointmentDB.Delete(target);
             } else if (target.StudentId == userId){
                 target.StudentId = null;
                 target.Student = null;
-                _appointmentDB.Save();
+                await _appointmentDB.Save();
             } else {
                 return "You are not authorized to cancel this appointment.";
             }
