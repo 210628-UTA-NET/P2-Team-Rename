@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { faBook, faBookMedical, faUser } from '@fortawesome/free-solid-svg-icons';
 import { UserDto } from 'src/app/models/api/user-dto.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -24,7 +25,7 @@ export class NavbarComponent implements OnInit {
     location: null,
   };
 
-  constructor(public authService: AuthenticationService) { 
+  constructor(public authService: AuthenticationService, private router: Router) { 
     this.authService.authChanged.subscribe(res =>{
       this.isUserAuthenticated = res;
     });
@@ -42,6 +43,11 @@ export class NavbarComponent implements OnInit {
     if (this.authService.isUserAuthenticated()) {
       this.authService.changeAuthState(true);
     }
+  }
+
+  public logout() {
+    this.authService.logout();
+    this.router.navigate(["/login"]);
   }
 
 }
