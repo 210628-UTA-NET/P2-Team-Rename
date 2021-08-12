@@ -9,7 +9,7 @@
     <div *ngIf="toggled" class="container" style="width: 18rem;  border: 1px solid black;">
       <h2>Users</h2>
       <ul class="list">
-          <li *ngFor="let person of list"
+          <li *ngFor="let person of importlist"
               [class.selected]="person === selectedUser"
               (click)="onSelect(person)">
               <span class="badge">Name: </span> {{person.firstName + " " + person.lastName}}
