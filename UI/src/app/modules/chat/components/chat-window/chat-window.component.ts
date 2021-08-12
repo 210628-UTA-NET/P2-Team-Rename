@@ -27,7 +27,6 @@ export class ChatWindowComponent implements OnInit {
 
   public sendMessage(): void {
     if (this.messageBody.value != '') {
-      console.log
       var msg: ChatMessage = {
         senderId: this.connectionForm.get('userIdA')?.value,
         receiverId: this.connectionForm.get('userIdB')?.value,

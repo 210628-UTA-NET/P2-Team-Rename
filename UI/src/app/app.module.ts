@@ -11,7 +11,6 @@ import { JwtModule } from "@auth0/angular-jwt";
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/pages/home/home.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
-import { AuthenticationService } from './services/authentication.service';
 import { LoadingWheelComponent } from './components/shared/loading-wheel/loading-wheel.component';
 import { AuthModule } from './modules/auth/auth.module';
 import { AdminAdmitComponent } from './components/pages/admin-admit/admin-admit.component';
@@ -19,6 +18,7 @@ import { AdminAdmitCardComponent } from './components/pages/admin-admit-card/adm
 import { UserListCardComponent } from './components/pages/user-list-card/user-list-card.component';
 import { UserListComponent } from './components/pages/user-list/user-list.component';
 import { UserModule } from './modules/user/user.module';
+import { DashMainComponent } from './components/dashboard/dash-main/dash-main.component';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -34,7 +34,8 @@ export function tokenGetter() {
     AdminAdmitCardComponent,
     UserListCardComponent,
     UserListComponent,
-    LoadingWheelComponent
+    LoadingWheelComponent,
+    DashMainComponent
   ],
   imports: [
     BrowserModule,
