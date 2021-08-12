@@ -34,7 +34,7 @@ export class TutorDetailsComponent implements OnInit {
       this.userService.GetTutor(id)
       .subscribe(tutor => {
         this.tutor = tutor
-        this.getAppointments(tutor.Id);
+        this.getAppointments(tutor.id);
       });
     }
   }

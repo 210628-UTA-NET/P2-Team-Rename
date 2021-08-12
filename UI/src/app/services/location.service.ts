@@ -12,6 +12,6 @@ export class LocationService {
 
   constructor(private http: HttpClient) { }
   GetCityState(location: Location): Observable<locationResponse> {
-    return this.http.get<locationResponse>(`${environment.POSI_STACK_URL}?access_key=${environment.POSI_STACK_KEY}&query=${location.Latitude},${location.Longitude}`)
+    return this.http.get<locationResponse>(`${environment.POSI_STACK_URL}?access_key=${environment.POSI_STACK_KEY}&query=${location.latitude},${location.longitude}`)
   }
 }

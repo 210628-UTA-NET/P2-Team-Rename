@@ -1,3 +1,4 @@
+import { ResponseTutor } from './../models/tutor/responseTutor';
 import { environment } from 'src/environments/environment';
 import { Appointment } from './../models/tutor/appointment';
 import { TUTORS } from './mock-tutors';
@@ -48,9 +49,9 @@ export class UserService {
     });
   }
 
-  SearchTutors(queryString: string): Observable<Tutor[]> {
+  SearchTutors(queryString: string): Observable<{results: Tutor[]}> {
     let foundTutors = TUTORS.filter((tutor) =>
-      tutor.Topics.some(
+      tutor.topics.some(
         (topic) =>
           topic.toLowerCase().indexOf(queryString.split(/=|&|\?/)[2].trim().toLowerCase()) != -1
       )
@@ -60,49 +61,38 @@ export class UserService {
 
     let re = /=|&|\?/;
     let queryArr = queryString.split(re);
-    console.log('queryArr: ')
-    console.log(queryArr);
-    console.log(queryString);
     if (queryArr.length > 3) {
       if (queryArr[4] === 'Price') {
-        console.log('Before Sorting');
-        console.log(foundTutors);
-        foundTutors = foundTutors.sort((tutor1, tutor2) => tutor1.HourlyRate - tutor2.HourlyRate);
-        console.log('After Sorting');
-        console.log(foundTutors)
+        foundTutors = foundTutors.sort((tutor1, tutor2) => tutor1.hourlyRate - tutor2.hourlyRate);
       }
       if (queryArr[4] === 'Rating_desc') {
-        console.log('Before Sorting');
-        console.log(foundTutors);
-        foundTutors = foundTutors.sort((tutor1, tutor2) => tutor2.Rating - tutor1.Rating);
-        console.log('After Sorting');
-        console.log(foundTutors)
+        foundTutors = foundTutors.sort((tutor1, tutor2) => tutor2.rating - tutor1.rating);
       }
     }
-    return of(foundTutors);
+    return of({results: foundTutors});
   }
 
-  SearchAPITutors(queryString: string): Observable<{Results: Tutor[]}> {
-    return this.http.get<{Results: Tutor[]}>(`${environment.urlAddress}/${this.tutorsPath}${queryString}`);
+  SearchAPITutors(queryString: string): Observable<{results: Tutor[]}> {
+    return this.http.get<{results: Tutor[]}>(`${environment.urlAddress}/${this.tutorsPath}${queryString}`);
   }
   GetTutor(tutorID: string): Observable<Tutor> {
     let defaultTutor: Tutor = {
-      Id: '',
-        FirstName: '',
-        LastName: '',
-        Email: '',
-        UserName: '',
-        Topics: [],
-        Location: {
-          Longitude: 0,
-          Latitude: 0,
+      id: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        userName: '',
+        topics: [],
+        location: {
+          longitude: 0,
+          latitude: 0,
         },
-      About: '',
-      HourlyRate: 0,
-      DegreesOrCerts: [],
-      Rating: 0,
+      about: '',
+      hourlyRate: 0,
+      degreesOrCerts: [],
+      rating: 0,
     };
-    let foundTutor = TUTORS.find((tutor) => (tutor.Id === tutorID));
+    let foundTutor = TUTORS.find((tutor) => (tutor.id === tutorID));
     if (foundTutor === undefined) {
       return of(defaultTutor);
     }
