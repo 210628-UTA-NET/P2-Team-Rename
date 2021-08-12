@@ -63,8 +63,8 @@ namespace BL {
             });
         }
 
-        public void SaveChanges() {
-            _tutorDB.Save();
+        public async Task<bool> SaveChanges() {
+            return await _tutorDB.Save();
         }
     }
 }

@@ -4,15 +4,17 @@ using DL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 
 namespace DL.Migrations
 {
     [DbContext(typeof(TutorConnectDBContext))]
-    partial class TutorConnectDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210812090704_TimeRename")]
+    partial class TimeRename
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,9 +111,11 @@ namespace DL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReceiverId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("SenderId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("SenderName")
@@ -378,15 +382,15 @@ namespace DL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5b13a9cf-1c64-4020-9fee-0870ba0e7153",
-                            ConcurrencyStamp = "31733bfb-c4a9-42fc-a4b8-63184e5828aa",
+                            Id = "137162ef-bc77-400e-b863-64d5b3d810a1",
+                            ConcurrencyStamp = "6986cc60-4fc3-4d6e-a9cd-99d4955250d7",
                             Name = "Tutor",
                             NormalizedName = "TUTOR"
                         },
                         new
                         {
-                            Id = "ba2b0cfd-da04-454d-aae9-e9ef7dc367dd",
-                            ConcurrencyStamp = "807e1352-d551-4738-9793-caa0961f5b80",
+                            Id = "426cfd88-3444-4248-b1ae-1b4ad05d455e",
+                            ConcurrencyStamp = "5da74755-fb76-48b1-a8e2-2547d48bcb49",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -564,12 +568,14 @@ namespace DL.Migrations
                     b.HasOne("Entities.Database.User", "Receiver")
                         .WithMany("MessagesReceived")
                         .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Entities.Database.User", "Sender")
                         .WithMany("MessagesSent")
                         .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Receiver");
 

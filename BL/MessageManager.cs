@@ -37,7 +37,7 @@ namespace BL {
                         m => m.Id == messageId
                     }
                 });
-                _messageDB.Delete(targetMessage);
+                await _messageDB.Delete(targetMessage);
                 return targetMessage;
             } catch (Exception ) {
                 return null;
@@ -81,7 +81,7 @@ namespace BL {
                         m => m.Id == messageId
                     }
                 });
-                _followRequestDB.Delete(targetMessage);
+                await _followRequestDB.Delete(targetMessage);
                 return targetMessage;
             } catch (Exception ) {
                 return null;

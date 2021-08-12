@@ -19,6 +19,9 @@ export class AuthenticationService {
 
   private userSub = new Subject<UserDto>();
   public userInfo = this.userSub.asObservable();
+
+  private userRoleSub = new Subject<string>();
+  public userRole = this.userRoleSub.asObservable();
   
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { 
     if (this.isUserAuthenticated()) {
@@ -37,7 +40,15 @@ export class AuthenticationService {
   public loadUser(){
     return this.http.get<UserDto>(`${environment.urlAddress}/user`).subscribe(res => {
       this.userSub.next(res);
-      console.log("GOT");
+
+      var role = "User";
+      if (this.isUserAdministrator()) {
+        role = "Administrator";
+      } else if (this.isUserTutor()) {
+        role = "Tutor";
+      }
+
+      this.userRoleSub.next(role);
       console.log(res);
     });
   }
