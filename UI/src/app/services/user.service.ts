@@ -55,6 +55,9 @@ export class UserService {
           topic.toLowerCase().indexOf(queryString.split(/=|&|\?/)[2].trim().toLowerCase()) != -1
       )
     );
+
+
+
     let re = /=|&|\?/;
     let queryArr = queryString.split(re);
     console.log('queryArr: ')
@@ -77,6 +80,10 @@ export class UserService {
       }
     }
     return of(foundTutors);
+  }
+
+  SearchAPITutors(queryString: string): Observable<{Results: Tutor[]}> {
+    return this.http.get<{Results: Tutor[]}>(`${environment.urlAddress}/${this.tutorsPath}${queryString}`);
   }
   GetTutor(tutorID: string): Observable<Tutor> {
     let defaultTutor: Tutor = {
