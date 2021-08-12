@@ -24,8 +24,25 @@ export class AdminAdmitCardComponent implements OnInit {
     //this.list = this._jwtHelper.GetApplications();
   }
 
-  //onSelect(selected: any) {
-  //  this.selectedApplication = selected;
-  //}
+  onSelect(selected: any) {
+    if(this.selectedApplication == selected)
+    {
+      console.log(selected.id + " details closed");
+      this.selectedApplication = undefined;
+    } else {
+      console.log(selected.id + " details opened");
+      this.selectedApplication = selected;
+    }
+  }
+
+  toAccept(selected: any)
+  {
+    console.log(selected.id + " Accepted");
+  }
+
+  toRemove(selected: any)
+  {
+    console.log(selected.id + " Rejected");
+  }
 
 }

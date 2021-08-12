@@ -11,19 +11,21 @@
       <ul class="list">
           <li *ngFor="let application of list"
               [class.selected]="application === selectedApplication" >
-              <!-- (click)="onSelect(application)"> -->
+              (click)="onSelect(application)">
               <span class="badge">Name: </span>
           </li>
       </ul>
 
       <div *ngIf="selectedApplication">
           <h2>Application Details</h2>
-          <div><span>: </span></div>
-          <div><span>: </span></div>
-          <div><span>: </span></div>
-          <div><span>: </span></div>
-          <a> <!-- (click)="toAccept(selectedUser)" --> <button class="btn btn-primary" > Accept </button></a>
-          <a> <!-- (click)="toRemove(selectedUser)" --> <button class="btn btn-danger" > Remove </button></a>
+          <div><span>Name: </span></div>
+          <div><span>Email: </span></div>
+          <div><span>Username: </span></div>
+          <div><span>About: </span></div>
+          <div><span>Degree: </span></div>
+          <div><span>Details: </span></div>
+          <a (click)="toAccept(selectedApplication)" ><button class="btn btn-primary" > Accept </button></a>
+          <a (click)="toRemove(selectedApplication)" ><button class="btn btn-danger" > Remove </button></a>
       </div>
 
   </div>

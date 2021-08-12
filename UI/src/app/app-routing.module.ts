@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+import { TutorApplyComponent } from './components/pages/tutor-apply/tutor-apply.component';
+import { NgModule, Component } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/pages/home/home.component';
 import { LoadingWheelComponent } from './components/shared/loading-wheel/loading-wheel.component';
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path: "home", component: HomeComponent},
   {path: "admit", component: AdminAdmitCardComponent},
   {path: "userlist", component: UserListCardComponent},
+  {path: "tutorapply", component: TutorApplyComponent},
 ];
 
 @NgModule({
