@@ -1,9 +1,11 @@
 import { Appointment } from './../../../../models/tutor/appointment';
 import { Tutor } from './../../../../models/tutor/tutor';
 import { UserService } from './../../../../services/user.service';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, HostListener, OnInit, Type } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { Location } from '@angular/common';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-tutorDetails',
@@ -17,16 +19,18 @@ export class TutorDetailsComponent implements OnInit {
   availableAppts: Appointment[] | undefined;
 
   constructor(
-    private route: ActivatedRoute,
-    private userService: UserService
-  ) {}
+    private activatedRoute: ActivatedRoute,
+    private userService: UserService,
+    private location: Location,
+    private route: Router
+  ) { }
 
   ngOnInit() {
     this.getTutor();
     //this.getAppointments();
   }
   getTutor(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id !== null)
     {
       this.userService.GetTutor(id)
@@ -34,8 +38,6 @@ export class TutorDetailsComponent implements OnInit {
         this.tutor = tutor
         this.getAppointments(tutor.Id);
       });
-      console.log(this.tutor);
-      console.log(this.availableAppts);
     }
   }
   getAppointments(tutorId: string): void {
@@ -51,6 +53,10 @@ export class TutorDetailsComponent implements OnInit {
         this.availableAppts?.splice(this.availableAppts.findIndex(appointment => appointment.Id === bookedAppointment.Id), 1);
       }
     })
+  }
+
+  back(): void {
+    this.route.navigate(['searchv3']);
   }
 
 }

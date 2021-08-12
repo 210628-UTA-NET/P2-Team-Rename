@@ -18,7 +18,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     TutorSearchComponent,
     TutorSearchV2Component,
     TutorSearchV3Component,
-    TutorDetailsComponent
+    TutorDetailsComponent,
   ],
   imports: [
     CommonModule,
