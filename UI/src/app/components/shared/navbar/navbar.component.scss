@@ -11,7 +11,32 @@
   margin-right: 20px;
 }
 
- p span {
+#nav-bar-main {
+  height:80px;
+}
+
+#user-label-parent {
+  display: flex;
+  flex-direction: column;
+}
+
+#logout-btn {
+  align-self: center;
+}
+
+.auth-btn {
+  width: 100px;
+  height: 40px;
+}
+
+.user-label {
+  display: flex;
+  flex-direction: row;
+  margin-right: 50px;
+  justify-content: center;
+}
+
+p span {
   display: block;
 }
 

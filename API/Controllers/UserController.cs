@@ -63,7 +63,7 @@ namespace API.Controllers {
         public async Task<IActionResult> Login([FromBody] UserAuthenticationDto userAuthentication) {
             User user = await _userManager.FindByEmailAsync(userAuthentication.Email);
             if (user == null || !await _userManager.CheckPasswordAsync(user, userAuthentication.Password))
-                return Unauthorized(new AuthenticationResponseDto { ErrorMessage = "Invalid Authentication" });
+                return Unauthorized(new AuthenticationResponseDto { ErrorMessage = "Invalid login credentials" });
 
             SigningCredentials signingCredentials = _jwtHandler.GetSigningCredentials();
             List<Claim> claims = await _jwtHandler.GetClaims(user);
