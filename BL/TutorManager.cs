@@ -39,6 +39,10 @@ namespace BL {
                 conditions.Add(t => t.Rating > tutorParams.Rating);
             }
 
+            if (tutorParams.Topic != null) {
+                conditions.Add(t => t.Topics.Select(topic => topic.TopicName).Contains(tutorParams.Topic.ToLower()));
+            }
+
             if (tutorParams.Distance != null && tutorParams.Latitude != null && tutorParams.Longitude != null) {
                 var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
                 var location = geometryFactory.CreatePoint(new NetTopologySuite.Geometries.Coordinate((double)tutorParams.Longitude, (double)tutorParams.Latitude));

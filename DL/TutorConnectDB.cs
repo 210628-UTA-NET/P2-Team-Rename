@@ -68,7 +68,9 @@ namespace DL {
             if (options.OrderBy != null) {
                 (string propertyName, bool desc) = ParseSortOrder(options.OrderBy);
                 if (propertyName != null) {
-                    queryableQuery = queryableQuery.OrderBy(propertyName, desc);
+                    queryableQuery = (desc)
+                        ? queryableQuery.OrderBy(propertyName + " desc")
+                        : queryableQuery.OrderBy(propertyName);
                 }
             }
 

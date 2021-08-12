@@ -67,7 +67,7 @@ namespace BL {
             if (approve) {
                 Tutor tutor = _mapper.Map<User, Tutor>(user);
                 tutor.DegreesOrCerts = tutorApplication.DegreesOrCerts;
-                tutor.Topics = tutorApplication.Topics;
+                tutor.TutorTopics = tutorApplication.Topics;
                 tutor.About = tutorApplication.About;
 
                 await _userManager.DeleteAsync(user);
