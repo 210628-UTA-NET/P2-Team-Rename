@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'searchv3', component: TutorSearchV3Component },
   { path: 'matches', component: TutorMatchesComponent },
   { path: 'tutor', component: TutorCardComponent },
-  { path: 'tutor/:id', component: TutorDetailsComponent }
+  { path: 'tutor/:id/:cityAndState', component: TutorDetailsComponent }
 ];
 
 export const UserRoutes = RouterModule.forChild(routes);

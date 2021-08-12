@@ -1,6 +1,5 @@
 import { Appointment } from './../models/tutor/appointment';
 import { TUTORS } from './mock-tutors';
-import { UserModule } from './../modules/user/user.module';
 import { Tutor } from './../models/tutor/tutor';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
@@ -45,9 +44,30 @@ export class UserService {
     let foundTutors = TUTORS.filter((tutor) =>
       tutor.Topics.some(
         (topic) =>
-          topic.toLowerCase().indexOf(queryString.split('=')[1].trim().toLowerCase()) != -1
+          topic.toLowerCase().indexOf(queryString.split(/=|&|\?/)[2].trim().toLowerCase()) != -1
       )
     );
+    let re = /=|&|\?/;
+    let queryArr = queryString.split(re);
+    console.log('queryArr: ')
+    console.log(queryArr);
+    console.log(queryString);
+    if (queryArr.length > 3) {
+      if (queryArr[4] === 'Price') {
+        console.log('Before Sorting');
+        console.log(foundTutors);
+        foundTutors = foundTutors.sort((tutor1, tutor2) => tutor1.HourlyRate - tutor2.HourlyRate);
+        console.log('After Sorting');
+        console.log(foundTutors)
+      }
+      if (queryArr[4] === 'Rating_desc') {
+        console.log('Before Sorting');
+        console.log(foundTutors);
+        foundTutors = foundTutors.sort((tutor1, tutor2) => tutor2.Rating - tutor1.Rating);
+        console.log('After Sorting');
+        console.log(foundTutors)
+      }
+    }
     return of(foundTutors);
   }
   GetTutor(tutorID: string): Observable<Tutor> {

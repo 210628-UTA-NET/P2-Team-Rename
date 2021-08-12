@@ -72,7 +72,7 @@ export const TUTORS: Tutor[] = [
         Details: 'Concentration in materials and thin films'
       }
     ],
-    Rating: 3.8
+    Rating: 9.8
   },
 
   {
@@ -94,7 +94,7 @@ export const TUTORS: Tutor[] = [
         Details: 'Completed degree at Marketing University with a minor in literature'
       }
     ],
-    Rating: 8.3
+    Rating: 9.9
   },
 
   {
@@ -120,7 +120,7 @@ export const TUTORS: Tutor[] = [
         Details: 'Completed Degree at Law Institute'
       }
     ],
-    Rating: 9.9
+    Rating: 8.3
   }
 
 ];
