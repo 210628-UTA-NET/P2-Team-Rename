@@ -1,0 +1,39 @@
+<p>tutor-apply works!</p>
+<div class="card" style="width: 25rem;  border: 1px solid black;">
+  <div class="card-body">
+    <h5 class="card-title">Tutor Application</h5>
+    <p class="card-text">Apply to be a tutor</p>
+    <a (click)="toggled=!toggled" ><button class="btn btn-success" > Application Form </button></a>
+    <div *ngIf="toggled" class="container" style="width: 18rem;  border: 1px solid black;">
+      <h2>Application</h2>
+      <div>
+          <div>
+            <form class="example-form">
+                <label>About: </label>
+                <input type="text" formControlName="about" class="form-control" required>
+              </form>
+          </div>
+          <div>
+            <form class="example-form">
+              <label>Degree: </label>
+              <input type="text" formControlName="degreeTitle" class="form-control" required>
+            </form>
+          </div>
+          <div>
+            <form class="example-form">
+              <label>Details: </label>
+              <input type="text" formControlName="degreeDetails" class="form-control" required>
+            </form>
+          </div>
+          <div>
+            <form class="example-form">
+              <label>Topics: </label>
+              <input type="text" formControlName="topics" class="form-control" required>
+            </form>
+          </div>
+          <a (click)="toSubmit()" ><button class="btn btn-primary" > Submit </button></a>
+      </div>
+
+  </div>
+  </div>
+</div>
