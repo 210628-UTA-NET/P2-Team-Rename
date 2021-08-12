@@ -1,17 +1,20 @@
+import { environment } from 'src/environments/environment';
 import { Appointment } from './../models/tutor/appointment';
 import { TUTORS } from './mock-tutors';
 import { Tutor } from './../models/tutor/tutor';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { appointments } from './mock-appointments';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private tutorsUrl = 'api/tutors';
+  private tutorsPath = 'tutor';
+  private appointmentsPath = 'appointment';
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   GetTutorAppointments(query: string): Observable<Appointment[]> {
     const re = /=|&/;
@@ -26,6 +29,11 @@ export class UserService {
 
     return of(available);
   }
+
+  GetAPITutorAppointments(query: string): Observable<{Results:Appointment[]}> {
+    return this.http.get<{Results: Appointment[]}>(`${environment.urlAddress}/${this.appointmentsPath}${query}`);
+  }
+
   BookAppointment(appointmentId: string): Observable<Appointment> {
     let bookedAppointment = appointments.find(appointment => appointment.Id === appointmentId);
     if (bookedAppointment && bookedAppointment.UserId === null) {

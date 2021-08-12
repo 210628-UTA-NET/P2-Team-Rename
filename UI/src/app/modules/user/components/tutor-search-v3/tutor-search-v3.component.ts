@@ -40,7 +40,7 @@ export class TutorSearchV3Component implements OnInit {
   onSubmit() {
     this.route.navigate([], {
       relativeTo: this.activatedRoute,
-      queryParams: { topic: this.searchForm.get('topic')?.value },
+      queryParams: { topic: `${this.searchForm.get('topic')?.value}` },
     });
 
     //only works for form controls one level deep may change so I get the query string from route later
