@@ -8,7 +8,8 @@ namespace API {
     public class AutoMapping : Profile {
         public AutoMapping() {
             CreateMap<User, UserDto>();
-            CreateMap<TutorApplication, TutorApplicationDto>();
+            CreateMap<TutorApplication, TutorApplicationDto>()
+                .ForMember(a => a.Topics, opt => opt.MapFrom(tu => tu.Topics.Select(topic => topic.TopicName).ToList()));
             CreateMap<SubmitTutorApplicationDto, TutorApplication>();
             CreateMap<DegreeCertification, DegreeOrCertDto>();
             CreateMap<DegreeOrCertDto, DegreeCertification>();
@@ -18,7 +19,6 @@ namespace API {
             CreateMap<Point, LocationDto>()
                 .ForMember(l => l.Latitude, opt => opt.MapFrom(p => p.Y))
                 .ForMember(l => l.Longitude, opt => opt.MapFrom(p => p.X));
-
         }
     }
 }

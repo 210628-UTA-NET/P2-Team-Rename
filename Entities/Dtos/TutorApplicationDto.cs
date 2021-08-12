@@ -9,7 +9,7 @@ namespace Entities.Dtos {
         public string About { get; set; }
         public ICollection<DegreeOrCertDto> DegreesOrCerts { get; set; }
         public bool Open { get; set; }
-        public ICollection<Topic> Topics { get; set; }
+        public ICollection<string> Topics { get; set; }
         public DateTime Timestamp { get; set; }
     }
 }
