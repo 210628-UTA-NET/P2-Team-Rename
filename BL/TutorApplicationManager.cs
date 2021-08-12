@@ -81,7 +81,7 @@ namespace BL {
             // Send message to user telling them they have been approved or denied
 
             tutorApplication.Open = false;
-            _applicationDB.Save();
+            await _applicationDB.Save();
             return true;
         }
     }
