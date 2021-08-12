@@ -9,3 +9,4 @@ export interface UserDto {
   userName: string;
   topics: TopicDto[] | null;
   location: LocationDto | null;
+}
