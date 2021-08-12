@@ -1,26 +1,24 @@
 <header>
-  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <nav id="nav-bar-main" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#"><h2>TutorConnect</h2></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav me-auto mb-2 mb-md-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-          </li>
-        </ul>
-        <div class="d-flex">
-          <button type="button" class="btn btn-outline-light me-2">Login</button>
-          <button type="button" class="btn btn-warning">Sign-up</button>
-        </div>
+      <a class="navbar-brand" href="#">
+        <h2>TutorConnect</h2>
+      </a>
+      <div id="auth-bar" class="d-flex text-light">
+        <ng-container *ngIf="isUserAuthenticated else Login">
+            <div class="user-label">
+              <fa-icon id="user-icon" class="fa-2x" [icon]="userIcon"></fa-icon>
+              <p><span>{{user.userName}}</span>
+                <span>{{role}}</span>
+              </p>
+            </div>
+            <button id="logout-btn" class="btn btn-danger auth-btn" (click)="logout()">Logout</button>
+        </ng-container>
+        <ng-template #Login>
+          <div id= "user-label">
+            <a [routerLink]="['/login']" class="btn btn-primary auth-btn">Login</a>
+          </div>
+        </ng-template>
       </div>
     </div>
   </nav>

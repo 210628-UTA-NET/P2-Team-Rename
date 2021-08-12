@@ -12,24 +12,23 @@ namespace Entities.Database {
             MessagesSent = new HashSet<Message>();
             MessagesReceived = new HashSet<Message>();
             Topics = new HashSet<Topic>();
-            Tutors = new HashSet<Tutor>();
             TransactionsSent = new HashSet<Transaction>();
             TransactionsReceived = new HashSet<Transaction>();
+            MyContacts = new HashSet<User>();
         }
 
         [Key]
         public override string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public ICollection<Topic> Topics { get; set; }
-        public Point Location { get; set; }
-        public virtual ICollection<ChatMessage> ChatMessages { get; set; }
+        public virtual ICollection<Topic> Topics { get; set; }
+        public virtual Point Location { get; set; }
         public virtual ICollection<Message> MessagesSent { get; set; }
         public virtual ICollection<Message> MessagesReceived { get; set; }
         public virtual ICollection<Appointment> Appointments { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
-        public ICollection<Transaction> TransactionsSent { get; set; }
-        public ICollection<Transaction> TransactionsReceived { get; set; }
-        public ICollection<Tutor> Tutors { get; set; }
+        public virtual ICollection<Transaction> TransactionsSent { get; set; }
+        public virtual ICollection<Transaction> TransactionsReceived { get; set; }
+        public virtual ICollection<User> MyContacts { get; set; }
     }
 }

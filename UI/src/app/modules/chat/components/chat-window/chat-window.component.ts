@@ -1,3 +1,4 @@
+/*
 import { Component, OnInit, NgZone } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ChatMessage } from 'src/app/models/chat/message.model';
@@ -27,7 +28,6 @@ export class ChatWindowComponent implements OnInit {
 
   public sendMessage(): void {
     if (this.messageBody.value != '') {
-      console.log
       var msg: ChatMessage = {
         senderId: this.connectionForm.get('userIdA')?.value,
         receiverId: this.connectionForm.get('userIdB')?.value,
@@ -56,3 +56,4 @@ export class ChatWindowComponent implements OnInit {
   }
 
 }
+*/

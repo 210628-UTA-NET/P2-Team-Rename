@@ -4,15 +4,17 @@ using DL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 
 namespace DL.Migrations
 {
     [DbContext(typeof(TutorConnectDBContext))]
-    partial class TutorConnectDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210810211152_MessageSystemUpdate")]
+    partial class MessageSystemUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,8 +121,10 @@ namespace DL.Migrations
                     b.Property<string>("SenderName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("TimeSent")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime>("Timestamp")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.HasKey("Id");
 
@@ -380,15 +384,15 @@ namespace DL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "137162ef-bc77-400e-b863-64d5b3d810a1",
-                            ConcurrencyStamp = "6986cc60-4fc3-4d6e-a9cd-99d4955250d7",
+                            Id = "479ae6a7-8130-4eff-97fa-cb5657d93141",
+                            ConcurrencyStamp = "68c313e1-e086-4a3c-92e6-f6bb943f1f4b",
                             Name = "Tutor",
                             NormalizedName = "TUTOR"
                         },
                         new
                         {
-                            Id = "426cfd88-3444-4248-b1ae-1b4ad05d455e",
-                            ConcurrencyStamp = "5da74755-fb76-48b1-a8e2-2547d48bcb49",
+                            Id = "8707a955-6000-4ab5-aca3-71e52b628942",
+                            ConcurrencyStamp = "d72efc7a-36f3-4856-ba39-bc4ddf515812",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });

@@ -13,9 +13,15 @@ export class ChatService {
   private _hubConnection: HubConnection;  
   
   constructor() {  
-    this._hubConnection = new HubConnectionBuilder()  
-      .withUrl(environment.urlAddress + '/chat')  
-      .build();
+    var token: string = localStorage.getItem("token") ?? "";
+      this._hubConnection = (token != "")  
+        ? new HubConnectionBuilder()  
+          .withUrl(environment.urlAddress + '/chat', {accessTokenFactory: () => token})  
+          .build()
+        : new HubConnectionBuilder()  
+          .withUrl(environment.urlAddress + '/chat')  
+          .build()
+
     this.registerOnServerEvents();  
     this.startConnection();  
   }
@@ -24,9 +30,9 @@ export class ChatService {
     this._hubConnection.invoke('PrivateChat', message);  
   }
   
-  public joinChat(senderId: string, receiverId: string) {
+  public joinChat(receiverId: string) {
     if (this._hubConnection) {
-      this._hubConnection.invoke('JoinPrivateChat', senderId, receiverId)
+      this._hubConnection.invoke('JoinPrivateChat', receiverId)
         .then(() => {
           console.log(`Connected to private chat with ${receiverId}.`)
         })
@@ -36,9 +42,9 @@ export class ChatService {
     }
   }
 
-  public leaveChat(senderId: string, receiverId: string) {
+  public leaveChat(receiverId: string) {
     if (this._hubConnection) {
-      this._hubConnection.invoke('LeavePrivateChat', senderId, receiverId)
+      this._hubConnection.invoke('LeavePrivateChat', receiverId)
         .then(() => {
           console.log(`Disconnected to private chat with ${receiverId}.`)
         })
@@ -62,9 +68,10 @@ export class ChatService {
   }
   
   private registerOnServerEvents(): void {  
-    this._hubConnection.on('MessageReceived', (data: any) => {  
+    this._hubConnection.on('Message', (data: any) => {  
       console.log("message recieved");
       this.messageReceived.emit(data);  
-    });  
+    });
+
   }  
 }
