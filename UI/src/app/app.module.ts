@@ -49,12 +49,13 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: ["localhost:44329"],
+        authScheme: 'Bearer ',
+        allowedDomains: ["localhost:44385"],
         disallowedRoutes: []
       }
     })
   ],
-  providers: [AuthenticationService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -29,7 +29,7 @@ namespace API.Controllers {
 
 
         [Authorize("Tutor")]
-        [HttpPut("approve/{followRequestId}")]
+        [HttpPatch("approve/{followRequestId}")]
         public async Task<IActionResult> ApproveFollowRequest([FromRoute] string followRequestId, bool approve = true) {
             string tutorId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Tutor tutor = await _tutorManager.FindByIdAsync(tutorId);
@@ -59,7 +59,7 @@ namespace API.Controllers {
 
 
         [Authorize]
-        [HttpPut("request/{tutorId}")]
+        [HttpPatch("request/{tutorId}")]
         public async Task<IActionResult> RequestFollowTutor([FromRoute] string tutorId) {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             User user = await _userManager.FindByIdAsync(userId);
