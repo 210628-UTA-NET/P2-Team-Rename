@@ -68,16 +68,11 @@ namespace DL {
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Tutor>();
+
             builder.Entity<DegreeCertification>();
             builder.Entity<TutorApplication>()
                 .Property(ta => ta.Timestamp)
                 .HasDefaultValueSql("getdate()");
-
-            /*
-            builder.Entity<ChatMessage>()
-                .HasOne(m => m.Sender)
-                .WithMany(u => u.ChatMessages)
-                .HasForeignKey(u => u.SenderId);*/
         }
     }
 }
