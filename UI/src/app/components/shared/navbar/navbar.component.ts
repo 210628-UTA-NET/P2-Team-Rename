@@ -21,7 +21,7 @@ export class NavbarComponent implements OnInit {
     lastName: '',
     email: '',
     userName: '',
-    topics:  null,
+    topics:  [],
     location: null,
   };
 

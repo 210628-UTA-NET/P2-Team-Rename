@@ -7,6 +7,6 @@ export interface UserDto {
   lastName: string;
   email: string;
   userName: string;
-  topics: TopicDto[] | null;
+  topics: string[];
   location: LocationDto | null;
 }
