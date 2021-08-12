@@ -19,10 +19,11 @@ namespace DL {
             return model;
         }
 
-        public async void Delete(T model) {
+        public async Task<bool> Delete(T model) {
             _context.Set<T>().Attach(model);
             _context.Set<T>().Remove(model);
             await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<T> FindSingle(QueryOptions<T> options) {
@@ -87,8 +88,9 @@ namespace DL {
             return (propName, desc);
         }
 
-        public void Save() {
-            _context.SaveChangesAsync();
+        public async Task<bool> Save() {
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public async void Update(T model) {

@@ -28,7 +28,7 @@ namespace API.Controllers {
         }
 
 
-        [Authorize("Tutor")]
+        [Authorize(Roles="Tutor")]
         [HttpPatch("approve/{followRequestId}")]
         public async Task<IActionResult> ApproveFollowRequest([FromRoute] string followRequestId, bool approve = true) {
             string tutorId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -36,7 +36,7 @@ namespace API.Controllers {
             if (tutor == null) return BadRequest(new { Error = "A tutor account with your Id could not be found." });
 
             FollowRequest request = await _messageManager.GetSingleRequestById(followRequestId);
-            if (request == null || request.ReceiverId != tutorId) return BadRequest();
+            if (request == null || request.ReceiverId != tutorId) return BadRequest(new { Error = "No request with that Id could be located." });
             request = await _messageManager.DeleteFollowRequest(followRequestId);
 
             User targetUser = await _userManager.FindByIdAsync(request.SenderId);
@@ -46,7 +46,7 @@ namespace API.Controllers {
                 tutor.MyContacts.Add(targetUser);
                 targetUser.MyContacts.Add(tutor);
 
-                _tutorManager.SaveChanges();
+                await _tutorManager.SaveChanges();
                 await _userManager.UpdateAsync(targetUser);
             }
 

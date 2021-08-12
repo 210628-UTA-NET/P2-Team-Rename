@@ -63,7 +63,7 @@ namespace API.Controllers {
         public async Task<IActionResult> Login([FromBody] UserAuthenticationDto userAuthentication) {
             User user = await _userManager.FindByEmailAsync(userAuthentication.Email);
             if (user == null || !await _userManager.CheckPasswordAsync(user, userAuthentication.Password))
-                return Unauthorized(new AuthenticationResponseDto { ErrorMessage = "Invalid login credentials" });
+                return Unauthorized(new AuthenticationResponseDto { ErrorMessage = "Invalid login credentials. Please verify that your username and password are correct." });
 
             SigningCredentials signingCredentials = _jwtHandler.GetSigningCredentials();
             List<Claim> claims = await _jwtHandler.GetClaims(user);
@@ -90,6 +90,8 @@ namespace API.Controllers {
 
             return Ok(userDto);
         }
+
+
         [Authorize]
         [HttpPatch("location")]
         public async Task<IActionResult> SetLocation([FromQuery] LocationDto location) {
@@ -106,6 +108,21 @@ namespace API.Controllers {
             return Ok(new { Results = string.Format("Location successfully changed.") });
         }
 
+        [Authorize]
+        [HttpGet("contacts")]
+        public async Task<IActionResult> GetMyContacts() {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            User user = await _userManager.Users.Include(u => u.MyContacts).Where(u => u.Id == userId).SingleOrDefaultAsync();
+            if (user == null) return BadRequest(new { Error = "A user with your Id could not be found." });
+
+            IList<UserDto> contacts = new List<UserDto>();
+            if (user.MyContacts != null) {
+                contacts = _mapper.Map<IList<User>, IList<UserDto>>(user.MyContacts.ToList());
+            }
+
+            return Ok(new { Results = contacts});
+        }
+
         //[Authorize]
         [HttpGet("search")]
         public async Task<IActionResult> QueryUsers([FromQuery] UserParameters userParameters) {
@@ -115,7 +132,7 @@ namespace API.Controllers {
 
             if (userParameters.Role != null) {
                 if (!roles.Contains(userParameters.Role)) {
-                    return BadRequest();
+                    return BadRequest(new { Error = "This role does not exist." });
                 } else {
                     query = (await _userManager.GetUsersInRoleAsync(userParameters.Role)).AsQueryable();
                 }
@@ -127,13 +144,12 @@ namespace API.Controllers {
 
             if (userParameters.Distance != null && userParameters.Longitude != null && userParameters.Latitude != null) {
                 var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
-                var location = geometryFactory.CreatePoint(new NetTopologySuite.Geometries.Coordinate((double)userParameters.Longitude, (double)userParameters.Latitude));
+                var location = geometryFactory.CreatePoint(new Coordinate((double)userParameters.Longitude, (double)userParameters.Latitude));
                 query = query.Where(u => u.Location.IsWithinDistance(location, (double) userParameters.Distance));
             }
 
             var results = await query.ToListAsync();
             IList<UserDto> userResults = _mapper.Map<List<UserDto>>(results);
-
 
             return Ok(new { Results = userResults });
         }
