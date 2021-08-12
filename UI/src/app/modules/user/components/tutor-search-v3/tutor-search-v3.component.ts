@@ -11,6 +11,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class TutorSearchV3Component implements OnInit {
   searchedTutors: Tutor[] = [];
+  queryString: string = '';
 
   constructor(
     private userService: UserService,
@@ -20,7 +21,8 @@ export class TutorSearchV3Component implements OnInit {
   searchForm = new FormGroup({
     topic: new FormControl(''),
   });
-  ngOnInit(): void {}
+  ngOnInit(): void { }
+
 
   onSubmit() {
     this.route.navigate([], {
@@ -29,7 +31,7 @@ export class TutorSearchV3Component implements OnInit {
     });
 
     //only works for form controls one level deep may change so I get the query string from route later
-    let queryString = Object.keys(this.searchForm.value).map(key => [key, this.searchForm.get(key)?.value]).reduce((query, [key, value], idx, arr) => {
+    this.queryString = Object.keys(this.searchForm.value).map(key => [key, this.searchForm.get(key)?.value]).reduce((query, [key, value], idx, arr) => {
       query = query.concat(`${key}=${value}`);
         if (idx < arr.length - 1)
         {
@@ -39,13 +41,13 @@ export class TutorSearchV3Component implements OnInit {
       return query;
     }, '?');
 
-    this.search(queryString);
+    this.search();
     this.searchForm.reset();
   }
-  search(searchTerm: string) {
-    if (searchTerm !== null) {
+  search() {
+    if (this.queryString !== null) {
       this.userService
-        .SearchTutors(searchTerm)
+        .SearchTutors(this.queryString)
         .subscribe((searchedTutors) => (this.searchedTutors = searchedTutors));
     }
     else

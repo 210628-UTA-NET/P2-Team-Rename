@@ -18,5 +18,6 @@ namespace Entities.Database {
         public ICollection<DegreeCertification> DegreesOrCerts { get; set; }
         public ICollection<Topic> TutorTopics { get; set; }
         public ICollection<Review> TutorReviews { get; set; }
+        public ICollection<FollowRequest> FollowRequests {get; set;}
     }
 }

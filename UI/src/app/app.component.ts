@@ -22,22 +22,18 @@ export class AppComponent {
 
   navigationInterceptor(event: RouterEvent): void {
     if (event instanceof NavigationStart) {
-      this.loading = true
-      console.log("loading start");
+      this.loading = true;
     }
     if (event instanceof NavigationEnd) {
       this.loading = false;
-      console.log("loading end1");
     }
 
     // Set loading state to false in both of the below events to hide the spinner in case a request fails
     if (event instanceof NavigationCancel) {
       this.loading = false;
-      console.log("loading end2");
     }
     if (event instanceof NavigationError) {
       this.loading = false;
-      console.log("loading end3");
     }
   }
 }
