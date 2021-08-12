@@ -27,7 +27,7 @@ export class UserListCardComponent implements OnInit {
         lastName: 'Smith',
         email: 'andy@gmail.com',
         userName: 'andylearn',
-        topic: [{topicName: 'Science'}],
+        topics: [{topicName: 'Science'}],
         location: {
           longitude: 12,
           latitude: 43

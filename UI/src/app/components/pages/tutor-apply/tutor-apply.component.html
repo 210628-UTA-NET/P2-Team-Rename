@@ -26,10 +26,11 @@
             <button (click)="submitDegree()">Submit</button>
           </div>
           <div>
-            <label>Topics</label>
+
             <button (click)="addTopic()">+ Add another topic</button>
 
             <div *ngIf="topictoggled">
+              <label>Topics</label>
               <form [formGroup]="appForm">
                 <input type="text" formControlName="topics" class="form-control" >
                 <button (click)="submitTopic()">Submit</button>
