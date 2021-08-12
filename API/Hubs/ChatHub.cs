@@ -5,8 +5,12 @@ using BL;
 
 using Entities.Database;
 using System.Collections.Generic;
+using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Hubs {
+
+    [Authorize]
     public class ChatHub : Hub {
         private MessageManager _messageManager;
 
@@ -16,7 +20,7 @@ namespace API.Hubs {
 
         public async Task PrivateChat(Message message) {
             string chatId = GenerateChatId(message.SenderId, message.ReceiverId);
-            await Clients.Group(chatId).SendAsync("MessageReceived", message);
+            await Clients.Group(chatId).SendAsync("Message", message);
             await _messageManager.AddMessage(message);
         }
 
@@ -27,7 +31,8 @@ namespace API.Hubs {
             //Load all previous messages
             IList<Message> previousMessages = await _messageManager.GetPrivateMessages(userId, targetUserId);
             foreach (Message message in previousMessages) {
-                await Clients.Group(chatId).SendAsync("MessageReceived", message);
+                message.TimeSent = message.TimeSent.ToLocalTime();
+                await Clients.User(userId).SendAsync("Message", message);
             }
         }
 
@@ -35,27 +40,6 @@ namespace API.Hubs {
             var userId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             string chatId = GenerateChatId(userId, targetUserId);
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, chatId);
-        }
-
-        public async Task TestPrivateChat(Message message) {
-            //var senderId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            string chatId = GenerateChatId(message.SenderId, message.ReceiverId);
-            await Clients.Group(chatId).SendAsync("MessageReceived", message);
-        }
-
-        public async Task JoinPrivateChatTest(string userId, string targetUserId) {
-            //var userId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            string chatId = GenerateChatId(userId, targetUserId);
-            await Groups.AddToGroupAsync(Context.ConnectionId, chatId);
-            await Clients.Group(chatId).SendAsync("Send", $"{Context.ConnectionId} has joined the chat.");
-        }
-
-        public async Task LeavePrivateChatTest(string userId, string targetUserId) {
-            //var userId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            //if (userId == null) return;
-            string chatId = GenerateChatId(userId, targetUserId);
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, chatId);
-            await Clients.Group(chatId).SendAsync("Send", $"{Context.ConnectionId} has left the chat.");
         }
 
         public static string GenerateChatId(string userIdA, string userIdB) {

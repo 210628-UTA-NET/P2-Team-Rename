@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {FormControl, FormGroup,  Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { UserAuthentication } from 'src/app/models/user/user-authentication.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import {debounceTime} from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'auth-login-user',
@@ -18,11 +21,26 @@ export class LoginUserComponent implements OnInit {
   public showError: boolean = false;
   private returnUrl: string;
 
+  private _error = new Subject<string>();
+
+  @ViewChild('errorAlert', {static: false}) errorAlert: NgbAlert;
+
   constructor(private _authService: AuthenticationService, private router: Router, private route: ActivatedRoute) { 
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._error.subscribe(message => this.errorMessage = message);
+    this._error.pipe(debounceTime(5000)).subscribe(() => {
+      if (this.errorAlert) {
+        this.errorAlert.close();
+      }
+    });
+  }
+
+  public setErrorMessage(error: string) {
+    this._error.next(error);
+  }
 
   public loginUser = (loginFormValue: any) => {
     this.showError = false;
@@ -40,8 +58,8 @@ export class LoginUserComponent implements OnInit {
        this.router.navigate([this.returnUrl]);
     },
     (error) => {
-      this.errorMessage = error;
-      this.showError = true;
+      var errorMessage = (error.error.errorMessage) ?? error.message;
+      this.setErrorMessage(errorMessage);
     })
   }
 }

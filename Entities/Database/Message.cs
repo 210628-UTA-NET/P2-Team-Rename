@@ -18,8 +18,6 @@ namespace Entities.Database {
         public string ReceiverId { get; set; }
         public string SenderName { get; set; }
         public virtual string Body { get; set; }
-
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTime Timestamp { get; set; }
+        public DateTime TimeSent { get; set; }
     }
 }

@@ -1,1 +1,40 @@
-<p>dash-main works!</p>
+<div class="container-fluid bg-light" id="app-dash-container">
+  <div class="d-none d-md-flex" id="app-friend-list">
+    <h4 class="text-light" id="app-padding-title">Your Connections</h4>
+    <div class="list-group mt-3">
+      <button *ngFor="let contact of contacts" class="list-group-item list-group-item-action"
+        (click)="openPrivateChat(contact, content)">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">{{contact.firstName + " " + contact.lastName}}</div>
+          {{contact.userName}}
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <div class="container bg-light" id="app-content-panel">
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 *ngIf="chatTarget">{{"Chatting with " + chatTarget.firstName + " " + chatTarget.lastName}}</h4>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid border bg-light" id="chat-window">
+      <div *ngFor="let msg of messages" class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{msg.senderName}}</h5>
+          <small>{{msg.timeSent | date:'L/dd/yy h:mm a'}}</small>
+        </div>
+        <p class="mb-1">{{msg.body}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <div class="input-group mb-3">
+        <input (keydown.enter)="sendMessage()" type="text" class="form-control" placeholder="Send a message" [formControl]="messageBody">
+        <button (click)="sendMessage()" class="btn btn-primary" type="button" id="send-message-button" >Send</button>
+      </div>
+  </div>
+</ng-template>

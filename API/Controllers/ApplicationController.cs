@@ -59,7 +59,7 @@ namespace API.Controllers {
         }
 
         //[Authorize(Roles = "Administrator")]
-        [HttpPut("{applicationId}")]
+        [HttpPatch("{applicationId}")]
         public async Task<IActionResult> ApproveOrDenyApplication([FromRoute] string applicationId, bool approve = true) {
             if (applicationId == null) return BadRequest(new { Error = "Invalid query parameters." });
 
