@@ -45,7 +45,7 @@ export class AdminAdmitCardComponent implements OnInit {
   toAccept(selected: TutorApplicationDto)
   {
     console.log(selected.id + " Accepted");
-    this._admitlist.postApplication(selected);
+    this._admitlist.patchApplication(selected.id);
     this.selectedApplication = undefined;
     this.getAllApplications();
   }
@@ -53,7 +53,7 @@ export class AdminAdmitCardComponent implements OnInit {
   toRemove(selected: TutorApplicationDto)
   {
     console.log(selected.id + " Rejected");
-    //this._admitlist.deleteApplication(selected);
+    this._admitlist.deleteApplication(selected.id);
     this.selectedApplication = undefined;
     this.getAllApplications();
   }

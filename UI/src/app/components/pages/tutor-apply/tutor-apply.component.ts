@@ -59,15 +59,11 @@ export class TutorApplyComponent implements OnInit {
   {
     this.about = this.appForm.get('about')?.value;
     console.log("Form Submitted " + this.user.firstName + this.about + " " + this.degree + " " + this.topics);
-    var application: TutorApplicationDto =
+    var application: any =
     {
-      user: this.user,
       about: this.about,
       degreesOrCerts: this.degree,
       topics: this.topics,
-      id: '',
-      timestamp: new Date
-
     };
     this._admitlist.postApplication(application);
   }
