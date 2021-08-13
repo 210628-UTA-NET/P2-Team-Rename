@@ -12,14 +12,18 @@ namespace BL {
     public class TutorApplicationManager {
         private readonly IDatabase<TutorApplication> _applicationDB;
         private readonly IDatabase<Tutor> _tutorDB;
+        private readonly IDatabase<Topic> _topicDB;
         private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
         private readonly IList<string> _includes;
 
-        public TutorApplicationManager(IDatabase<TutorApplication> applicationDB, IDatabase<Tutor> tutorDB, UserManager<User> userManager, IMapper mapper) {
+        public TutorApplicationManager(IDatabase<TutorApplication> applicationDB, 
+            IDatabase<Tutor> tutorDB, UserManager<User> userManager, 
+            IDatabase<Topic> topicDB, IMapper mapper) {
             _applicationDB = applicationDB;
             _tutorDB = tutorDB;
             _userManager = userManager;
+            _topicDB = topicDB;
             _mapper = mapper;
             _includes = new List<string> {
                 "User",
@@ -45,6 +49,27 @@ namespace BL {
         }
 
         public async Task<TutorApplication> CreateTutorApplication(TutorApplication application, string userId) {
+
+            IList<Topic> topics = await _topicDB.Query(new(){ });
+
+            IList<Topic> tempTopics = new List<Topic>();
+
+            if (application.Topics != null) {
+                foreach (Topic t in application.Topics) {
+                    Topic existingTopic = await _topicDB.FindSingle(new() {
+                        Conditions = new List<Func<Topic, bool>> {
+                            tp => tp.TopicName == t.TopicName
+                        }
+                    });
+
+                    if (existingTopic != null) {
+                        tempTopics.Add(existingTopic);
+                    } else {
+                        tempTopics.Add(t);
+                    }
+                }
+                application.Topics = tempTopics;
+            }
 
             application.Open = true;
             application.UserId = userId;
