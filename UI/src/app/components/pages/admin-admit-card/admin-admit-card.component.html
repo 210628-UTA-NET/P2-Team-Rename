@@ -10,20 +10,27 @@
       <h2>Applications</h2>
       <ul class="list">
           <li *ngFor="let application of list"
-              [class.selected]="application === selectedApplication" >
+              [class.selected]="application === selectedApplication"
               (click)="onSelect(application)">
-              <span class="badge">Name: </span>
+              <span class="badge">Name: </span> {{application.user.firstName}} {{application.user.lastName}}
           </li>
       </ul>
 
       <div *ngIf="selectedApplication">
           <h2>Application Details</h2>
-          <div><span>Name: </span></div>
-          <div><span>Email: </span></div>
-          <div><span>Username: </span></div>
-          <div><span>About: </span></div>
+          <div><span>Name: </span></div> {{selectedApplication.user.firstName}} {{selectedApplication.user.lastName}}
+          <div><span>Email: </span></div> {{selectedApplication.user.email}}
+          <div><span>Username: </span></div> {{selectedApplication.user.userName}}
+          <div><span>About: </span></div> {{selectedApplication.about}}
           <div><span>Degree: </span></div>
-          <div><span>Details: </span></div>
+          <div *ngFor="let degree of selectedApplication.degreesOrCerts" >
+            <div><span>Title: {{degree.title}}</span></div>
+            <div><span>{{degree.details}}</span></div>
+          </div>
+          <div><span>Topics: </span></div>
+          <div *ngFor="let topic of selectedApplication.topics">
+            <div><span>{{topic}}</span></div>
+          </div>
           <a (click)="toAccept(selectedApplication)" ><button class="btn btn-primary" > Accept </button></a>
           <a (click)="toRemove(selectedApplication)" ><button class="btn btn-danger" > Remove </button></a>
       </div>

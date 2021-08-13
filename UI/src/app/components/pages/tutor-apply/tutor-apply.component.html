@@ -1,4 +1,4 @@
-<p>tutor-apply works!</p>
+<p>tutor-apply works! {{this.index}}</p>
 <div class="card" style="width: 25rem;  border: 1px solid black;">
   <div class="card-body">
     <h5 class="card-title">Tutor Application</h5>
@@ -8,28 +8,34 @@
       <h2>Application</h2>
       <div>
           <div>
-            <form class="example-form">
+            <form [formGroup]="appForm">
                 <label>About: </label>
-                <input type="text" formControlName="about" class="form-control" required>
+                <input type="text" id="about" name="about" formControlName="about">
               </form>
           </div>
-          <div>
-            <form class="example-form">
+          <div><button (click)="addDegree()">+ Add another degree</button></div>
+          <div *ngIf="degreetoggled">
+            <form [formGroup]="appForm">
               <label>Degree: </label>
-              <input type="text" formControlName="degreeTitle" class="form-control" required>
+              <input type="text" formControlName="degreeTitle" class="form-control">
             </form>
-          </div>
-          <div>
-            <form class="example-form">
+            <form [formGroup]="appForm">
               <label>Details: </label>
-              <input type="text" formControlName="degreeDetails" class="form-control" required>
+              <input type="text" formControlName="degreeDetails" class="form-control">
             </form>
+            <button (click)="submitDegree()">Submit</button>
           </div>
           <div>
-            <form class="example-form">
-              <label>Topics: </label>
-              <input type="text" formControlName="topics" class="form-control" required>
-            </form>
+
+            <button (click)="addTopic()">+ Add another topic</button>
+
+            <div *ngIf="topictoggled">
+              <label>Topics</label>
+              <form [formGroup]="appForm">
+                <input type="text" formControlName="topics" class="form-control" >
+                <button (click)="submitTopic()">Submit</button>
+              </form>
+            </div>
           </div>
           <a (click)="toSubmit()" ><button class="btn btn-primary" > Submit </button></a>
       </div>
