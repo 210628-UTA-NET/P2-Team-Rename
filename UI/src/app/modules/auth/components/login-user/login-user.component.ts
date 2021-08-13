@@ -58,8 +58,8 @@ export class LoginUserComponent implements OnInit {
        this.router.navigate([this.returnUrl]);
     },
     (error) => {
-      var errorMessage = (error.error.errorMessage) ?? error.message;
-      this.setErrorMessage(errorMessage);
+      console.log(error);
+      this.setErrorMessage(error);
     })
   }
 }
