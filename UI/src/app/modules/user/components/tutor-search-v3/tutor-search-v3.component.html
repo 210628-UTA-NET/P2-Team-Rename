@@ -23,7 +23,7 @@
           </div>
       </div>
   </div>
-  <div *ngIf="searchedTutors.length" class="row">
+  <div *ngIf="searchedTutors && searchedTutors.length > 0" class="row">
           <div class="col-12">
               <div class="card card-margin">
                   <div class="card-body">
@@ -104,8 +104,8 @@
                                                       </td>
                                                       <td>
                                                           <div class="widget-26-job-title">
-                                                              <a [routerLink]="['/tutor', tutor.Id, cityAndState[i]]"
-                                                              routerLinkActive="router-link-active" href="#">{{tutor.FirstName + ' ' + tutor.LastName}}</a>
+                                                              <a [routerLink]="['/tutor', tutor.id, cityAndState[i]]"
+                                                              routerLinkActive="router-link-active" href="#">{{tutor.firstName + ' ' + tutor.lastName}}</a>
                                                               <!--<p class="m-0"><a href="#" class="employer-name">{{tutor.User.UserName}}</a> <span class="text-muted time">1 days ago</span></p>-->
                                                           </div>
                                                       </td>
@@ -117,17 +117,17 @@
                                                           </div>
                                                       </td>
                                                       <td>
-                                                          <div class="widget-26-job-salary">{{tutor.HourlyRate | currency}}/hr</div>
+                                                          <div class="widget-26-job-salary">{{tutor.hourlyRate | currency}}/hr</div>
                                                       </td>
                                                       <td>
                                                           <div class="widget-26-job-category bg-soft-base">
                                                               <i class="indicator bg-base"></i>
-                                                              <span>{{tutor.Topics.join(', ')}}</span>
+                                                              <span>{{tutor.topics.join(', ')}}</span>
                                                           </div>
                                                       </td>
                                                       <td>
                                                           <div class="widget-26-job-starred">
-                                                              <span>{{tutor.Rating}}</span>
+                                                              <span>{{tutor.rating}}</span>
                                                           </div>
                                                       </td>
                                                   </tr>

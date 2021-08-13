@@ -21,11 +21,11 @@ export class NavbarComponent implements OnInit {
     lastName: '',
     email: '',
     userName: '',
-    topics:  [],
+    topics:  [''],
     location: null,
   };
 
-  constructor(public authService: AuthenticationService, private router: Router) { 
+  constructor(public authService: AuthenticationService, private router: Router) {
     this.authService.authChanged.subscribe(res =>{
       this.isUserAuthenticated = res;
     });

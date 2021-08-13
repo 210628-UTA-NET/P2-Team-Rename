@@ -9,3 +9,4 @@ export interface TutorApplicationDto {
   topics: string[],
   timestamp: Date,
 }
+

@@ -1,3 +1,4 @@
+import { UserlistService } from 'src/app/services/userlist.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { EnvironmentUrlService } from 'src/app/services/environment-url.service';
@@ -5,6 +6,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { UserDto } from 'src/app/models/api/user-dto.model';
 import { TopicDto } from 'src/app/models/api/topic-dto.model';
 import { LocationDto } from 'src/app/models/api/location-dto.model';
+import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 //import { getMaxListeners } from 'process';
 
 @Component({
@@ -13,12 +16,14 @@ import { LocationDto } from 'src/app/models/api/location-dto.model';
   styleUrls: ['./user-list-card.component.scss']
 })
 export class UserListCardComponent implements OnInit {
+  [x: string]: any;
 
   list: UserDto[];//List of Users
+  importlist: UserDto[];
   selectedUser?: any;//Variable for displaying user details
   toggled: boolean = false;
 
-  constructor(private _http: HttpClient, private _envUrl: EnvironmentUrlService, private _jwtHelper: JwtHelperService)
+  constructor(private _http: HttpClient, private _userlist: UserlistService)
   {
       this.list = [{
 
@@ -34,6 +39,8 @@ export class UserListCardComponent implements OnInit {
         }
 
       }];
+      this.getAllUsers();
+
   }
 
   ngOnInit(): void
@@ -56,4 +63,14 @@ export class UserListCardComponent implements OnInit {
   {
     console.log(person.id + " removed");
   }
+
+  getAllUsers()
+  {
+    this._userlist.getAllUsers().subscribe(
+      res => {
+        this.importlist = res.results;
+      }
+    );
+  }
+
 }

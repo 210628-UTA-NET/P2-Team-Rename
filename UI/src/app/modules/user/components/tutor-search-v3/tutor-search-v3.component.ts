@@ -3,9 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from './../../../../services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { LocationService } from 'src/app/services/location.service';
 import { ShareData } from 'src/app/services/shareDataService';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-tutor-search-v3',
@@ -24,7 +22,6 @@ export class TutorSearchV3Component implements OnInit {
 
   constructor(
     private userService: UserService,
-    private locationService: LocationService,
     private route: Router,
     private activatedRoute: ActivatedRoute,
     private shareData: ShareData
@@ -38,10 +35,10 @@ export class TutorSearchV3Component implements OnInit {
   }
 
   onSubmit() {
-    this.route.navigate([], {
+    /*this.route.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: { topic: `${this.searchForm.get('topic')?.value}` },
-    });
+    });*/
 
     //only works for form controls one level deep may change so I get the query string from route later
     this.setQueryString();
@@ -64,41 +61,35 @@ export class TutorSearchV3Component implements OnInit {
   search(queryString: string) {
     if (this.queryString !== null) {
       this.userService
-        .SearchAPITutors(queryString)
+        .SearchTutors(queryString)
         .subscribe((searchedTutors) => {
-          let {Results} = searchedTutors;
-          this.searchedTutors = Results
+          let {results} = searchedTutors;
+          this.searchedTutors = results
         });
     } else {
       this.searchedTutors = [];
     }
 
-    this.searchedTutors
+    /*this.searchedTutors
       .map((tutor) => tutor.Location)
       .forEach((location, index) => {
         this.locationService.GetCityState(location).subscribe((resp) => {
           let label = resp.data[0].label.split(',').slice(1).join();
           this.cityAndState[index] = label;
         });
-      });
+      });*/
   }
 
 
   sort(criteria: any) {
     this.sortOption = criteria;
-    this.route.navigate([], {
+    /*this.route.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: {
         orderBy: criteria
       },
-      queryParamsHandling: 'merge',
-      // preserve the existing query params in the route
-      //skipLocationChange: true
-      // do not trigger navigation
-    });
-    console.log(criteria);
+      queryParamsHandling: 'merge'
+    });*/
     this.search(`${this.queryString}&OrderBy=${criteria}`)
-    console.log(this.searchedTutors);
-    //console.log(`${this.queryString}&orderBy=${criteria}`);
   }
 }

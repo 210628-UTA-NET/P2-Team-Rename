@@ -45,7 +45,7 @@
                     <h6 class="mb-0">Full Name</h6>
                   </div>
                   <div class="col-sm-9 text-secondary">
-                    {{tutor.FirstName}} {{tutor.LastName}}
+                    {{tutor.firstName}} {{tutor.lastName}}
                   </div>
                 </div>
                 <hr>
@@ -54,7 +54,7 @@
                     <h6 class="mb-0">Email</h6>
                   </div>
                   <div class="col-sm-9 text-secondary">
-                    {{tutor.Email}}
+                    {{tutor.email}}
                   </div>
                 </div>
                 <hr>
@@ -103,8 +103,8 @@
                 <div class="card h-100">
                   <div class="card-body">
                     <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">topics</i>Tutored</h6>
-                    <div  *ngFor="let topic of tutor.Topics; let i = index">
-                      <small>{{tutor.Topics[i]}}</small>
+                    <div  *ngFor="let topic of tutor.topics; let i = index">
+                      <small>{{tutor.topics[i]}}</small>
                     </div>
                   </div>
                 </div>

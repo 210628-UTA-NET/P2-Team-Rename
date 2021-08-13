@@ -1,4 +1,4 @@
 export interface degreeOrCert {
-  Title: string,
-  Details: string
+  title: string,
+  details: string
 }
