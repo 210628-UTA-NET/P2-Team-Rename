@@ -1,3 +1,4 @@
+import { degreeOrCert } from './../../../models/tutor/degreeOrCert';
 import { TutorApplicationDto } from './../../../models/api/application-dto.model';
 import { AdmitserviceService } from './../../../services/admitservice.service';
 import { HttpClient } from '@angular/common/http';
@@ -34,21 +35,27 @@ export class AdminAdmitCardComponent implements OnInit {
     } else {
       console.log(selected.id + " details opened");
       this.selectedApplication = selected;
-      this.selectedApplication?.topics.forEach(function (value)
+      this.selectedApplication?.degreesOrCerts.forEach(function (value)
       {
         console.log(value);
       });
     }
   }
 
-  toAccept(selected: any)
+  toAccept(selected: TutorApplicationDto)
   {
     console.log(selected.id + " Accepted");
+    this._admitlist.postApplication(selected);
+    this.selectedApplication = undefined;
+    this.getAllApplications();
   }
 
-  toRemove(selected: any)
+  toRemove(selected: TutorApplicationDto)
   {
     console.log(selected.id + " Rejected");
+    //this._admitlist.deleteApplication(selected);
+    this.selectedApplication = undefined;
+    this.getAllApplications();
   }
 
   getAllApplications()
