@@ -5,7 +5,7 @@ export interface TutorApplicationDto {
   id: string,
   user: UserDto,
   about: string,
-  degreeOrCerts: DegreeOrCertDto[],
+  degreesOrCerts: DegreeOrCertDto[],
   topics: string[],
   timestamp: Date,
 }
