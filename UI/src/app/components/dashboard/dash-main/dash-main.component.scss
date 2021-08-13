@@ -2,6 +2,7 @@
   display: flex;
   min-height: calc(100vh - 80px);
   padding: 0px;
+  z-index: 2;
 }
 
 #app-friend-list {
@@ -19,3 +20,15 @@
   height: 350px;
   padding: 0px;
 }
+
+#tutor-apply{
+  display: flex;
+  height: 300px;
+  position: absolute;
+  padding: 15px;
+  top: 500px;
+  right:200px;
+  z-index: 0;
+
+}
+

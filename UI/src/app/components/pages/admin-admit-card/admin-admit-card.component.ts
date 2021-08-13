@@ -1,5 +1,5 @@
 import { degreeOrCert } from './../../../models/tutor/degreeOrCert';
-import { TutorApplicationDto } from './../../../models/api/application-dto.model';
+import { TutorApplicationDto } from 'src/app/models/api/application-dto.model';
 import { AdmitserviceService } from './../../../services/admitservice.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';

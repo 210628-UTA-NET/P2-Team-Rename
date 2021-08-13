@@ -58,7 +58,7 @@ export class TutorApplyComponent implements OnInit {
   toSubmit()
   {
     this.about = this.appForm.get('about')?.value;
-    console.log("Form Submitted " + this.about + " " + this.degree + " " + this.topics);
+    console.log("Form Submitted " + this.user.firstName + this.about + " " + this.degree + " " + this.topics);
     var application: TutorApplicationDto =
     {
       user: this.user,
