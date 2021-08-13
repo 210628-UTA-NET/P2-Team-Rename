@@ -25,7 +25,7 @@ export class UserService {
 
     if (queryArr[1] === 'true')
     {
-      available = appointments.filter(appt => (appt.UserId === null && appt.TutorId === TutorId));
+      available = appointments.filter(appt => (appt.userId === null && appt.tutorId === TutorId));
     }
 
     return of(available);
@@ -36,16 +36,16 @@ export class UserService {
   }
 
   BookAppointment(appointmentId: string): Observable<Appointment> {
-    let bookedAppointment = appointments.find(appointment => appointment.Id === appointmentId);
-    if (bookedAppointment && bookedAppointment.UserId === null) {
-        bookedAppointment.UserId = '10';
+    let bookedAppointment = appointments.find(appointment => appointment.id === appointmentId);
+    if (bookedAppointment && bookedAppointment.userId === null) {
+        bookedAppointment.userId = '10';
         return of(bookedAppointment);
     }
     return of({
-      Id: '',
-      Date: new Date(0, 0, 0, 0, 0),
-      TutorId: '',
-      UserId: ''
+      id: '',
+      date: new Date(0, 0, 0, 0, 0),
+      tutorId: '',
+      userId: ''
     });
   }
 

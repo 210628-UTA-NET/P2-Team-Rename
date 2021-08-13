@@ -74,7 +74,7 @@
                   <div class="card-body">
                     <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">available</i>Appointments</h6>
                     <div *ngFor="let appointment of availableAppts">
-                      <input type="button" (click)="book(appointment.Id)" [value]="appointment.Date | date:'short'" />
+                      <input type="button" (click)="book(appointment.id)" [value]="appointment.date | date:'short'" />
                     </div>
                     <!--<small>Web Design</small>
                     <div class="progress mb-3" style="height: 5px">

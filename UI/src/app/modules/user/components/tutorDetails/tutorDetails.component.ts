@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 
 export class TutorDetailsComponent implements OnInit {
-  tutor: Tutor | undefined;
+  @Input() tutor?: Tutor;
   tutorId: string | undefined;
   availableAppts: Appointment[] | undefined;
   cityAndState: string | null = '';
@@ -24,10 +24,12 @@ export class TutorDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getTutor();
-    this.cityAndState = this.activatedRoute.snapshot.paramMap.get('cityAndState');
+    /*this.getTutor();
+    this.cityAndState = this.activatedRoute.snapshot.paramMap.get('cityAndState');*/
+    this.getAppointments(this.tutor?.id);
+    console.log(this.availableAppts);
   }
-  getTutor(): void {
+  /*getTutor(): void {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id !== null)
     {
@@ -37,24 +39,28 @@ export class TutorDetailsComponent implements OnInit {
         this.getAppointments(tutor.id);
       });
     }
-  }
-  getAppointments(tutorId: string): void {
+  }*/
+  getAppointments(tutorId: string | undefined): void {
     //const id = this.route.snapshot.paramMap.get('id');
+    console.log('tutor ID ' +tutorId);
     let query = `available=true&tutorId=${tutorId}`;
     this.userService.GetTutorAppointments(query)
-    .subscribe(appts => this.availableAppts = appts);
+    .subscribe(appts => {
+      console.log("retrieved appts");
+      console.log(appts);
+      this.availableAppts = appts});
   }
   book(appointmentID: string): void {
     this.userService.BookAppointment(appointmentID)
     .subscribe(bookedAppointment => {
-      if (bookedAppointment.Id) {
-        this.availableAppts?.splice(this.availableAppts.findIndex(appointment => appointment.Id === bookedAppointment.Id), 1);
+      if (bookedAppointment.id) {
+        this.availableAppts?.splice(this.availableAppts.findIndex(appointment => appointment.id === bookedAppointment.id), 1);
       }
     })
   }
 
   back(): void {
-    this.route.navigate(['searchv3']);
+    this.tutor = undefined;
   }
 
 }

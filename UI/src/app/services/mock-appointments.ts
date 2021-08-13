@@ -2,93 +2,93 @@ import { Appointment } from "../models/tutor/appointment";
 
 export const appointments: Appointment[] = [
   {
-    Id: '1',
-    Date: new Date(2021, 7, 12, 13, 30), //8/12/2021 2:30pm
-    TutorId: '10',
-    UserId: null
+    id: '1',
+    date: new Date(2021, 7, 12, 13, 30), //8/12/2021 2:30pm
+    tutorId: '10',
+    userId: null
   },
   {
-    Id: '2',
-    Date: new Date(2021, 7, 12, 14, 30),
-    TutorId: '10',
-    UserId: null
+    id: '2',
+    date: new Date(2021, 7, 12, 14, 30),
+    tutorId: '10',
+    userId: null
   },
   {
-    Id: '3',
-    Date: new Date(2021, 7, 12, 15, 30),
-    TutorId: '10',
-    UserId: null
+    id: '3',
+    date: new Date(2021, 7, 12, 15, 30),
+    tutorId: '10',
+    userId: null
   },
   {
-    Id: '4',
-    Date: new Date(2021, 7, 12, 6, 30), //8/12/2021 7:30am
-    TutorId: '11',
-    UserId: null
+    id: '4',
+    date: new Date(2021, 7, 12, 6, 30), //8/12/2021 7:30am
+    tutorId: '11',
+    userId: null
   },
   {
-    Id: '5',
-    Date: new Date(2021, 7, 12, 7, 30),
-    TutorId: '11',
-    UserId: null
+    id: '5',
+    date: new Date(2021, 7, 12, 7, 30),
+    tutorId: '11',
+    userId: null
   },
   {
-    Id: '6',
-    Date: new Date(2021, 7, 12, 8, 30),
-    TutorId: '11',
-    UserId: null
+    id: '6',
+    date: new Date(2021, 7, 12, 8, 30),
+    tutorId: '11',
+    userId: null
   },
   {
-    Id: '7',
-    Date: new Date(2021, 7, 12, 17, 30), //6:30pm
-    TutorId: '12',
-    UserId: null
+    id: '7',
+    date: new Date(2021, 7, 12, 17, 30), //6:30pm
+    tutorId: '12',
+    userId: null
   },
   {
-    Id: '8',
-    Date: new Date(2021, 7, 12, 18, 30),
-    TutorId: '12',
-    UserId: null
+    id: '8',
+    date: new Date(2021, 7, 12, 18, 30),
+    tutorId: '12',
+    userId: null
   },
   {
-    Id: '9',
-    Date: new Date(2021, 7, 12, 18, 30),
-    TutorId: '12',
-    UserId: null
+    id: '9',
+    date: new Date(2021, 7, 12, 18, 30),
+    tutorId: '12',
+    userId: null
   },
   {
-    Id: '10',
-    Date: new Date(2021, 7, 12, 1, 30), //2:30am
-    TutorId: '13',
-    UserId: null
+    id: '10',
+    date: new Date(2021, 7, 12, 1, 30), //2:30am
+    tutorId: '13',
+    userId: null
   },
   {
-    Id: '11',
-    Date: new Date(2021, 7, 12, 2, 30),
-    TutorId: '13',
-    UserId: null
+    id: '11',
+    date: new Date(2021, 7, 12, 2, 30),
+    tutorId: '13',
+    userId: null
   },
   {
-    Id: '12',
-    Date: new Date(2021, 7, 12, 3, 30),
-    TutorId: '13',
-    UserId: null
+    id: '12',
+    date: new Date(2021, 7, 12, 3, 30),
+    tutorId: '13',
+    userId: null
   },
   {
-    Id: '13',
-    Date: new Date(2021, 7, 12, 20, 30), //9:30pm
-    TutorId: '14',
-    UserId: null
+    id: '13',
+    date: new Date(2021, 7, 12, 20, 30), //9:30pm
+    tutorId: '14',
+    userId: null
   },
   {
-    Id: '14',
-    Date: new Date(2021, 7, 12, 21, 30),
-    TutorId: '14',
-    UserId: null
+    id: '14',
+    date: new Date(2021, 7, 12, 21, 30),
+    tutorId: '14',
+    userId: null
   },
   {
-    Id: '15',
-    Date: new Date(2021, 7, 12, 22, 30),
-    TutorId: '14',
-    UserId: null
+    id: '15',
+    date: new Date(2021, 7, 12, 22, 30),
+    tutorId: '14',
+    userId: null
   }
 ];

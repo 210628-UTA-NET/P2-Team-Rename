@@ -19,6 +19,10 @@ export class TutorSearchV3Component implements OnInit {
     {name: 'Rating_desc', abbrev: 'Rating'}
   ];
   sortOption: string = this.orderBy[1].name;
+  searchForm = new FormGroup({
+    topic: new FormControl(''),
+  });
+  selectedTutor: Tutor | undefined;
 
   constructor(
     private userService: UserService,
@@ -26,9 +30,7 @@ export class TutorSearchV3Component implements OnInit {
     private activatedRoute: ActivatedRoute,
     private shareData: ShareData
   ) {}
-  searchForm = new FormGroup({
-    topic: new FormControl(''),
-  });
+
 
   ngOnInit(): void {
 
@@ -91,5 +93,9 @@ export class TutorSearchV3Component implements OnInit {
       queryParamsHandling: 'merge'
     });*/
     this.search(`${this.queryString}&OrderBy=${criteria}`)
+  }
+  select(tutor: Tutor) {
+    console.log('clicked');
+    this.selectedTutor = tutor;
   }
 }
