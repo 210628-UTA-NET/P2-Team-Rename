@@ -39,7 +39,7 @@ export class ErrorHandlerService implements HttpInterceptor {
   }
 
   private handleForbidden = (error: HttpErrorResponse) => {
-    this._router.navigate(["/login"], { queryParams: { returnUrl: this._router.url }});
+    this._router.navigate(["/login"]);
     return "Forbidden";
   }
 
@@ -49,7 +49,7 @@ export class ErrorHandlerService implements HttpInterceptor {
       return 'Authentication failed. Wrong Username or Password';
     }
     else {
-      this._router.navigate(['/login'], { queryParams: { returnUrl: this._router.url }});
+      this._router.navigate(['/login']);
       return error.message;
     }
   }

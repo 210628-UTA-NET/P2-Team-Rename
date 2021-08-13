@@ -25,11 +25,11 @@ import { ErrorHandlerService } from 'src/app/services/error-handler.service';
     ])
   ],
   providers: [
-    {
+    /*{
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorHandlerService,
       multi: true
-    }
+    }*/
   ]
 })
 export class AuthModule { }
