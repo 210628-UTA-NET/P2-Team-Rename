@@ -40,3 +40,11 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Publish
+      run: dotnet publish --configuration Release -o ./publish
+    - name: deploy
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: tutorconnect
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }} 
+        package: ./publish
