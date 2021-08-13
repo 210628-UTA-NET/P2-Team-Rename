@@ -17,6 +17,7 @@ using Entities.Query;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite;
+using NetTopologySuite.Geometries;
 
 namespace API.Controllers {
 
@@ -50,10 +51,15 @@ namespace API.Controllers {
 
                 return BadRequest(new RegistrationResponseDto { Errors = errors });
             }
+            SigningCredentials signingCredentials = _jwtHandler.GetSigningCredentials();
+            List<Claim> claims = await _jwtHandler.GetClaims(user);
+            JwtSecurityToken tokenOptions = _jwtHandler.GenerateTokenOptions(signingCredentials, claims);
+            string token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             var userDto = _mapper.Map<UserDto>(user);
 
             return Ok(new RegistrationResponseDto {
-                IsSuccessfulRegistration = true,
+                Success = true,
+                Token = token,
                 User = userDto
             });
         }
@@ -62,16 +68,16 @@ namespace API.Controllers {
         public async Task<IActionResult> Login([FromBody] UserAuthenticationDto userAuthentication) {
             User user = await _userManager.FindByEmailAsync(userAuthentication.Email);
             if (user == null || !await _userManager.CheckPasswordAsync(user, userAuthentication.Password))
-                return Unauthorized(new AuthenticationResponseDto { ErrorMessage = "Invalid Authentication" });
+                return Unauthorized(new AuthenticationResponseDto { ErrorMessage = "Invalid login credentials. Please verify that your username and password are correct." });
 
             SigningCredentials signingCredentials = _jwtHandler.GetSigningCredentials();
-            List<Claim> claims = _jwtHandler.GetClaims(user);
+            List<Claim> claims = await _jwtHandler.GetClaims(user);
             JwtSecurityToken tokenOptions = _jwtHandler.GenerateTokenOptions(signingCredentials, claims);
             string token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             var userDto = _mapper.Map<UserDto>(user);
 
-            return Ok(new AuthenticationResponseDto { 
-                IsSuccessfulAuthentication = true, 
+            return Ok(new AuthenticationResponseDto {
+                Success = true,
                 Token = token,
                 User = userDto
             });
@@ -81,18 +87,49 @@ namespace API.Controllers {
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetUser() {
-            string id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            User user = await _userManager.FindByIdAsync(id);
-
-            if (user == null) return StatusCode(500);
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            User user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return BadRequest(new { Error = "A user with your Id could not be found." });
 
             UserDto userDto = _mapper.Map<UserDto>(user);
 
             return Ok(userDto);
         }
 
+
+        [Authorize]
+        [HttpPatch("location")]
+        public async Task<IActionResult> SetLocation([FromQuery] LocationDto location) {
+            if (!ModelState.IsValid) return BadRequest(new { Error = "Invalid location format." });
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            User user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return BadRequest(new { Error = "A user with your Id could not be found." });
+
+            var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
+            user.Location = geometryFactory.CreatePoint(new Coordinate(location.Longitude, location.Latitude));
+
+            await _userManager.UpdateAsync(user);
+
+            return Ok(new { Results = string.Format("Location successfully changed.") });
+        }
+
+        [Authorize]
+        [HttpGet("contacts")]
+        public async Task<IActionResult> GetMyContacts() {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            User user = await _userManager.Users.Include(u => u.MyContacts).Where(u => u.Id == userId).SingleOrDefaultAsync();
+            if (user == null) return BadRequest(new { Error = "A user with your Id could not be found." });
+
+            IList<UserDto> contacts = new List<UserDto>();
+            if (user.MyContacts != null) {
+                contacts = _mapper.Map<IList<User>, IList<UserDto>>(user.MyContacts.ToList());
+            }
+
+            return Ok(new { Results = contacts});
+        }
+
         //[Authorize]
-        [HttpGet("Search")]
+        [HttpGet("search")]
         public async Task<IActionResult> QueryUsers([FromQuery] UserParameters userParameters) {
             var roles = _roleManager.Roles.Select(r => r.Name).ToList();
 
@@ -100,7 +137,7 @@ namespace API.Controllers {
 
             if (userParameters.Role != null) {
                 if (!roles.Contains(userParameters.Role)) {
-                    return BadRequest();
+                    return BadRequest(new { Error = "This role does not exist." });
                 } else {
                     query = (await _userManager.GetUsersInRoleAsync(userParameters.Role)).AsQueryable();
                 }
@@ -112,26 +149,25 @@ namespace API.Controllers {
 
             if (userParameters.Distance != null && userParameters.Longitude != null && userParameters.Latitude != null) {
                 var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
-                var location = geometryFactory.CreatePoint(new NetTopologySuite.Geometries.Coordinate((double)userParameters.Longitude, (double)userParameters.Latitude));
+                var location = geometryFactory.CreatePoint(new Coordinate((double)userParameters.Longitude, (double)userParameters.Latitude));
                 query = query.Where(u => u.Location.IsWithinDistance(location, (double) userParameters.Distance));
             }
 
             var results = await query.ToListAsync();
             IList<UserDto> userResults = _mapper.Map<List<UserDto>>(results);
 
-
             return Ok(new { Results = userResults });
         }
 
         //[Authorize(Roles = "Administrator")]
-        [HttpDelete]
+        [HttpDelete("{userId}")]
         public async Task<IActionResult> RemoveUser([FromRoute] string userId) {
             User target = await _userManager.FindByIdAsync(userId);
             if (target == null) return BadRequest();
 
             await _userManager.DeleteAsync(target);
 
-            return Ok();
+            return Ok(new { Results = string.Format("User with id: {0} successfully deleted.", userId) });
         }
     }
 }

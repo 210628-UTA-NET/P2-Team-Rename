@@ -67,37 +67,6 @@ namespace DL.Migrations
                     b.ToTable("Availabilities");
                 });
 
-            modelBuilder.Entity("Entities.Database.ChatMessage", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Body")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReceiverId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SenderId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SenderName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ChatMessage");
-                });
-
             modelBuilder.Entity("Entities.Database.DegreeCertification", b =>
                 {
                     b.Property<string>("Id")
@@ -132,7 +101,11 @@ namespace DL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("MessageBody")
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReceiverId")
@@ -140,6 +113,9 @@ namespace DL.Migrations
 
                     b.Property<string>("SenderId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SenderName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("TimeSent")
                         .HasColumnType("datetime2");
@@ -151,6 +127,8 @@ namespace DL.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Message");
                 });
 
             modelBuilder.Entity("Entities.Database.Payment", b =>
@@ -324,9 +302,6 @@ namespace DL.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("MessageId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -350,13 +325,14 @@ namespace DL.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MessageId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -365,6 +341,8 @@ namespace DL.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("AspNetUsers");
 
@@ -400,15 +378,15 @@ namespace DL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "648decb2-b5dc-45dd-807e-e028722020ae",
-                            ConcurrencyStamp = "eee1c715-5508-4dae-8ea3-347dd68cbe49",
+                            Id = "5b13a9cf-1c64-4020-9fee-0870ba0e7153",
+                            ConcurrencyStamp = "31733bfb-c4a9-42fc-a4b8-63184e5828aa",
                             Name = "Tutor",
                             NormalizedName = "TUTOR"
                         },
                         new
                         {
-                            Id = "0e0db2d5-d051-440c-a880-62240bdd9bf1",
-                            ConcurrencyStamp = "da730b88-9cb7-4d95-a125-bbe8e1936cb0",
+                            Id = "ba2b0cfd-da04-454d-aae9-e9ef7dc367dd",
+                            ConcurrencyStamp = "807e1352-d551-4738-9793-caa0961f5b80",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -518,6 +496,18 @@ namespace DL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Entities.Database.FollowRequest", b =>
+                {
+                    b.HasBaseType("Entities.Database.Message");
+
+                    b.Property<string>("TutorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasIndex("TutorId");
+
+                    b.HasDiscriminator().HasValue("FollowRequest");
+                });
+
             modelBuilder.Entity("Entities.Database.Tutor", b =>
                 {
                     b.HasBaseType("Entities.Database.User");
@@ -530,11 +520,6 @@ namespace DL.Migrations
 
                     b.Property<double?>("Rating")
                         .HasColumnType("float");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasIndex("UserId");
 
                     b.HasDiscriminator().HasValue("Tutor");
                 });
@@ -561,13 +546,6 @@ namespace DL.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Entities.Database.ChatMessage", b =>
-                {
-                    b.HasOne("Entities.Database.User", null)
-                        .WithMany("ChatMessages")
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Entities.Database.DegreeCertification", b =>
@@ -669,9 +647,9 @@ namespace DL.Migrations
 
             modelBuilder.Entity("Entities.Database.User", b =>
                 {
-                    b.HasOne("Entities.Database.Message", null)
-                        .WithMany("Users")
-                        .HasForeignKey("MessageId");
+                    b.HasOne("Entities.Database.User", null)
+                        .WithMany("MyContacts")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -725,21 +703,16 @@ namespace DL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.Database.Tutor", b =>
+            modelBuilder.Entity("Entities.Database.FollowRequest", b =>
                 {
-                    b.HasOne("Entities.Database.User", null)
-                        .WithMany("Tutors")
-                        .HasForeignKey("UserId");
+                    b.HasOne("Entities.Database.Tutor", null)
+                        .WithMany("FollowRequests")
+                        .HasForeignKey("TutorId");
                 });
 
             modelBuilder.Entity("Entities.Database.Appointment", b =>
                 {
                     b.Navigation("Transaction");
-                });
-
-            modelBuilder.Entity("Entities.Database.Message", b =>
-                {
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Entities.Database.TutorApplication", b =>
@@ -751,11 +724,11 @@ namespace DL.Migrations
 
             modelBuilder.Entity("Entities.Database.User", b =>
                 {
-                    b.Navigation("ChatMessages");
-
                     b.Navigation("MessagesReceived");
 
                     b.Navigation("MessagesSent");
+
+                    b.Navigation("MyContacts");
 
                     b.Navigation("Reviews");
 
@@ -764,8 +737,6 @@ namespace DL.Migrations
                     b.Navigation("TransactionsReceived");
 
                     b.Navigation("TransactionsSent");
-
-                    b.Navigation("Tutors");
                 });
 
             modelBuilder.Entity("Entities.Database.Tutor", b =>
@@ -773,6 +744,8 @@ namespace DL.Migrations
                     b.Navigation("Appointments");
 
                     b.Navigation("DegreesOrCerts");
+
+                    b.Navigation("FollowRequests");
 
                     b.Navigation("TutorReviews");
 

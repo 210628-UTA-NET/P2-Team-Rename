@@ -58,7 +58,7 @@ namespace API {
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
                     Scheme = "bearer",
-                    Description = "Please insert JWT token into field"
+                    Description = "JWTForTutorConnect"
                 });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement { {
@@ -94,6 +94,7 @@ namespace API {
             services.AddScoped<TutorApplicationManager>();
             services.AddScoped<TutorManager>();
             services.AddScoped<AppointmentManager>();
+            services.AddScoped<MessageManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

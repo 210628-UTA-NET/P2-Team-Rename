@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { faBook, faBookMedical } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
+import { faBook, faBookMedical, faUser } from '@fortawesome/free-solid-svg-icons';
+import { UserDto } from 'src/app/models/api/user-dto.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,11 +10,44 @@ import { faBook, faBookMedical } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  faBook = faBook;
+  public faBook = faBook;
+  public userIcon = faUser;
 
-  constructor() { }
+  public role = "User";
+  public isUserAuthenticated: boolean = false;
+  public user: UserDto = {
+    id: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    userName: '',
+    topics:  [''],
+    location: null,
+  };
+
+  constructor(public authService: AuthenticationService, private router: Router) {
+    this.authService.authChanged.subscribe(res =>{
+      this.isUserAuthenticated = res;
+    });
+
+    this.authService.userInfo.subscribe(res => {
+      this.user = res;
+    });
+
+    this.authService.userRole.subscribe(res => {
+      this.role = res;
+    });
+  }
 
   ngOnInit(): void {
+    if (this.authService.isUserAuthenticated()) {
+      this.authService.changeAuthState(true);
+    }
+  }
+
+  public logout() {
+    this.authService.logout();
+    this.router.navigate(["/login"]);
   }
 
 }

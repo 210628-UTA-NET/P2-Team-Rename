@@ -1,4 +1,8 @@
+import { UserDto } from "../api/user-dto.model";
+
 export interface RegistrationResponse {
-  isSuccessfulRegistration: boolean;
+  success: boolean;
   errors: string[];
+  token: string;
+  user: UserDto;
 }

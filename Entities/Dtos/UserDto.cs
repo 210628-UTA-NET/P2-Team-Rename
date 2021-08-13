@@ -9,7 +9,6 @@ namespace Entities.Dtos {
         public string LastName { get; set; }
         public string Email { get; set; }
         public string UserName { get; set; }
-        public ICollection<Topic> Topics { get; set; }
-        public Point Location { get; set; }
+        public LocationDto Location { get; set; }
     }
 }

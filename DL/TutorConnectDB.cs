@@ -19,10 +19,11 @@ namespace DL {
             return model;
         }
 
-        public async void Delete(T model) {
+        public async Task<bool> Delete(T model) {
             _context.Set<T>().Attach(model);
             _context.Set<T>().Remove(model);
             await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<T> FindSingle(QueryOptions<T> options) {
@@ -67,7 +68,9 @@ namespace DL {
             if (options.OrderBy != null) {
                 (string propertyName, bool desc) = ParseSortOrder(options.OrderBy);
                 if (propertyName != null) {
-                    queryableQuery = queryableQuery.OrderBy(propertyName, desc);
+                    queryableQuery = (desc)
+                        ? queryableQuery.OrderBy(propertyName + " desc")
+                        : queryableQuery.OrderBy(propertyName);
                 }
             }
 
@@ -87,8 +90,9 @@ namespace DL {
             return (propName, desc);
         }
 
-        public async void Save() {
+        public async Task<bool> Save() {
             await _context.SaveChangesAsync();
+            return true;
         }
 
         public async void Update(T model) {

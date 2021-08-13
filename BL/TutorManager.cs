@@ -16,8 +16,10 @@ namespace BL {
         public TutorManager(IDatabase<Tutor> tutorDB) {
             _tutorDB = tutorDB;
             _includes = new List<string> {
-                "User",
-                "DegreesOrCerts"
+                "TutorTopics",
+                "TutorReviews",
+                "DegreesOrCerts",
+                "MyContacts"
             };
         }
 
@@ -38,6 +40,10 @@ namespace BL {
                 conditions.Add(t => t.Rating > tutorParams.Rating);
             }
 
+            if (tutorParams.Topic != null) {
+                conditions.Add(t => t.Topics.Select(topic => topic.TopicName).Contains(tutorParams.Topic.ToLower()));
+            }
+
             if (tutorParams.Distance != null && tutorParams.Latitude != null && tutorParams.Longitude != null) {
                 var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
                 var location = geometryFactory.CreatePoint(new NetTopologySuite.Geometries.Coordinate((double)tutorParams.Longitude, (double)tutorParams.Latitude));
@@ -46,12 +52,24 @@ namespace BL {
 
              return await _tutorDB.Query(new() {
                 Conditions = conditions,
+                Includes = _includes,
                 PageNumber = tutorParams.PageNumber,
                 PageSize = tutorParams.PageSize,
                 OrderBy = tutorParams.OrderBy
             });
+        }
 
+        public async Task<Tutor> FindByIdAsync(string tutorId) {
+            return await _tutorDB.FindSingle(new() {
+                Conditions = new List<Func<Tutor, bool>> {
+                    t => t.Id == tutorId
+                },
+                Includes = _includes
+            });
+        }
 
+        public async Task<bool> SaveChanges() {
+            return await _tutorDB.Save();
         }
     }
 }

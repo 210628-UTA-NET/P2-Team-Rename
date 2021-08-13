@@ -1,0 +1,30 @@
+<p>user-list-card works!</p>
+
+<div class="card" style="width: 25rem;  border: 1px solid black;">
+  <div class="card-body">
+    <h5 class="card-title">User List</h5>
+    <h6 class="card-subtitle mb-2 text-muted">Total Users: </h6>
+    <p class="card-text">View current users</p>
+    <a (click)="toggled=!toggled" ><button class="btn btn-success" > View Users </button></a>
+    <div *ngIf="toggled" class="container" style="width: 18rem;  border: 1px solid black;">
+      <h2>Users</h2>
+      <ul class="list">
+          <li *ngFor="let person of importlist"
+              [class.selected]="person === selectedUser"
+              (click)="onSelect(person)">
+              <span class="badge">Name: </span> {{person.firstName + " " + person.lastName}}
+          </li>
+      </ul>
+
+      <div *ngIf="selectedUser">
+          <h2>{{selectedUser.firstName + " " + selectedUser.lastName}} Details</h2>
+          <div><span>Email: </span> {{selectedUser.email}} </div>
+          <div><span>Username: </span> {{selectedUser.userName}} </div>
+          <a (click)="toRemove(selectedUser)" ><button class="btn btn-danger" > Remove </button></a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
