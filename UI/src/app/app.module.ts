@@ -59,7 +59,7 @@ export function tokenGetter() {
       config: {
         tokenGetter: tokenGetter,
         authScheme: 'Bearer ',
-        allowedDomains: ["localhost:44385, tutorconnect.azurewebsites.net"],
+        allowedDomains: ["localhost:44385, tutorconnectapi.azurewebsites.net"],
         disallowedRoutes: []
       }
     })
