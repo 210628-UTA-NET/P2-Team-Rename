@@ -14,10 +14,11 @@ import { HttpClient } from '@angular/common/http';
 export class UserService {
   private tutorsPath = 'tutor';
   private appointmentsPath = 'appointment';
+  private bookingPath = `${this.appointmentsPath}/book`;
 
   constructor(private http: HttpClient) {}
 
-  GetTutorAppointments(query: string): Observable<Appointment[]> {
+  GetTutorAppointments(query: string): Observable<{results: Appointment[]}> {
     const re = /=|&/;
     let available: Appointment[] = [];
     let queryArr = query.split(re);
@@ -28,25 +29,29 @@ export class UserService {
       available = appointments.filter(appt => (appt.userId === null && appt.tutorId === TutorId));
     }
 
-    return of(available);
+    return of({results: available});
   }
 
-  GetAPITutorAppointments(query: string): Observable<{Results:Appointment[]}> {
-    return this.http.get<{Results: Appointment[]}>(`${environment.urlAddress}/${this.appointmentsPath}${query}`);
+  GetAPITutorAppointments(query: string): Observable<{results: Appointment[]}> {
+    return this.http.get<{results: Appointment[]}>(`${environment.urlAddress}/${this.appointmentsPath}${query}`);
   }
 
-  BookAppointment(appointmentId: string): Observable<Appointment> {
+  BookAppointment(appointmentId: string): Observable<{results: Appointment}> {
     let bookedAppointment = appointments.find(appointment => appointment.id === appointmentId);
     if (bookedAppointment && bookedAppointment.userId === null) {
         bookedAppointment.userId = '10';
-        return of(bookedAppointment);
+        return of({results: bookedAppointment});
     }
-    return of({
+    return of({results: {
       id: '',
       date: new Date(0, 0, 0, 0, 0),
       tutorId: '',
       userId: ''
-    });
+    }});
+  }
+
+  BookAPIAppointment(appointmentID: string): Observable<{results: Appointment}> {
+    return this.http.patch<{results: Appointment}>(`${this.bookingPath}/${appointmentID}`, {});
   }
 
   SearchTutors(queryString: string): Observable<{results: Tutor[]}> {

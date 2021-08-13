@@ -43,22 +43,21 @@ export class TutorDetailsComponent implements OnInit {
   }*/
   getAppointments(tutorId: string | undefined): void {
     //const id = this.route.snapshot.paramMap.get('id');
-    console.log('tutor ID ' + tutorId);
-    let query = `available=true&tutorId=${tutorId}`;
+    let query = `?available=true&tutorId=${tutorId}`;
     this.userService.GetTutorAppointments(query).subscribe((appts) => {
-      console.log('retrieved appts');
-      console.log(appts);
-      this.availableAppts = appts;
+      let { results } = appts;
+      this.availableAppts = results;
     });
   }
   book(appointmentID: string): void {
     this.userService
       .BookAppointment(appointmentID)
       .subscribe((bookedAppointment) => {
-        if (bookedAppointment.id) {
+        let {results} = bookedAppointment
+        if (results.id) {
           this.availableAppts?.splice(
             this.availableAppts.findIndex(
-              (appointment) => appointment.id === bookedAppointment.id
+              (appointment) => appointment.id === results.id
             ),
             1
           );

@@ -63,7 +63,7 @@ export class TutorSearchV3Component implements OnInit {
   search(queryString: string) {
     if (this.queryString !== null) {
       this.userService
-        .SearchAPITutors(queryString)
+        .SearchTutors(queryString)
         .subscribe((searchedTutors) => {
           let {results} = searchedTutors;
           this.searchedTutors = results
