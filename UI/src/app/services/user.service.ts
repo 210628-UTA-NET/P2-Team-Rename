@@ -1,18 +1,21 @@
+import { ResponseTutor } from './../models/tutor/responseTutor';
+import { environment } from 'src/environments/environment';
 import { Appointment } from './../models/tutor/appointment';
 import { TUTORS } from './mock-tutors';
-import { UserModule } from './../modules/user/user.module';
 import { Tutor } from './../models/tutor/tutor';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { appointments } from './mock-appointments';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private tutorsUrl = 'api/tutors';
+  private tutorsPath = 'tutor';
+  private appointmentsPath = 'appointment';
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   GetTutorAppointments(query: string): Observable<Appointment[]> {
     const re = /=|&/;
@@ -27,6 +30,11 @@ export class UserService {
 
     return of(available);
   }
+
+  GetAPITutorAppointments(query: string): Observable<{Results:Appointment[]}> {
+    return this.http.get<{Results: Appointment[]}>(`${environment.urlAddress}/${this.appointmentsPath}${query}`);
+  }
+
   BookAppointment(appointmentId: string): Observable<Appointment> {
     let bookedAppointment = appointments.find(appointment => appointment.Id === appointmentId);
     if (bookedAppointment && bookedAppointment.UserId === null) {
@@ -41,33 +49,50 @@ export class UserService {
     });
   }
 
-  SearchTutors(queryString: string): Observable<Tutor[]> {
+  SearchTutors(queryString: string): Observable<{results: Tutor[]}> {
     let foundTutors = TUTORS.filter((tutor) =>
-      tutor.Topics.some(
+      tutor.topics.some(
         (topic) =>
-          topic.toLowerCase().indexOf(queryString.split('=')[1].trim().toLowerCase()) != -1
+          topic.toLowerCase().indexOf(queryString.split(/=|&|\?/)[2].trim().toLowerCase()) != -1
       )
     );
-    return of(foundTutors);
+
+
+
+    let re = /=|&|\?/;
+    let queryArr = queryString.split(re);
+    if (queryArr.length > 3) {
+      if (queryArr[4] === 'Price') {
+        foundTutors = foundTutors.sort((tutor1, tutor2) => tutor1.hourlyRate - tutor2.hourlyRate);
+      }
+      if (queryArr[4] === 'Rating_desc') {
+        foundTutors = foundTutors.sort((tutor1, tutor2) => tutor2.rating - tutor1.rating);
+      }
+    }
+    return of({results: foundTutors});
+  }
+
+  SearchAPITutors(queryString: string): Observable<{results: Tutor[]}> {
+    return this.http.get<{results: Tutor[]}>(`${environment.urlAddress}/${this.tutorsPath}${queryString}`);
   }
   GetTutor(tutorID: string): Observable<Tutor> {
     let defaultTutor: Tutor = {
-      Id: '',
-        FirstName: '',
-        LastName: '',
-        Email: '',
-        UserName: '',
-        Topics: [],
-        Location: {
-          Longitude: 0,
-          Latitude: 0,
+      id: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        userName: '',
+        topics: [],
+        location: {
+          longitude: 0,
+          latitude: 0,
         },
-      About: '',
-      HourlyRate: 0,
-      DegreesOrCerts: [],
-      Rating: 0,
+      about: '',
+      hourlyRate: 0,
+      degreesOrCerts: [],
+      rating: 0,
     };
-    let foundTutor = TUTORS.find((tutor) => (tutor.Id === tutorID));
+    let foundTutor = TUTORS.find((tutor) => (tutor.id === tutorID));
     if (foundTutor === undefined) {
       return of(defaultTutor);
     }

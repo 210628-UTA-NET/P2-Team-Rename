@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  urlAddress: 'https://localhost:44385'
+  urlAddress: 'https://localhost:44385',
+  POSI_STACK_KEY: '6bdaf42d460498a853518e98acee44bd',
+  POSI_STACK_URL: 'http://api.positionstack.com/v1/reverse'
 };
 
 /*

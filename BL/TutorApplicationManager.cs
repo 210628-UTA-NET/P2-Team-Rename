@@ -67,7 +67,7 @@ namespace BL {
             if (approve) {
                 Tutor tutor = _mapper.Map<User, Tutor>(user);
                 tutor.DegreesOrCerts = tutorApplication.DegreesOrCerts;
-                tutor.Topics = tutorApplication.Topics;
+                tutor.TutorTopics = tutorApplication.Topics;
                 tutor.About = tutorApplication.About;
 
                 await _userManager.DeleteAsync(user);
@@ -81,7 +81,7 @@ namespace BL {
             // Send message to user telling them they have been approved or denied
 
             tutorApplication.Open = false;
-            _applicationDB.Save();
+            await _applicationDB.Save();
             return true;
         }
     }

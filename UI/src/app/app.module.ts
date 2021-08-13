@@ -1,6 +1,7 @@
+import { TutorSearchV3Component } from './modules/user/components/tutor-search-v3/tutor-search-v3.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -20,6 +21,7 @@ import { UserListComponent } from './components/pages/user-list/user-list.compon
 import { UserModule } from './modules/user/user.module';
 import { TutorApplyComponent } from './components/pages/tutor-apply/tutor-apply.component';
 import { DashMainComponent } from './components/dashboard/dash-main/dash-main.component';
+import { TutorDetailsComponent } from './modules/user/components/tutorDetails/tutorDetails.component';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -37,7 +39,9 @@ export function tokenGetter() {
     UserListComponent,
     TutorApplyComponent,
     LoadingWheelComponent,
-    DashMainComponent
+    DashMainComponent,
+    TutorDetailsComponent,
+    TutorSearchV3Component
 
   ],
   imports: [
@@ -50,6 +54,7 @@ export function tokenGetter() {
     HttpClientModule,
     AuthModule,
     UserModule,
+    FormsModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

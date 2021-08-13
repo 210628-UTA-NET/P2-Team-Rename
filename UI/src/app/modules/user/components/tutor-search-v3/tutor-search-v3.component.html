@@ -23,7 +23,7 @@
           </div>
       </div>
   </div>
-  <div *ngIf="searchedTutors.length" class="row">
+  <div *ngIf="searchedTutors && searchedTutors.length > 0" class="row">
           <div class="col-12">
               <div class="card card-margin">
                   <div class="card-body">
@@ -32,20 +32,21 @@
                               <div class="search-result">
                                   <div class="result-header">
                                       <div class="row">
-                                          <div class="col-lg-6">
+                                          <!--<div class="col-lg-6">
                                               <div class="records">Showing: <b>1-20</b> of <b>200</b> result</div>
-                                          </div>
+                                          </div>-->
                                           <div class="col-lg-6">
                                               <div class="result-actions">
                                                   <div class="result-sorting">
                                                       <span>Sort By:</span>
-                                                      <select class="form-control border-0" id="exampleOption">
-                                                          <option value="1">Rating</option>
-                                                          <option value="2">Price</option>
-                                                          <option value="3">Both</option>
-                                                      </select>
+                                                      <select  [(ngModel)]="sortOption" (ngModelChange)="sort($event)" class="form-control border-0" id="exampleOption">
+                                                        <option  *ngFor="let criteria of orderBy" [value]="criteria.name">{{criteria.abbrev}}</option>
+                                                        <!--<option value="2">Price</option>
+                                                        <option value="3">Both</option>-->
+                                                    </select>
+
                                                   </div>
-                                                  <div class="result-views">
+                                                  <!--<div class="result-views">
                                                       <button type="button" class="btn btn-soft-base btn-icon">
                                                           <svg
                                                               xmlns="http://www.w3.org/2000/svg"
@@ -86,7 +87,7 @@
                                                               <rect x="3" y="14" width="7" height="7"></rect>
                                                           </svg>
                                                       </button>
-                                                  </div>
+                                                  </div>-->
                                               </div>
                                           </div>
                                       </div>
@@ -95,7 +96,7 @@
                                       <div class="table-responsive">
                                           <table class="table widget-26">
                                               <tbody>
-                                                  <tr *ngFor="let tutor of searchedTutors">
+                                                  <tr *ngFor="let tutor of searchedTutors; let i = index">
                                                       <td>
                                                           <div class="widget-26-job-emp-img">
                                                               <img src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="Company" />
@@ -103,29 +104,30 @@
                                                       </td>
                                                       <td>
                                                           <div class="widget-26-job-title">
-                                                              <a [routerLink]="['/tutor', tutor.Id]"
-                                                              routerLinkActive="router-link-active" href="#">{{tutor.FirstName + ' ' + tutor.LastName}}</a>
+                                                              <a [routerLink]="['/tutor', tutor.id, cityAndState[i]]"
+                                                              routerLinkActive="router-link-active" href="#">{{tutor.firstName + ' ' + tutor.lastName}}</a>
                                                               <!--<p class="m-0"><a href="#" class="employer-name">{{tutor.User.UserName}}</a> <span class="text-muted time">1 days ago</span></p>-->
                                                           </div>
                                                       </td>
                                                       <td>
                                                           <div class="widget-26-job-info">
                                                               <!--<p class="type m-0">Full-Time</p>-->
-                                                              <p class="text-muted m-0">in <span class="location">{{tutor.Location.Longitude + ' ' + tutor.Location.Latitude}}</span></p>
+                                                              <p class="text-muted m-0">in <span class="location">{{cityAndState[i]}}</span></p>
+                                                              <!--<p class="text-muted m-0">in <span class="location">{{tutor.Location.Longitude + ' ' + tutor.Location.Latitude}}</span></p>-->
                                                           </div>
                                                       </td>
                                                       <td>
-                                                          <div class="widget-26-job-salary">{{tutor.HourlyRate | currency}}/hr</div>
+                                                          <div class="widget-26-job-salary">{{tutor.hourlyRate | currency}}/hr</div>
                                                       </td>
                                                       <td>
                                                           <div class="widget-26-job-category bg-soft-base">
                                                               <i class="indicator bg-base"></i>
-                                                              <span>{{tutor.Topics.join(', ')}}</span>
+                                                              <span>{{tutor.topics.join(', ')}}</span>
                                                           </div>
                                                       </td>
                                                       <td>
                                                           <div class="widget-26-job-starred">
-                                                              <span>{{tutor.Rating}}</span>
+                                                              <span>{{tutor.rating}}</span>
                                                           </div>
                                                       </td>
                                                   </tr>

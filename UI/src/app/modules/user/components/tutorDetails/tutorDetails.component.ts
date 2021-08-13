@@ -1,11 +1,9 @@
+import { ShareData } from './../../../../services/shareDataService';
 import { Appointment } from './../../../../models/tutor/appointment';
 import { Tutor } from './../../../../models/tutor/tutor';
 import { UserService } from './../../../../services/user.service';
-import { Component, HostListener, OnInit, Type } from '@angular/core';
+import { Component, HostListener, Input, OnInit, Type } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
-import { Location } from '@angular/common';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-tutorDetails',
@@ -17,17 +15,17 @@ export class TutorDetailsComponent implements OnInit {
   tutor: Tutor | undefined;
   tutorId: string | undefined;
   availableAppts: Appointment[] | undefined;
+  cityAndState: string | null = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private userService: UserService,
-    private location: Location,
-    private route: Router
+    private route: Router,
   ) { }
 
   ngOnInit() {
     this.getTutor();
-    //this.getAppointments();
+    this.cityAndState = this.activatedRoute.snapshot.paramMap.get('cityAndState');
   }
   getTutor(): void {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -36,7 +34,7 @@ export class TutorDetailsComponent implements OnInit {
       this.userService.GetTutor(id)
       .subscribe(tutor => {
         this.tutor = tutor
-        this.getAppointments(tutor.Id);
+        this.getAppointments(tutor.id);
       });
     }
   }

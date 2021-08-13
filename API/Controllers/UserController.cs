@@ -51,10 +51,15 @@ namespace API.Controllers {
 
                 return BadRequest(new RegistrationResponseDto { Errors = errors });
             }
+            SigningCredentials signingCredentials = _jwtHandler.GetSigningCredentials();
+            List<Claim> claims = await _jwtHandler.GetClaims(user);
+            JwtSecurityToken tokenOptions = _jwtHandler.GenerateTokenOptions(signingCredentials, claims);
+            string token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             var userDto = _mapper.Map<UserDto>(user);
 
             return Ok(new RegistrationResponseDto {
                 Success = true,
+                Token = token,
                 User = userDto
             });
         }

@@ -12,7 +12,7 @@ namespace Entities.Dtos {
         public double? Rating { get; set; }
         public double? Distance { get; set; }
         public ICollection<DegreeOrCertDto> DegreesOrCerts { get; set; }
-        public ICollection<Topic> TutorTopics { get; set; }
+        public ICollection<string> Topics { get; set; }
         public ICollection<Review> TutorReviews { get; set; }
     }
 }
