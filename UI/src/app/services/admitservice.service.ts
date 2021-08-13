@@ -21,4 +21,9 @@ export class AdmitserviceService {
   {
     this._http.post(`${environment.urlAddress}/application`, application);
   }
+
+  deleteApplication(application: TutorApplicationDto)
+  {
+    this._http.delete(`${environment.urlAddress}/application/`+ application);
+  }
 }

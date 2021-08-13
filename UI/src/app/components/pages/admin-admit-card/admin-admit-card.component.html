@@ -23,8 +23,8 @@
           <div><span>Username: </span></div> {{selectedApplication.user.userName}}
           <div><span>About: </span></div> {{selectedApplication.about}}
           <div><span>Degree: </span></div>
-          <div *ngFor="let degree of selectedApplication.degreeOrCerts" >
-            <div><span>{{degree.title}}</span></div>
+          <div *ngFor="let degree of selectedApplication.degreesOrCerts" >
+            <div><span>Title: {{degree.title}}</span></div>
             <div><span>{{degree.details}}</span></div>
           </div>
           <div><span>Topics: </span></div>
