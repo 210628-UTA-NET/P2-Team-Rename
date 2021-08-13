@@ -8,9 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-tutorDetails',
   templateUrl: './tutorDetails.component.html',
-  styleUrls: ['./tutorDetails.component.scss']
+  styleUrls: ['./tutorDetails.component.scss'],
 })
-
 export class TutorDetailsComponent implements OnInit {
   @Input() tutor?: Tutor;
   tutorId: string | undefined;
@@ -20,12 +19,14 @@ export class TutorDetailsComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private userService: UserService,
-    private route: Router,
-  ) { }
+    private route: Router
+  ) {}
 
   ngOnInit() {
     /*this.getTutor();
     this.cityAndState = this.activatedRoute.snapshot.paramMap.get('cityAndState');*/
+  }
+  ngOnChanges() {
     this.getAppointments(this.tutor?.id);
     console.log(this.availableAppts);
   }
@@ -42,25 +43,30 @@ export class TutorDetailsComponent implements OnInit {
   }*/
   getAppointments(tutorId: string | undefined): void {
     //const id = this.route.snapshot.paramMap.get('id');
-    console.log('tutor ID ' +tutorId);
+    console.log('tutor ID ' + tutorId);
     let query = `available=true&tutorId=${tutorId}`;
-    this.userService.GetTutorAppointments(query)
-    .subscribe(appts => {
-      console.log("retrieved appts");
+    this.userService.GetTutorAppointments(query).subscribe((appts) => {
+      console.log('retrieved appts');
       console.log(appts);
-      this.availableAppts = appts});
+      this.availableAppts = appts;
+    });
   }
   book(appointmentID: string): void {
-    this.userService.BookAppointment(appointmentID)
-    .subscribe(bookedAppointment => {
-      if (bookedAppointment.id) {
-        this.availableAppts?.splice(this.availableAppts.findIndex(appointment => appointment.id === bookedAppointment.id), 1);
-      }
-    })
+    this.userService
+      .BookAppointment(appointmentID)
+      .subscribe((bookedAppointment) => {
+        if (bookedAppointment.id) {
+          this.availableAppts?.splice(
+            this.availableAppts.findIndex(
+              (appointment) => appointment.id === bookedAppointment.id
+            ),
+            1
+          );
+        }
+      });
   }
 
   back(): void {
     this.tutor = undefined;
   }
-
 }
