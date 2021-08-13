@@ -35,10 +35,10 @@ export class TutorSearchV3Component implements OnInit {
   }
 
   onSubmit() {
-    this.route.navigate([], {
+    /*this.route.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: { topic: `${this.searchForm.get('topic')?.value}` },
-    });
+    });*/
 
     //only works for form controls one level deep may change so I get the query string from route later
     this.setQueryString();
@@ -83,13 +83,13 @@ export class TutorSearchV3Component implements OnInit {
 
   sort(criteria: any) {
     this.sortOption = criteria;
-    this.route.navigate([], {
+    /*this.route.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: {
         orderBy: criteria
       },
       queryParamsHandling: 'merge'
-    });
+    });*/
     this.search(`${this.queryString}&OrderBy=${criteria}`)
   }
 }
