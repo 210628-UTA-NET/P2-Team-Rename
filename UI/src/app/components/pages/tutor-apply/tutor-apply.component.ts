@@ -7,6 +7,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { DegreeOrCertDto } from 'src/app/models/api/degreeOrCert-dto.model';
 import { AdmitserviceService } from 'src/app/services/admitservice.service';
+import { UserDto } from 'src/app/models/api/user-dto.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-tutor-apply',
@@ -25,14 +27,26 @@ export class TutorApplyComponent implements OnInit {
     degree: DegreeOrCertDto[] = [];
     topics: string[] = [];
     index: number = this.topics.length;
+    public user: UserDto = {
+      id: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      userName: '',
+      topics:  [''],
+      location: null,
+    };
 
-  constructor(private formBuilder: FormBuilder, private _admitlist: AdmitserviceService)
+  constructor(private formBuilder: FormBuilder, private _admitlist: AdmitserviceService, public authService: AuthenticationService)
   {
     this.appForm = this.formBuilder.group({
       about: new FormControl(''),
       degreeTitle: new FormControl(''),
       degreeDetails: new FormControl(''),
       topics: new FormControl('')
+    });
+    this.authService.userInfo.subscribe(res => {
+      this.user = res;
     });
   }
 
@@ -45,14 +59,17 @@ export class TutorApplyComponent implements OnInit {
   {
     this.about = this.appForm.get('about')?.value;
     console.log("Form Submitted " + this.about + " " + this.degree + " " + this.topics);
-    /*var application: TutorApplicationDto =
+    var application: TutorApplicationDto =
     {
+      user: this.user,
       about: this.about,
       degreesOrCerts: this.degree,
-      topics: this.topics
+      topics: this.topics,
+      id: '',
+      timestamp: new Date
 
     };
-    this._admitlist.postApplication(application);*/
+    this._admitlist.postApplication(application);
   }
 
   addTopic()
