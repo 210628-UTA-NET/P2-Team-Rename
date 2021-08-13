@@ -98,4 +98,8 @@ export class TutorSearchV3Component implements OnInit {
     console.log('clicked');
     this.selectedTutor = tutor;
   }
+  back(): void {
+    this.selectedTutor = undefined;
+    this.searchedTutors = [];
+  }
 }
