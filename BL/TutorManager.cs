@@ -18,7 +18,8 @@ namespace BL {
             _includes = new List<string> {
                 "TutorTopics",
                 "TutorReviews",
-                "DegreesOrCerts"
+                "DegreesOrCerts",
+                "MyContacts"
             };
         }
 

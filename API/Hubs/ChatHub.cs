@@ -6,6 +6,7 @@ using BL;
 using Entities.Database;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 
 namespace API.Hubs {
@@ -30,7 +31,7 @@ namespace API.Hubs {
             await Groups.AddToGroupAsync(Context.ConnectionId, chatId);
             //Load all previous messages
             IList<Message> previousMessages = await _messageManager.GetPrivateMessages(userId, targetUserId);
-            foreach (Message message in previousMessages) {
+            foreach (Message message in previousMessages.OrderBy(m => m.TimeSent).ToList()) {
                 message.TimeSent = message.TimeSent.ToLocalTime();
                 await Clients.User(userId).SendAsync("Message", message);
             }

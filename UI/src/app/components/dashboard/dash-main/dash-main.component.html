@@ -21,7 +21,7 @@
   <div class="modal-header">
     <h4 *ngIf="chatTarget">{{"Chatting with " + chatTarget.firstName + " " + chatTarget.lastName}}</h4>
   </div>
-  <div class="modal-body">
+  <div #scrollMe [scrollTop]="messages.length === 0 ? 0: scrollMe.scrollHeight"  class="modal-body">
     <div class="container-fluid border bg-light" id="chat-window">
       <div *ngFor="let msg of messages" class="list-group-item list-group-item-action">
         <div class="d-flex w-100 justify-content-between">

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { UserDto } from 'src/app/models/api/user-dto.model';
 import { UserContactResponse } from 'src/app/models/user/user-contacts-response.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -38,11 +38,13 @@ export class DashMainComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   public getUserContacts() {
     this.http.get<UserContactResponse>(`${environment.urlAddress}/user/contacts`).subscribe(res => {
       console.log("got contacts");
+      console.log(res.results);
       this.contacts = res.results;
     });
   }
@@ -54,11 +56,9 @@ export class DashMainComponent implements OnInit {
       centered: true,
       scrollable: true
     }).result.then( _ => {
-      console.log("closed");
       this.chatService.leaveChat(target.id);
       this.messages = [];
     }, _ => {
-      console.log("closed2");
       this.chatService.leaveChat(target.id);
       this.messages = [];
     })
@@ -83,7 +83,6 @@ export class DashMainComponent implements OnInit {
     this.chatService.messageReceived.subscribe((message: ChatMessage) => {  
       this.ngZone.run(() => {   
           this.messages.push(message);
-          console.log("got message"); 
       });  
     });  
   }
