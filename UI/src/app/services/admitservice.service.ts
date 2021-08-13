@@ -17,13 +17,18 @@ export class AdmitserviceService {
     return this._http.get<ApplicationGetResponse>(`${environment.urlAddress}/application`);
   }
 
-  postApplication(application: TutorApplicationDto)
+  postApplication(application: any)
   {
     this._http.post(`${environment.urlAddress}/application`, application);
   }
 
-  deleteApplication(application: TutorApplicationDto)
+  deleteApplication(application: string)
   {
     this._http.delete(`${environment.urlAddress}/application/`+ application);
+  }
+
+  patchApplication(application: string)
+  {
+    this._http.patch(`${environment.urlAddress}/application/`, application);
   }
 }

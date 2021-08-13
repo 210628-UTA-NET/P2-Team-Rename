@@ -44,14 +44,14 @@ export class TutorDetailsComponent implements OnInit {
   getAppointments(tutorId: string | undefined): void {
     //const id = this.route.snapshot.paramMap.get('id');
     let query = `?available=true&tutorId=${tutorId}`;
-    this.userService.GetTutorAppointments(query).subscribe((appts) => {
+    this.userService.GetAPITutorAppointments(query).subscribe((appts) => {
       let { results } = appts;
       this.availableAppts = results;
     });
   }
   book(appointmentID: string): void {
     this.userService
-      .BookAppointment(appointmentID)
+      .BookAPIAppointment(appointmentID)
       .subscribe((bookedAppointment) => {
         let {results} = bookedAppointment
         if (results.id) {

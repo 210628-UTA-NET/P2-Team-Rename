@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  urlAddress: 'https://localhost:44385'
+  urlAddress: 'https://tutorconnect.azurewebsites.net'
 };

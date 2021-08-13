@@ -43,7 +43,6 @@ export class DashMainComponent implements OnInit {
 
   public getUserContacts() {
     this.http.get<UserContactResponse>(`${environment.urlAddress}/user/contacts`).subscribe(res => {
-      console.log("got contacts");
       console.log(res.results);
       this.contacts = res.results;
     });

@@ -47,7 +47,13 @@ namespace BL {
             if (tutorParams.Distance != null && tutorParams.Latitude != null && tutorParams.Longitude != null) {
                 var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
                 var location = geometryFactory.CreatePoint(new NetTopologySuite.Geometries.Coordinate((double)tutorParams.Longitude, (double)tutorParams.Latitude));
-                conditions.Add(t => t.Location.IsWithinDistance(location, (double)tutorParams.Distance));
+                conditions.Add(t => {
+                    if (t.Location != null) {
+                        return t.Location.IsWithinDistance(location, (double)tutorParams.Distance);
+                    } else {
+                        return true;
+                    }
+                });
             }
 
              return await _tutorDB.Query(new() {
