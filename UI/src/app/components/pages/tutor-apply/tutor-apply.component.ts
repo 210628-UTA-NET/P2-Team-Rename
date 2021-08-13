@@ -1,3 +1,4 @@
+import { TutorApplicationDto } from './../../../models/api/application-dto.model';
 import { degreeOrCert } from './../../../models/tutor/degreeOrCert';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
@@ -5,6 +6,7 @@ import { EnvironmentUrlService } from 'src/app/services/environment-url.service'
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { DegreeOrCertDto } from 'src/app/models/api/degreeOrCert-dto.model';
+import { AdmitserviceService } from 'src/app/services/admitservice.service';
 
 @Component({
   selector: 'app-tutor-apply',
@@ -24,7 +26,7 @@ export class TutorApplyComponent implements OnInit {
     topics: string[] = [];
     index: number = this.topics.length;
 
-  constructor(private formBuilder: FormBuilder)
+  constructor(private formBuilder: FormBuilder, private _admitlist: AdmitserviceService)
   {
     this.appForm = this.formBuilder.group({
       about: new FormControl(''),
@@ -43,7 +45,14 @@ export class TutorApplyComponent implements OnInit {
   {
     this.about = this.appForm.get('about')?.value;
     console.log("Form Submitted " + this.about + " " + this.degree + " " + this.topics);
-    //this._admitlist.postApplication(selected);
+    /*var application: TutorApplicationDto =
+    {
+      about: this.about,
+      degreesOrCerts: this.degree,
+      topics: this.topics
+
+    };
+    this._admitlist.postApplication(application);*/
   }
 
   addTopic()
