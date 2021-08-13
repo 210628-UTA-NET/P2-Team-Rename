@@ -7,7 +7,7 @@ Users can:
 - Register and sign up for an account
 - Search for tutors based on topic
 - View available appointments with tutors
-- Book appointments (API only)
+- Book appointments
 - Manage appointments with tutors (API only).
 - Friend request tutors to chat with them (API only).
 - Live chat with Tutors (SignalR)
