@@ -54,8 +54,8 @@ export class RegisterUserComponent implements OnInit {
 
   @ViewChild('errorAlert', {static: false}) errorAlert: NgbAlert;
 
-  constructor(private authService: AuthenticationService, private router: Router, private route: ActivatedRoute) {
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+  constructor(private authService: AuthenticationService, private router: Router) {
+    this.returnUrl = '/';
   }
 
   ngOnInit(): void { 
