@@ -34,7 +34,7 @@ namespace API {
         public void ConfigureServices(IServiceCollection services) {
             services.AddCors(options => {
                 options.AddDefaultPolicy(builder => {
-                    builder.WithOrigins("http://localhost:4200")
+                    builder.WithOrigins("http://localhost:4200", "http://tutorconnect.azurewebsites.net/")
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials();
